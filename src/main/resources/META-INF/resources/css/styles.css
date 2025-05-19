@@ -1,0 +1,72 @@
+/* Estilos gerais */
+body {
+    background-color: #f8f9fa;
+}
+
+/* Estilos do cardápio */
+.menu-item {
+    transition: transform 0.2s;
+}
+
+.menu-item:hover {
+    transform: translateY(-5px);
+}
+
+.menu-item .card {
+    height: 100%;
+}
+
+.menu-item .card-img-top {
+    height: 200px;
+    object-fit: cover;
+}
+
+/* Estilos dos pedidos */
+.order-status {
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.875rem;
+}
+
+.status-pending {
+    background-color: #ffc107;
+    color: #000;
+}
+
+.status-preparing {
+    background-color: #17a2b8;
+    color: #fff;
+}
+
+.status-ready {
+    background-color: #28a745;
+    color: #fff;
+}
+
+.status-delivered {
+    background-color: #6c757d;
+    color: #fff;
+}
+
+/* Estilos do formulário de login */
+.login-container {
+    max-width: 400px;
+    margin: 2rem auto;
+}
+
+/* Estilos da navbar */
+.navbar {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Estilos dos botões de ação */
+.action-buttons .btn {
+    margin-right: 0.5rem;
+}
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+    .menu-item .card-img-top {
+        height: 150px;
+    }
+} 

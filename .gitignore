@@ -1,0 +1,50 @@
+# Arquivos compilados
+target/
+*.class
+
+# Arquivos de IDE
+.idea/
+*.iml
+.vscode/
+.settings/
+.project
+.classpath
+
+# Arquivos de log
+*.log
+
+# Arquivos do sistema
+.DS_Store
+Thumbs.db
+
+# Arquivos de ambiente
+.env
+*.env
+
+# Arquivos de build
+node_modules/
+dist/
+build/
+
+# Arquivos de banco de dados
+*.db
+*.sqlite
+
+# Arquivos de cache
+.cache/
+.npm/
+.yarn/
+
+# Arquivos de teste
+coverage/
+.nyc_output/
+
+# Arquivos de deploy
+*.war
+*.ear
+*.jar
+!target/*.jar
+
+# Arquivos de configuração local
+application-local.properties
+application-local.yaml 

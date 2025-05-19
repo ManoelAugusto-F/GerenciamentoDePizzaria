@@ -5,7 +5,7 @@ Este é um sistema web completo para gerenciamento de pizzaria, desenvolvido com
 ## 🚀 Tecnologias Utilizadas
 
 - **Backend:**
-  - Java EE 11
+  - Java EE 17
   - Quarkus Framework
   - JAX-RS para APIs RESTful
   - Hibernate ORM com Panache

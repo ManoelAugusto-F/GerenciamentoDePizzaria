@@ -3,6 +3,7 @@ class App {
         this.currentPage = 'home';
         this.setupEventListeners();
         this.loadPage();
+        this.setupLoadingIndicator();
     }
 
     setupEventListeners() {
@@ -73,28 +74,42 @@ class App {
         content.innerHTML = template.innerHTML;
 
         try {
+            this.showLoading();
             const products = await api.getProducts();
             const menuItems = document.getElementById('menuItems');
             
+            if (!products || products.length === 0) {
+                menuItems.innerHTML = '<div class="col-12 text-center"><p>Nenhum produto disponível no momento.</p></div>';
+                return;
+            }
+
             menuItems.innerHTML = products.map(product => `
                 <div class="col-md-4 mb-4">
                     <div class="card menu-item">
-                        <img src="${product.imageUrl}" class="card-img-top" alt="${product.name}">
+                        <img src="${product.imageUrl || 'images/default-pizza.jpg'}" 
+                             class="card-img-top" 
+                             alt="${product.name}"
+                             onerror="this.src='images/default-pizza.jpg'">
                         <div class="card-body">
                             <h5 class="card-title">${product.name}</h5>
-                            <p class="card-text">${product.description}</p>
+                            <p class="card-text">${product.description || 'Sem descrição'}</p>
                             <p class="card-text">
-                                <strong>R$ ${product.price.toFixed(2)}</strong>
+                                <strong>R$ ${product.price?.toFixed(2) || '0.00'}</strong>
                             </p>
-                            <button class="btn btn-primary" onclick="app.addToCart(${product.id})">
-                                Adicionar ao Carrinho
+                            <button class="btn btn-primary" 
+                                    onclick="app.addToCart(${product.id})"
+                                    ${!product.available ? 'disabled' : ''}>
+                                ${product.available ? 'Adicionar ao Carrinho' : 'Indisponível'}
                             </button>
                         </div>
                     </div>
                 </div>
             `).join('');
         } catch (error) {
-            content.innerHTML = '<div class="alert alert-danger">Erro ao carregar o cardápio</div>';
+            this.showError('Erro ao carregar o cardápio. Por favor, tente novamente mais tarde.');
+            console.error('Erro ao carregar menu:', error);
+        } finally {
+            this.hideLoading();
         }
     }
 
@@ -257,12 +272,22 @@ class App {
     }
 
     async deleteUser(userId) {
+        if (!userId) {
+            this.showError('ID do usuário inválido');
+            return;
+        }
+
         if (confirm('Tem certeza que deseja excluir este usuário?')) {
             try {
+                this.showLoading();
                 await api.deleteUser(userId);
+                this.showSuccess('Usuário excluído com sucesso!');
                 await this.loadUsersPage();
             } catch (error) {
-                alert('Erro ao excluir usuário');
+                this.showError('Erro ao excluir usuário. Por favor, tente novamente.');
+                console.error('Erro ao excluir usuário:', error);
+            } finally {
+                this.hideLoading();
             }
         }
     }
@@ -287,6 +312,70 @@ class App {
             }
         }
     }
+
+    setupLoadingIndicator() {
+        const loadingDiv = document.createElement('div');
+        loadingDiv.id = 'loading-indicator';
+        loadingDiv.className = 'loading-indicator';
+        loadingDiv.innerHTML = '<div class="spinner-border text-primary" role="status"><span class="visually-hidden">Carregando...</span></div>';
+        document.body.appendChild(loadingDiv);
+    }
+
+    showLoading() {
+        document.getElementById('loading-indicator').style.display = 'flex';
+    }
+
+    hideLoading() {
+        document.getElementById('loading-indicator').style.display = 'none';
+    }
+
+    showError(message) {
+        const alertDiv = document.createElement('div');
+        alertDiv.className = 'alert alert-danger alert-dismissible fade show';
+        alertDiv.innerHTML = `
+            ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        `;
+        document.getElementById('content').prepend(alertDiv);
+        setTimeout(() => alertDiv.remove(), 5000);
+    }
+
+    showSuccess(message) {
+        const alertDiv = document.createElement('div');
+        alertDiv.className = 'alert alert-success alert-dismissible fade show';
+        alertDiv.innerHTML = `
+            ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        `;
+        document.getElementById('content').prepend(alertDiv);
+        setTimeout(() => alertDiv.remove(), 5000);
+    }
 }
+
+// Adicionar estilos CSS necessários
+const style = document.createElement('style');
+style.textContent = `
+    .loading-indicator {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.8);
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+    }
+    
+    .alert {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 1000;
+        min-width: 300px;
+    }
+`;
+document.head.appendChild(style);
 
 const app = new App(); 

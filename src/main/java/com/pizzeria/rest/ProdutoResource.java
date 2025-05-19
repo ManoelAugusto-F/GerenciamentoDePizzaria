@@ -5,7 +5,6 @@ import com.pizzeria.model.entity.Usuario;
 import com.pizzeria.service.ProdutoService;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
-import jakarta.security.enterprise.SecurityContext;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;

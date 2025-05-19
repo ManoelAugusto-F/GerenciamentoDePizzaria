@@ -5,7 +5,6 @@ import com.pizzeria.model.entity.Usuario;
 import com.pizzeria.service.PedidoService;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
-import jakarta.security.enterprise.SecurityContext;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
@@ -85,7 +84,7 @@ public class PedidoResource {
             
             Usuario usuario = (Usuario) securityContext.getUserPrincipal();
             if (usuario.getPerfil() == Usuario.Perfil.CLIENTE && 
-                !pedido.getCliente().getId().equals(usuario.getId())) {
+                !pedido.getCliente().id.equals(usuario.id)) {
                 return Response.status(Response.Status.FORBIDDEN).build();
             }
             

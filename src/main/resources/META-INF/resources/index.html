@@ -3,105 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Gerenciamento de Pizzaria</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/styles.css" rel="stylesheet">
+    <title>Pizzaria - Início</title>
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar">
         <div class="container">
-            <a class="navbar-brand" href="#">Pizzaria</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" data-page="home">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" data-page="menu">Cardápio</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" data-page="orders">Pedidos</a>
-                    </li>
-                    <li class="nav-item admin-only" style="display: none;">
-                        <a class="nav-link" href="#" data-page="users">Usuários</a>
-                    </li>
-                    <li class="nav-item admin-only" style="display: none;">
-                        <a class="nav-link" href="#" data-page="products">Produtos</a>
-                    </li>
-                </ul>
-                <div class="d-flex">
-                    <span class="navbar-text me-3" id="userInfo"></span>
-                    <button class="btn btn-outline-light" id="logoutBtn">Sair</button>
-                </div>
+            <a href="index.html" class="logo">Pizzaria</a>
+            <div class="nav-links">
+                <a href="index.html" class="active">Início</a>
+                <a href="cardapio.html">Cardápio</a>
+                <a href="login.html">Login</a>
+                <a href="cadastro.html">Cadastro</a>
             </div>
         </div>
     </nav>
 
-    <div class="container mt-4">
-        <div id="content">
-            <!-- O conteúdo será carregado dinamicamente aqui -->
-        </div>
-    </div>
+    <main>
+        <section class="hero">
+            <div class="container">
+                <h1>As Melhores Pizzas da Cidade</h1>
+                <p>Ingredientes frescos e receitas tradicionais</p>
+                <a href="cardapio.html" class="btn btn-primary">Ver Cardápio</a>
+            </div>
+        </section>
 
-    <!-- Templates -->
-    <template id="login-template">
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header">
-                        <h4 class="mb-0">Login</h4>
+        <section class="features">
+            <div class="container">
+                <h2>Por que escolher nossa pizzaria?</h2>
+                <div class="features-grid">
+                    <div class="feature">
+                        <h3>Ingredientes Frescos</h3>
+                        <p>Utilizamos apenas ingredientes selecionados e frescos</p>
                     </div>
-                    <div class="card-body">
-                        <form id="loginForm">
-                            <div class="mb-3">
-                                <label for="email" class="form-label">Email</label>
-                                <input type="email" class="form-control" id="email" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="password" class="form-label">Senha</label>
-                                <input type="password" class="form-control" id="password" required>
-                            </div>
-                            <button type="submit" class="btn btn-primary">Entrar</button>
-                        </form>
+                    <div class="feature">
+                        <h3>Entrega Rápida</h3>
+                        <p>Entrega em até 45 minutos na sua região</p>
+                    </div>
+                    <div class="feature">
+                        <h3>Preços Justos</h3>
+                        <p>Qualidade e sabor por um preço acessível</p>
                     </div>
                 </div>
             </div>
-        </div>
-    </template>
+        </section>
 
-    <template id="menu-template">
-        <h2>Cardápio</h2>
-        <div class="row" id="menuItems">
-            <!-- Os itens do cardápio serão carregados aqui -->
-        </div>
-    </template>
+        <section class="about">
+            <div class="container">
+                <h2>Sobre Nós</h2>
+                <p>Há mais de 20 anos servindo as melhores pizzas da cidade. Nossa missão é proporcionar uma experiência gastronômica única, com sabores autênticos e atendimento de qualidade.</p>
+            </div>
+        </section>
+    </main>
 
-    <template id="orders-template">
-        <h2>Meus Pedidos</h2>
-        <div class="table-responsive">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Número</th>
-                        <th>Data</th>
-                        <th>Status</th>
-                        <th>Valor Total</th>
-                        <th>Ações</th>
-                    </tr>
-                </thead>
-                <tbody id="ordersList">
-                    <!-- Os pedidos serão carregados aqui -->
-                </tbody>
-            </table>
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Pizzaria. Todos os direitos reservados.</p>
         </div>
-    </template>
+    </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="js/auth.js"></script>
-    <script src="js/api.js"></script>
-    <script src="js/app.js"></script>
+    <script src="js/script.js"></script>
 </body>
 </html> 

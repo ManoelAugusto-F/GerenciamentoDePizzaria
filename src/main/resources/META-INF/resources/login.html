@@ -15,6 +15,7 @@
                 <a href="cardapio.html">Cardápio</a>
                 <a href="login.html" class="active">Login</a>
                 <a href="cadastro.html">Cadastro</a>
+                <span id="userInfo" style="margin-left: 1rem;"></span>
             </div>
         </div>
     </nav>
@@ -41,5 +42,20 @@
     </main>
 
     <script src="js/script.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        // Redireciona se já autenticado
+        document.addEventListener('DOMContentLoaded', function() {
+            if (auth.isAuthenticated()) {
+                if (auth.user?.perfil === 'ADMIN') {
+                    window.location.href = '/admin.html';
+                } else if (auth.user?.perfil === 'ATENDENTE') {
+                    window.location.href = '/atendente.html';
+                } else {
+                    window.location.href = '/cliente.html';
+                }
+            }
+        });
+    </script>
 </body>
 </html> 

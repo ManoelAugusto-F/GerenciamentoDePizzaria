@@ -57,7 +57,34 @@ public class ProdutoService {
     public Produto buscarPorId(Long id) {
         return Produto.findById(id);
     }
-    
+
+    // NOVOS MÉTODOS
+    public List<Produto> listarDisponiveis() {
+        return Produto.list("disponivel", true);
+    }
+
+    @Transactional
+    public Produto ativar(Long id, Usuario usuario) {
+        Produto produto = Produto.findById(id);
+        if (produto == null) {
+            throw new RuntimeException("Produto não encontrado");
+        }
+        produto.setDisponivel(true);
+        registrarLog(usuario, "ATIVAR", "Produto ativado: " + produto.getNome());
+        return produto;
+    }
+
+    @Transactional
+    public Produto desativar(Long id, Usuario usuario) {
+        Produto produto = Produto.findById(id);
+        if (produto == null) {
+            throw new RuntimeException("Produto não encontrado");
+        }
+        produto.setDisponivel(false);
+        registrarLog(usuario, "DESATIVAR", "Produto desativado: " + produto.getNome());
+        return produto;
+    }
+
     private void registrarLog(Usuario usuario, String acao, String descricao) {
         Log log = new Log();
         log.setUsuario(usuario);

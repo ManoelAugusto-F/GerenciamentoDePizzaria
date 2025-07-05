@@ -28,7 +28,7 @@ public class Produto extends PanacheEntity {
     @Column(nullable = false)
     private boolean disponivel = true;
     
-    @Column
+    @Column(name = "imagem_url")
     private String imagemUrl;
     
     public enum Tipo {

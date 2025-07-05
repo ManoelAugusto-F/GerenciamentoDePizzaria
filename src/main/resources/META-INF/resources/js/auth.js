@@ -38,7 +38,13 @@ class Auth {
 
             const data = await response.json();
             this.setSession(data);
-            window.location.href = '/';
+            if (data.perfil === 'ADMIN') {
+                window.location.href = '/admin.html';
+            } else if (data.perfil === 'ATENDENTE') {
+                window.location.href = '/atendente.html';
+            } else {
+                window.location.href = '/cliente.html';
+            }
         } catch (error) {
             alert(error.message);
         }
@@ -72,7 +78,7 @@ class Auth {
 
         if (this.isAuthenticated()) {
             if (userInfo) {
-                userInfo.textContent = `Olá, ${this.user.name}`;
+                userInfo.textContent = `Olá, ${this.user.nomeCompleto} (${this.user.perfil})`;
             }
             adminElements.forEach(el => {
                 el.style.display = this.isAdmin() ? 'block' : 'none';

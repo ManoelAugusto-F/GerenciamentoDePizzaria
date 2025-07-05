@@ -10,11 +10,16 @@
     <nav class="navbar">
         <div class="container">
             <a href="index.html" class="logo">Pizzaria</a>
-            <div class="nav-links">
+            <div class="nav-links" id="mainMenu">
                 <a href="index.html" class="active">Início</a>
                 <a href="cardapio.html">Cardápio</a>
-                <a href="login.html">Login</a>
-                <a href="cadastro.html">Cadastro</a>
+                <a href="login.html" id="loginLink">Login</a>
+                <a href="cadastro.html" id="registerLink">Cadastro</a>
+                <a href="admin.html" class="admin-only" style="display:none">Administração</a>
+                <a href="atendente.html" class="attendant-only" style="display:none">Painel Atendente</a>
+                <a href="cliente.html" class="client-only" style="display:none">Meus Pedidos</a>
+                <a href="#" id="logoutBtn" style="display:none">Sair</a>
+                <span id="userInfo" style="margin-left: 1rem;"></span>
             </div>
         </div>
     </nav>
@@ -63,5 +68,30 @@
     </footer>
 
     <script src="js/script.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        // Menu dinâmico conforme papel
+        document.addEventListener('DOMContentLoaded', function() {
+            if (auth.isAuthenticated()) {
+                document.getElementById('loginLink').style.display = 'none';
+                document.getElementById('registerLink').style.display = 'none';
+                document.getElementById('logoutBtn').style.display = 'inline-block';
+                if (auth.user?.perfil === 'ADMIN') {
+                    document.querySelector('.admin-only').style.display = 'inline-block';
+                } else if (auth.user?.perfil === 'ATENDENTE') {
+                    document.querySelector('.attendant-only').style.display = 'inline-block';
+                } else if (auth.user?.perfil === 'CLIENTE') {
+                    document.querySelector('.client-only').style.display = 'inline-block';
+                }
+            } else {
+                document.getElementById('loginLink').style.display = 'inline-block';
+                document.getElementById('registerLink').style.display = 'inline-block';
+                document.getElementById('logoutBtn').style.display = 'none';
+                document.querySelector('.admin-only').style.display = 'none';
+                document.querySelector('.attendant-only').style.display = 'none';
+                document.querySelector('.client-only').style.display = 'none';
+            }
+        });
+    </script>
 </body>
 </html> 

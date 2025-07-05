@@ -11,7 +11,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 public class Usuario extends PanacheEntity {
     
-    @Column(nullable = false)
+    @Column(name = "nome_completo", nullable = false)
     private String nomeCompleto;
     
     @Column(nullable = false, unique = true)

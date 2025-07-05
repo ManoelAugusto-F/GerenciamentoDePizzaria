@@ -65,6 +65,10 @@ public class PedidoResource {
         return pedidoService.listarPorCliente(clienteId);
     }
     
+    /**
+     * Listar pedidos por status (painel do atendente)
+     * Somente ADMIN e ATENDENTE
+     */
     @GET
     @Path("/status/{status}")
     @RolesAllowed({"ADMIN", "ATENDENTE"})
@@ -94,5 +98,16 @@ public class PedidoResource {
                          .entity(e.getMessage())
                          .build();
         }
+    }
+    
+    @GET
+    @Path("/me")
+    @RolesAllowed("CLIENTE")
+    public List<Pedido> listarMeusPedidos(@jakarta.ws.rs.core.Context jakarta.ws.rs.core.SecurityContext securityContext) {
+        Usuario usuario = (Usuario) securityContext.getUserPrincipal();
+        if (usuario == null) {
+            throw new WebApplicationException("Não autenticado", Response.Status.UNAUTHORIZED);
+        }
+        return pedidoService.listarPorCliente(usuario.id);
     }
 } 

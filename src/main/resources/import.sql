@@ -1,6 +1,22 @@
--- Inserir usuário administrador
+-- Usuário administrador
 INSERT INTO usuarios (nome_completo, email, senha, perfil, ativo)
-VALUES ('Administrador', 'admin@pizzeria.com', 'admin123', 'ADMIN', true);
+VALUES ('Administrador', 'admin@pizzeria.com', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVEFDa', 'ADMIN', true);
+
+-- Usuário Manoel Augusto (ADMIN)
+INSERT INTO usuarios (nome_completo, email, senha, perfil, ativo)
+VALUES ('Manoel Augusto', 'manoelaugusto.ferreira@gmail.com', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVEFDa', 'ADMIN', true);
+
+-- Usuário Julio Cesar (ADMIN)
+INSERT INTO usuarios (nome_completo, email, senha, perfil, ativo)
+VALUES ('Julio Cesar', 'juliojcc.franca@gmail.com', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVEFDa', 'ADMIN', true);
+
+-- Usuário atendente
+INSERT INTO usuarios (nome_completo, email, senha, perfil, ativo)
+VALUES ('Atendente', 'atendente@pizzeria.com', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVEFDa', 'ATENDENTE', true);
+
+-- Usuário cliente
+INSERT INTO usuarios (nome_completo, email, senha, perfil, ativo)
+VALUES ('Cliente', 'cliente@pizzeria.com', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVEFDa', 'CLIENTE', true);
 
 -- Inserir alguns produtos
 INSERT INTO produtos (nome, descricao, preco, tipo, disponivel, imagem_url)

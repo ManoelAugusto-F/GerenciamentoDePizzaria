@@ -9,6 +9,7 @@ import jakarta.transaction.Transactional;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.HashSet;
+import org.mindrot.jbcrypt.BCrypt;
 
 @ApplicationScoped
 public class AuthService {
@@ -17,7 +18,7 @@ public class AuthService {
     public AuthResponseDTO authenticate(AuthDTO authDTO) {
         Usuario usuario = Usuario.find("email", authDTO.getEmail()).firstResult();
         
-        if (usuario == null || !usuario.getSenha().equals(authDTO.getSenha())) {
+        if (usuario == null || !BCrypt.checkpw(authDTO.getSenha(), usuario.getSenha())) {
             throw new RuntimeException("Credenciais inválidas");
         }
         

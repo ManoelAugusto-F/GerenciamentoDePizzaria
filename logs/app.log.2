@@ -1,5 +1,5 @@
-2025-07-13 11:25:22,649 pop-os pizzeria-management-dev.jar[52331] WARN  [io.agr.pool] (agroal-21) Datasource '<default>': FATAL: password authentication failed for user "postgres"
-2025-07-13 11:25:22,649 pop-os pizzeria-management-dev.jar[52331] WARN  [org.hib.eng.jdb.env.int.JdbcEnvironmentInitiator] (JPA Startup Thread) HHH000342: Could not obtain connection to query metadata: java.lang.NullPointerException: Cannot invoke "org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(java.sql.SQLException, String)" because the return value of "org.hibernate.resource.transaction.backend.jta.internal.JtaIsolationDelegate.sqlExceptionHelper()" is null
+2025-07-13 11:25:24,940 pop-os pizzeria-management-dev.jar[52331] WARN  [io.agr.pool] (agroal-31) Datasource '<default>': FATAL: password authentication failed for user "postgres"
+2025-07-13 11:25:24,941 pop-os pizzeria-management-dev.jar[52331] WARN  [org.hib.eng.jdb.env.int.JdbcEnvironmentInitiator] (JPA Startup Thread) HHH000342: Could not obtain connection to query metadata: java.lang.NullPointerException: Cannot invoke "org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(java.sql.SQLException, String)" because the return value of "org.hibernate.resource.transaction.backend.jta.internal.JtaIsolationDelegate.sqlExceptionHelper()" is null
 	at org.hibernate.resource.transaction.backend.jta.internal.JtaIsolationDelegate.doTheWork(JtaIsolationDelegate.java:186)
 	at org.hibernate.resource.transaction.backend.jta.internal.JtaIsolationDelegate.lambda$delegateWork$1(JtaIsolationDelegate.java:75)
 	at org.hibernate.resource.transaction.backend.jta.internal.JtaIsolationDelegate.doInSuspendedTransaction(JtaIsolationDelegate.java:107)
@@ -25,13 +25,13 @@
 	at io.quarkus.hibernate.orm.runtime.JPAConfig$1.run(JPAConfig.java:64)
 	at java.base/java.lang.Thread.run(Thread.java:840)
 
-2025-07-13 11:25:22,680 pop-os pizzeria-management-dev.jar[52331] DEBUG [org.hib.SQL] (JPA Startup Thread) 
+2025-07-13 11:25:24,960 pop-os pizzeria-management-dev.jar[52331] DEBUG [org.hib.SQL] (JPA Startup Thread) 
     alter table if exists itens_pedido 
        drop constraint if exists FK42mycompce3b7yt3l6ukdwsxy
-2025-07-13 11:25:22,700 pop-os pizzeria-management-dev.jar[52331] WARN  [io.agr.pool] (agroal-21) Datasource '<default>': FATAL: password authentication failed for user "postgres"
-2025-07-13 11:25:22,701 pop-os pizzeria-management-dev.jar[52331] WARN  [org.hib.eng.jdb.spi.SqlExceptionHelper] (JPA Startup Thread) SQL Error: 0, SQLState: 28P01
-2025-07-13 11:25:22,701 pop-os pizzeria-management-dev.jar[52331] ERROR [org.hib.eng.jdb.spi.SqlExceptionHelper] (JPA Startup Thread) FATAL: password authentication failed for user "postgres"
-2025-07-13 11:25:22,705 pop-os pizzeria-management-dev.jar[52331] ERROR [io.qua.run.Application] (Quarkus Main Thread) Failed to start application (with profile [dev]): java.lang.RuntimeException: Failed to start quarkus
+2025-07-13 11:25:24,979 pop-os pizzeria-management-dev.jar[52331] WARN  [io.agr.pool] (agroal-31) Datasource '<default>': FATAL: password authentication failed for user "postgres"
+2025-07-13 11:25:24,980 pop-os pizzeria-management-dev.jar[52331] WARN  [org.hib.eng.jdb.spi.SqlExceptionHelper] (JPA Startup Thread) SQL Error: 0, SQLState: 28P01
+2025-07-13 11:25:24,980 pop-os pizzeria-management-dev.jar[52331] ERROR [org.hib.eng.jdb.spi.SqlExceptionHelper] (JPA Startup Thread) FATAL: password authentication failed for user "postgres"
+2025-07-13 11:25:24,984 pop-os pizzeria-management-dev.jar[52331] ERROR [io.qua.run.Application] (Quarkus Main Thread) Failed to start application (with profile [dev]): java.lang.RuntimeException: Failed to start quarkus
 	at io.quarkus.runner.ApplicationImpl.doStart(Unknown Source)
 	at io.quarkus.runtime.Application.start(Application.java:101)
 	at io.quarkus.runtime.ApplicationLifecycleManager.run(ApplicationLifecycleManager.java:111)
@@ -96,7 +96,7 @@ Caused by: org.postgresql.util.PSQLException: FATAL: password authentication fai
 	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
 	... 1 more
 
-2025-07-13 11:25:22,723 pop-os pizzeria-management-dev.jar[52331] ERROR [io.qua.dep.dev.IsolatedDevModeMain] (vert.x-worker-thread-1) Failed to start quarkus: io.quarkus.dev.appstate.ApplicationStartException: java.lang.RuntimeException: Failed to start quarkus
+2025-07-13 11:25:24,997 pop-os pizzeria-management-dev.jar[52331] ERROR [io.qua.dep.dev.IsolatedDevModeMain] (vert.x-worker-thread-1) Failed to start quarkus: io.quarkus.dev.appstate.ApplicationStartException: java.lang.RuntimeException: Failed to start quarkus
 	at io.quarkus.dev.appstate.ApplicationStateNotification.waitForApplicationStart(ApplicationStateNotification.java:58)
 	at io.quarkus.runner.bootstrap.StartupActionImpl.runMainClass(StartupActionImpl.java:132)
 	at io.quarkus.deployment.dev.IsolatedDevModeMain.restartApp(IsolatedDevModeMain.java:192)

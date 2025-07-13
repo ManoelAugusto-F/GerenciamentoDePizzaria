@@ -1,4 +1,4 @@
-2025-07-13 10:53:06,388 pop-os pizzeria-management-dev.jar[49009] ERROR [io.qua.run.boo.StartupActionImpl] (Quarkus Main Thread) Error running Quarkus: java.lang.reflect.InvocationTargetException
+2025-07-13 10:55:16,897 pop-os pizzeria-management-dev.jar[50254] ERROR [io.qua.run.boo.StartupActionImpl] (Quarkus Main Thread) Error running Quarkus: java.lang.reflect.InvocationTargetException
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -19,7 +19,7 @@ Caused by: java.lang.ExceptionInInitializerError
 Caused by: java.lang.RuntimeException: Failed to start quarkus
 	at io.quarkus.runner.ApplicationImpl.<clinit>(Unknown Source)
 	... 15 more
-Caused by: org.hibernate.AnnotationException: Association 'com.pizzeria.model.entity.Pedido.atendente' targets an unknown entity named 'com.pizzeria.model.entity.Usuario'
+Caused by: org.hibernate.AnnotationException: Association 'com.pizzeria.model.entity.Log.usuario' targets an unknown entity named 'com.pizzeria.model.entity.Usuario'
 	at org.hibernate.boot.model.internal.ToOneFkSecondPass.doSecondPass(ToOneFkSecondPass.java:104)
 	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.processEndOfQueue(InFlightMetadataCollectorImpl.java:1910)
 	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.processFkSecondPassesInOrder(InFlightMetadataCollectorImpl.java:1859)
@@ -35,4 +35,5 @@ Caused by: org.hibernate.AnnotationException: Association 'com.pizzeria.model.en
 	at io.quarkus.deployment.steps.ArcProcessor$notifyBeanContainerListeners1304312071.deploy(Unknown Source)
 	... 16 more
 
-2025-07-13 10:53:06,413 pop-os pizzeria-management-dev.jar[49009] INFO  [io.qua.dep.dev.IsolatedDevModeMain] (main) Attempting to start live reload endpoint to recover from previous Quarkus startup failure
+2025-07-13 10:55:16,922 pop-os pizzeria-management-dev.jar[50254] INFO  [io.qua.dep.dev.IsolatedDevModeMain] (main) Attempting to start live reload endpoint to recover from previous Quarkus startup failure
+2025-07-13 10:55:23,214 pop-os pizzeria-management-dev.jar[50254] WARN  [io.qua.config] (build-3) Unrecognized configuration file file:/home/manoel/Programa%C3%A7%C3%A3o%20Web/target/classes/application.yaml found; Please, check if your are providing the proper extension to load the file

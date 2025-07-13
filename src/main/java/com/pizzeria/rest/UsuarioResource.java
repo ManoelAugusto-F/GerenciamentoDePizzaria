@@ -5,6 +5,7 @@ import com.pizzeria.service.UsuarioService;
 import com.pizzeria.dto.UsuarioDTO;
 import com.pizzeria.dto.UsuarioCriarDTO;
 import com.pizzeria.dto.UsuarioAtualizarDTO;
+import com.pizzeria.dto.UserLoginDTO;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -16,6 +17,7 @@ import jakarta.ws.rs.WebApplicationException;
 import org.jboss.logging.Logger;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.mindrot.jbcrypt.BCrypt;
 
 @Path("/usuarios")
 @Produces(MediaType.APPLICATION_JSON)
@@ -251,6 +253,33 @@ public class UsuarioResource {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                          .entity("{\"erro\":\"Erro interno do servidor\"}")
                          .build();
+        }
+    }
+
+    @POST
+    @Path("/login")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response loginUsuario(com.pizzeria.dto.UserLoginDTO dto) {
+        try {
+            Usuario usuario = Usuario.find("email", dto.email).firstResult();
+            if (usuario == null || !BCrypt.checkpw(dto.password, usuario.getSenha())) {
+                return Response.status(Response.Status.UNAUTHORIZED)
+                    .entity("{\"erro\":\"Credenciais inválidas\"}")
+                    .build();
+            }
+            if (!usuario.isAtivo()) {
+                return Response.status(Response.Status.FORBIDDEN)
+                    .entity("{\"erro\":\"Usuário inativo\"}")
+                    .build();
+            }
+            return Response.ok()
+                .entity("{\"mensagem\":\"Login realizado com sucesso\"}")
+                .build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                .entity("{\"erro\":\"Erro interno ao autenticar\"}")
+                .build();
         }
     }
 } 

@@ -1,0 +1,429 @@
+2025-07-13 10:58:45,980 pop-os pizzeria-management-dev.jar[52331] DEBUG [org.hib.SQL] (JPA Startup Thread) 
+    drop table if exists itens_pedido cascade 
+2025-07-13 10:58:45,985 pop-os pizzeria-management-dev.jar[52331] DEBUG [org.hib.SQL] (JPA Startup Thread) 
+    drop table if exists logs cascade 
+2025-07-13 10:58:45,986 pop-os pizzeria-management-dev.jar[52331] DEBUG [org.hib.SQL] (JPA Startup Thread) 
+    drop table if exists order_items cascade 
+2025-07-13 10:58:45,987 pop-os pizzeria-management-dev.jar[52331] DEBUG [org.hib.SQL] (JPA Startup Thread) 
+    drop table if exists orders cascade 
+2025-07-13 10:58:45,987 pop-os pizzeria-management-dev.jar[52331] DEBUG [org.hib.SQL] (JPA Startup Thread) 
+    drop table if exists pedidos cascade 
+2025-07-13 10:58:45,988 pop-os pizzeria-management-dev.jar[52331] DEBUG [org.hib.SQL] (JPA Startup Thread) 
+    drop table if exists pizzas cascade 
+2025-07-13 10:58:45,988 pop-os pizzeria-management-dev.jar[52331] DEBUG [org.hib.SQL] (JPA Startup Thread) 
+    drop table if exists produtos cascade 
+2025-07-13 10:58:45,989 pop-os pizzeria-management-dev.jar[52331] DEBUG [org.hib.SQL] (JPA Startup Thread) 
+    drop table if exists users cascade 
+2025-07-13 10:58:45,989 pop-os pizzeria-management-dev.jar[52331] DEBUG [org.hib.SQL] (JPA Startup Thread) 
+    drop table if exists usuarios cascade 
+2025-07-13 10:58:45,990 pop-os pizzeria-management-dev.jar[52331] DEBUG [org.hib.SQL] (JPA Startup Thread) 
+    drop sequence if exists itens_pedido_SEQ
+2025-07-13 10:58:45,990 pop-os pizzeria-management-dev.jar[52331] DEBUG [org.hib.SQL] (JPA Startup Thread) 
+    drop sequence if exists logs_SEQ
+2025-07-13 10:58:45,991 pop-os pizzeria-management-dev.jar[52331] DEBUG [org.hib.SQL] (JPA Startup Thread) 
+    drop sequence if exists order_items_SEQ
+2025-07-13 10:58:45,991 pop-os pizzeria-management-dev.jar[52331] DEBUG [org.hib.SQL] (JPA Startup Thread) 
+    drop sequence if exists orders_SEQ
+2025-07-13 10:58:45,992 pop-os pizzeria-management-dev.jar[52331] DEBUG [org.hib.SQL] (JPA Startup Thread) 
+    drop sequence if exists pedidos_SEQ
+2025-07-13 10:58:45,992 pop-os pizzeria-management-dev.jar[52331] DEBUG [org.hib.SQL] (JPA Startup Thread) 
+    drop sequence if exists pizzas_SEQ
+2025-07-13 10:58:45,992 pop-os pizzeria-management-dev.jar[52331] DEBUG [org.hib.SQL] (JPA Startup Thread) 
+    drop sequence if exists produtos_SEQ
+2025-07-13 10:58:45,993 pop-os pizzeria-management-dev.jar[52331] DEBUG [org.hib.SQL] (JPA Startup Thread) 
+    drop sequence if exists users_SEQ
+2025-07-13 10:58:45,993 pop-os pizzeria-management-dev.jar[52331] DEBUG [org.hib.SQL] (JPA Startup Thread) 
+    drop sequence if exists usuarios_SEQ
+2025-07-13 10:58:45,997 pop-os pizzeria-management-dev.jar[52331] DEBUG [org.hib.SQL] (JPA Startup Thread) 
+    create sequence itens_pedido_SEQ start with 1 increment by 50
+2025-07-13 10:58:45,999 pop-os pizzeria-management-dev.jar[52331] DEBUG [org.hib.SQL] (JPA Startup Thread) 
+    create sequence logs_SEQ start with 1 increment by 50
+2025-07-13 10:58:45,999 pop-os pizzeria-management-dev.jar[52331] DEBUG [org.hib.SQL] (JPA Startup Thread) 
+    create sequence order_items_SEQ start with 1 increment by 50
+2025-07-13 10:58:46,000 pop-os pizzeria-management-dev.jar[52331] DEBUG [org.hib.SQL] (JPA Startup Thread) 
+    create sequence orders_SEQ start with 1 increment by 50
+2025-07-13 10:58:46,001 pop-os pizzeria-management-dev.jar[52331] DEBUG [org.hib.SQL] (JPA Startup Thread) 
+    create sequence pedidos_SEQ start with 1 increment by 50
+2025-07-13 10:58:46,001 pop-os pizzeria-management-dev.jar[52331] DEBUG [org.hib.SQL] (JPA Startup Thread) 
+    create sequence pizzas_SEQ start with 1 increment by 50
+2025-07-13 10:58:46,002 pop-os pizzeria-management-dev.jar[52331] DEBUG [org.hib.SQL] (JPA Startup Thread) 
+    create sequence produtos_SEQ start with 1 increment by 50
+2025-07-13 10:58:46,003 pop-os pizzeria-management-dev.jar[52331] DEBUG [org.hib.SQL] (JPA Startup Thread) 
+    create sequence users_SEQ start with 1 increment by 50
+2025-07-13 10:58:46,003 pop-os pizzeria-management-dev.jar[52331] DEBUG [org.hib.SQL] (JPA Startup Thread) 
+    create sequence usuarios_SEQ start with 1 increment by 50
+2025-07-13 10:58:46,005 pop-os pizzeria-management-dev.jar[52331] DEBUG [org.hib.SQL] (JPA Startup Thread) 
+    create table itens_pedido (
+        precoUnitario numeric(38,2) not null,
+        quantidade integer not null,
+        subtotal numeric(38,2) not null,
+        id bigint not null,
+        pedido_id bigint not null,
+        produto_id bigint not null,
+        observacoes varchar(255),
+        primary key (id)
+    )
+2025-07-13 10:58:46,010 pop-os pizzeria-management-dev.jar[52331] DEBUG [org.hib.SQL] (JPA Startup Thread) 
+    create table logs (
+        dataHora timestamp(6) not null,
+        id bigint not null,
+        usuario_id bigint not null,
+        acao varchar(255) not null,
+        descricao varchar(255) not null,
+        detalhes varchar(255),
+        primary key (id)
+    )
+2025-07-13 10:58:46,011 pop-os pizzeria-management-dev.jar[52331] DEBUG [org.hib.SQL] (JPA Startup Thread) 
+    create table order_items (
+        price float(53),
+        quantity integer,
+        id bigint not null,
+        order_id bigint,
+        pizza_id bigint,
+        primary key (id)
+    )
+2025-07-13 10:58:46,012 pop-os pizzeria-management-dev.jar[52331] DEBUG [org.hib.SQL] (JPA Startup Thread) 
+    create table orders (
+        total float(53),
+        createdAt timestamp(6),
+        id bigint not null,
+        user_id bigint,
+        status varchar(255),
+        primary key (id)
+    )
+2025-07-13 10:58:46,013 pop-os pizzeria-management-dev.jar[52331] DEBUG [org.hib.SQL] (JPA Startup Thread) 
+    create table pedidos (
+        valorTotal numeric(38,2) not null,
+        atendente_id bigint,
+        cliente_id bigint not null,
+        dataAtualizacao timestamp(6) not null,
+        dataPedido timestamp(6) not null,
+        id bigint not null,
+        enderecoEntrega varchar(255) not null,
+        formaPagamento varchar(255) not null,
+        status varchar(255) not null check (status in ('RECEBIDO','PREPARANDO','PRONTO','ENTREGUE')),
+        primary key (id)
+    )
+2025-07-13 10:58:46,017 pop-os pizzeria-management-dev.jar[52331] DEBUG [org.hib.SQL] (JPA Startup Thread) 
+    create table pizzas (
+        available boolean,
+        price float(53),
+        id bigint not null,
+        description varchar(255),
+        imageUrl varchar(255),
+        name varchar(255),
+        primary key (id)
+    )
+2025-07-13 10:58:46,018 pop-os pizzeria-management-dev.jar[52331] DEBUG [org.hib.SQL] (JPA Startup Thread) 
+    create table produtos (
+        disponivel boolean not null,
+        preco numeric(38,2) not null,
+        id bigint not null,
+        descricao varchar(1000),
+        imagem_url varchar(255),
+        nome varchar(255) not null,
+        tipo varchar(255) not null check (tipo in ('PIZZA','BEBIDA','EXTRAS')),
+        primary key (id)
+    )
+2025-07-13 10:58:46,021 pop-os pizzeria-management-dev.jar[52331] DEBUG [org.hib.SQL] (JPA Startup Thread) 
+    create table users (
+        id bigint not null,
+        email varchar(255) unique,
+        name varchar(255),
+        password varchar(255),
+        roles varchar(255),
+        primary key (id)
+    )
+2025-07-13 10:58:46,023 pop-os pizzeria-management-dev.jar[52331] DEBUG [org.hib.SQL] (JPA Startup Thread) 
+    create table usuarios (
+        ativo boolean not null,
+        perfil tinyint check (perfil between 0 and 2),
+        id bigint not null,
+        email varchar(255),
+        nomeCompleto varchar(255),
+        senha varchar(255),
+        primary key (id)
+    )
+2025-07-13 10:58:46,024 pop-os pizzeria-management-dev.jar[52331] DEBUG [org.hib.SQL] (JPA Startup Thread) 
+    alter table if exists itens_pedido 
+       add constraint FK42mycompce3b7yt3l6ukdwsxy 
+       foreign key (pedido_id) 
+       references pedidos
+2025-07-13 10:58:46,031 pop-os pizzeria-management-dev.jar[52331] DEBUG [org.hib.SQL] (JPA Startup Thread) 
+    alter table if exists itens_pedido 
+       add constraint FKxytdlekpdaobqphujy9bmuhl 
+       foreign key (produto_id) 
+       references produtos
+2025-07-13 10:58:46,032 pop-os pizzeria-management-dev.jar[52331] DEBUG [org.hib.SQL] (JPA Startup Thread) 
+    alter table if exists logs 
+       add constraint FKiwemym0xxgb0o2lx77swfg5q3 
+       foreign key (usuario_id) 
+       references usuarios
+2025-07-13 10:58:46,035 pop-os pizzeria-management-dev.jar[52331] DEBUG [org.hib.SQL] (JPA Startup Thread) 
+    alter table if exists order_items 
+       add constraint FKbioxgbv59vetrxe0ejfubep1w 
+       foreign key (order_id) 
+       references orders
+2025-07-13 10:58:46,036 pop-os pizzeria-management-dev.jar[52331] DEBUG [org.hib.SQL] (JPA Startup Thread) 
+    alter table if exists order_items 
+       add constraint FKgam9c7d0dd120965bwkse8meb 
+       foreign key (pizza_id) 
+       references pizzas
+2025-07-13 10:58:46,038 pop-os pizzeria-management-dev.jar[52331] DEBUG [org.hib.SQL] (JPA Startup Thread) 
+    alter table if exists orders 
+       add constraint FK32ql8ubntj5uh44ph9659tiih 
+       foreign key (user_id) 
+       references users
+2025-07-13 10:58:46,039 pop-os pizzeria-management-dev.jar[52331] DEBUG [org.hib.SQL] (JPA Startup Thread) 
+    alter table if exists pedidos 
+       add constraint FKgi01bjlx8b6mc2f5d4idptiqb 
+       foreign key (atendente_id) 
+       references usuarios
+2025-07-13 10:58:46,040 pop-os pizzeria-management-dev.jar[52331] DEBUG [org.hib.SQL] (JPA Startup Thread) 
+    alter table if exists pedidos 
+       add constraint FK6dtctern9votxnaydg7g2uifb 
+       foreign key (cliente_id) 
+       references usuarios
+2025-07-13 10:58:46,067 pop-os pizzeria-management-dev.jar[52331] DEBUG [org.hib.SQL] (JPA Startup Thread) INSERT INTO usuarios (id, nome_completo, email, senha, perfil, ativo) VALUES (1, 'Administrador', 'admin@pizzeria.com', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVEFDa', 'ADMIN', true)
+2025-07-13 10:58:46,070 pop-os pizzeria-management-dev.jar[52331] WARN  [org.hib.too.sch.int.ExceptionHandlerLoggedImpl] (JPA Startup Thread) GenerationTarget encountered exception accepting command : Error executing DDL "INSERT INTO usuarios (id, nome_completo, email, senha, perfil, ativo) VALUES (1, 'Administrador', 'admin@pizzeria.com', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVEFDa', 'ADMIN', true)" via JDBC [Column "NOME_COMPLETO" not found;]: org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "INSERT INTO usuarios (id, nome_completo, email, senha, perfil, ativo) VALUES (1, 'Administrador', 'admin@pizzeria.com', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVEFDa', 'ADMIN', true)" via JDBC [Column "NOME_COMPLETO" not found;]
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:94)
+	at org.hibernate.tool.schema.internal.Helper.applySqlString(Helper.java:233)
+	at org.hibernate.tool.schema.internal.Helper.applyScript(Helper.java:255)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.applyImportFiles(SchemaCreatorImpl.java:665)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.applyImportSources(SchemaCreatorImpl.java:584)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.performCreation(SchemaCreatorImpl.java:184)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.doCreation(SchemaCreatorImpl.java:142)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.doCreation(SchemaCreatorImpl.java:118)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:256)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.lambda$process$5(SchemaManagementToolCoordinator.java:145)
+	at java.base/java.util.HashMap.forEach(HashMap.java:1421)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:142)
+	at io.quarkus.hibernate.orm.runtime.observers.SessionFactoryObserverForSchemaExport.sessionFactoryCreated(SessionFactoryObserverForSchemaExport.java:21)
+	at org.hibernate.internal.SessionFactoryObserverChain.sessionFactoryCreated(SessionFactoryObserverChain.java:35)
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:315)
+	at io.quarkus.hibernate.orm.runtime.boot.FastBootEntityManagerFactoryBuilder.build(FastBootEntityManagerFactoryBuilder.java:87)
+	at io.quarkus.hibernate.orm.runtime.FastBootHibernatePersistenceProvider.createEntityManagerFactory(FastBootHibernatePersistenceProvider.java:72)
+	at jakarta.persistence.Persistence.createEntityManagerFactory(Persistence.java:80)
+	at jakarta.persistence.Persistence.createEntityManagerFactory(Persistence.java:55)
+	at io.quarkus.hibernate.orm.runtime.JPAConfig$LazyPersistenceUnit.get(JPAConfig.java:157)
+	at io.quarkus.hibernate.orm.runtime.JPAConfig$1.run(JPAConfig.java:64)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Column "NOME_COMPLETO" not found; SQL statement:
+INSERT INTO usuarios (id, nome_completo, email, senha, perfil, ativo) VALUES (1, 'Administrador', 'admin@pizzeria.com', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVEFDa', 'ADMIN', true) [42122-224]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:514)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.table.Table.getColumn(Table.java:759)
+	at org.h2.command.Parser.parseColumn(Parser.java:1190)
+	at org.h2.command.Parser.parseColumnList(Parser.java:1175)
+	at org.h2.command.Parser.parseInsert(Parser.java:1549)
+	at org.h2.command.Parser.parsePrepared(Parser.java:719)
+	at org.h2.command.Parser.parse(Parser.java:592)
+	at org.h2.command.Parser.parse(Parser.java:564)
+	at org.h2.command.Parser.prepareCommand(Parser.java:483)
+	at org.h2.engine.SessionLocal.prepareLocal(SessionLocal.java:639)
+	at org.h2.engine.SessionLocal.prepareCommand(SessionLocal.java:559)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1166)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:245)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:231)
+	at io.agroal.pool.wrapper.StatementWrapper.execute(StatementWrapper.java:235)
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80)
+	... 21 more
+
+2025-07-13 10:58:46,073 pop-os pizzeria-management-dev.jar[52331] DEBUG [org.hib.SQL] (JPA Startup Thread) INSERT INTO usuarios (id, nome_completo, email, senha, perfil, ativo) VALUES (2, 'Manoel Augusto', 'manoelaugusto.ferreira@gmail.com', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVEFDa', 'ADMIN', true)
+2025-07-13 10:58:46,073 pop-os pizzeria-management-dev.jar[52331] WARN  [org.hib.too.sch.int.ExceptionHandlerLoggedImpl] (JPA Startup Thread) GenerationTarget encountered exception accepting command : Error executing DDL "INSERT INTO usuarios (id, nome_completo, email, senha, perfil, ativo) VALUES (2, 'Manoel Augusto', 'manoelaugusto.ferreira@gmail.com', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVEFDa', 'ADMIN', true)" via JDBC [Column "NOME_COMPLETO" not found;]: org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "INSERT INTO usuarios (id, nome_completo, email, senha, perfil, ativo) VALUES (2, 'Manoel Augusto', 'manoelaugusto.ferreira@gmail.com', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVEFDa', 'ADMIN', true)" via JDBC [Column "NOME_COMPLETO" not found;]
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:94)
+	at org.hibernate.tool.schema.internal.Helper.applySqlString(Helper.java:233)
+	at org.hibernate.tool.schema.internal.Helper.applyScript(Helper.java:255)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.applyImportFiles(SchemaCreatorImpl.java:665)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.applyImportSources(SchemaCreatorImpl.java:584)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.performCreation(SchemaCreatorImpl.java:184)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.doCreation(SchemaCreatorImpl.java:142)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.doCreation(SchemaCreatorImpl.java:118)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:256)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.lambda$process$5(SchemaManagementToolCoordinator.java:145)
+	at java.base/java.util.HashMap.forEach(HashMap.java:1421)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:142)
+	at io.quarkus.hibernate.orm.runtime.observers.SessionFactoryObserverForSchemaExport.sessionFactoryCreated(SessionFactoryObserverForSchemaExport.java:21)
+	at org.hibernate.internal.SessionFactoryObserverChain.sessionFactoryCreated(SessionFactoryObserverChain.java:35)
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:315)
+	at io.quarkus.hibernate.orm.runtime.boot.FastBootEntityManagerFactoryBuilder.build(FastBootEntityManagerFactoryBuilder.java:87)
+	at io.quarkus.hibernate.orm.runtime.FastBootHibernatePersistenceProvider.createEntityManagerFactory(FastBootHibernatePersistenceProvider.java:72)
+	at jakarta.persistence.Persistence.createEntityManagerFactory(Persistence.java:80)
+	at jakarta.persistence.Persistence.createEntityManagerFactory(Persistence.java:55)
+	at io.quarkus.hibernate.orm.runtime.JPAConfig$LazyPersistenceUnit.get(JPAConfig.java:157)
+	at io.quarkus.hibernate.orm.runtime.JPAConfig$1.run(JPAConfig.java:64)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Column "NOME_COMPLETO" not found; SQL statement:
+INSERT INTO usuarios (id, nome_completo, email, senha, perfil, ativo) VALUES (2, 'Manoel Augusto', 'manoelaugusto.ferreira@gmail.com', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVEFDa', 'ADMIN', true) [42122-224]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:514)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.table.Table.getColumn(Table.java:759)
+	at org.h2.command.Parser.parseColumn(Parser.java:1190)
+	at org.h2.command.Parser.parseColumnList(Parser.java:1175)
+	at org.h2.command.Parser.parseInsert(Parser.java:1549)
+	at org.h2.command.Parser.parsePrepared(Parser.java:719)
+	at org.h2.command.Parser.parse(Parser.java:592)
+	at org.h2.command.Parser.parse(Parser.java:564)
+	at org.h2.command.Parser.prepareCommand(Parser.java:483)
+	at org.h2.engine.SessionLocal.prepareLocal(SessionLocal.java:639)
+	at org.h2.engine.SessionLocal.prepareCommand(SessionLocal.java:559)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1166)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:245)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:231)
+	at io.agroal.pool.wrapper.StatementWrapper.execute(StatementWrapper.java:235)
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80)
+	... 21 more
+
+2025-07-13 10:58:46,074 pop-os pizzeria-management-dev.jar[52331] DEBUG [org.hib.SQL] (JPA Startup Thread) INSERT INTO usuarios (id, nome_completo, email, senha, perfil, ativo) VALUES (3, 'Julio Cesar', 'juliojcc.franca@gmail.com', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVEFDa', 'ADMIN', true)
+2025-07-13 10:58:46,074 pop-os pizzeria-management-dev.jar[52331] WARN  [org.hib.too.sch.int.ExceptionHandlerLoggedImpl] (JPA Startup Thread) GenerationTarget encountered exception accepting command : Error executing DDL "INSERT INTO usuarios (id, nome_completo, email, senha, perfil, ativo) VALUES (3, 'Julio Cesar', 'juliojcc.franca@gmail.com', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVEFDa', 'ADMIN', true)" via JDBC [Column "NOME_COMPLETO" not found;]: org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "INSERT INTO usuarios (id, nome_completo, email, senha, perfil, ativo) VALUES (3, 'Julio Cesar', 'juliojcc.franca@gmail.com', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVEFDa', 'ADMIN', true)" via JDBC [Column "NOME_COMPLETO" not found;]
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:94)
+	at org.hibernate.tool.schema.internal.Helper.applySqlString(Helper.java:233)
+	at org.hibernate.tool.schema.internal.Helper.applyScript(Helper.java:255)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.applyImportFiles(SchemaCreatorImpl.java:665)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.applyImportSources(SchemaCreatorImpl.java:584)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.performCreation(SchemaCreatorImpl.java:184)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.doCreation(SchemaCreatorImpl.java:142)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.doCreation(SchemaCreatorImpl.java:118)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:256)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.lambda$process$5(SchemaManagementToolCoordinator.java:145)
+	at java.base/java.util.HashMap.forEach(HashMap.java:1421)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:142)
+	at io.quarkus.hibernate.orm.runtime.observers.SessionFactoryObserverForSchemaExport.sessionFactoryCreated(SessionFactoryObserverForSchemaExport.java:21)
+	at org.hibernate.internal.SessionFactoryObserverChain.sessionFactoryCreated(SessionFactoryObserverChain.java:35)
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:315)
+	at io.quarkus.hibernate.orm.runtime.boot.FastBootEntityManagerFactoryBuilder.build(FastBootEntityManagerFactoryBuilder.java:87)
+	at io.quarkus.hibernate.orm.runtime.FastBootHibernatePersistenceProvider.createEntityManagerFactory(FastBootHibernatePersistenceProvider.java:72)
+	at jakarta.persistence.Persistence.createEntityManagerFactory(Persistence.java:80)
+	at jakarta.persistence.Persistence.createEntityManagerFactory(Persistence.java:55)
+	at io.quarkus.hibernate.orm.runtime.JPAConfig$LazyPersistenceUnit.get(JPAConfig.java:157)
+	at io.quarkus.hibernate.orm.runtime.JPAConfig$1.run(JPAConfig.java:64)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Column "NOME_COMPLETO" not found; SQL statement:
+INSERT INTO usuarios (id, nome_completo, email, senha, perfil, ativo) VALUES (3, 'Julio Cesar', 'juliojcc.franca@gmail.com', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVEFDa', 'ADMIN', true) [42122-224]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:514)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.table.Table.getColumn(Table.java:759)
+	at org.h2.command.Parser.parseColumn(Parser.java:1190)
+	at org.h2.command.Parser.parseColumnList(Parser.java:1175)
+	at org.h2.command.Parser.parseInsert(Parser.java:1549)
+	at org.h2.command.Parser.parsePrepared(Parser.java:719)
+	at org.h2.command.Parser.parse(Parser.java:592)
+	at org.h2.command.Parser.parse(Parser.java:564)
+	at org.h2.command.Parser.prepareCommand(Parser.java:483)
+	at org.h2.engine.SessionLocal.prepareLocal(SessionLocal.java:639)
+	at org.h2.engine.SessionLocal.prepareCommand(SessionLocal.java:559)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1166)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:245)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:231)
+	at io.agroal.pool.wrapper.StatementWrapper.execute(StatementWrapper.java:235)
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80)
+	... 21 more
+
+2025-07-13 10:58:46,075 pop-os pizzeria-management-dev.jar[52331] DEBUG [org.hib.SQL] (JPA Startup Thread) INSERT INTO usuarios (id, nome_completo, email, senha, perfil, ativo) VALUES (4, 'Atendente', 'atendente@pizzeria.com', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVEFDa', 'ATENDENTE', true)
+2025-07-13 10:58:46,076 pop-os pizzeria-management-dev.jar[52331] WARN  [org.hib.too.sch.int.ExceptionHandlerLoggedImpl] (JPA Startup Thread) GenerationTarget encountered exception accepting command : Error executing DDL "INSERT INTO usuarios (id, nome_completo, email, senha, perfil, ativo) VALUES (4, 'Atendente', 'atendente@pizzeria.com', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVEFDa', 'ATENDENTE', true)" via JDBC [Column "NOME_COMPLETO" not found;]: org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "INSERT INTO usuarios (id, nome_completo, email, senha, perfil, ativo) VALUES (4, 'Atendente', 'atendente@pizzeria.com', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVEFDa', 'ATENDENTE', true)" via JDBC [Column "NOME_COMPLETO" not found;]
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:94)
+	at org.hibernate.tool.schema.internal.Helper.applySqlString(Helper.java:233)
+	at org.hibernate.tool.schema.internal.Helper.applyScript(Helper.java:255)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.applyImportFiles(SchemaCreatorImpl.java:665)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.applyImportSources(SchemaCreatorImpl.java:584)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.performCreation(SchemaCreatorImpl.java:184)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.doCreation(SchemaCreatorImpl.java:142)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.doCreation(SchemaCreatorImpl.java:118)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:256)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.lambda$process$5(SchemaManagementToolCoordinator.java:145)
+	at java.base/java.util.HashMap.forEach(HashMap.java:1421)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:142)
+	at io.quarkus.hibernate.orm.runtime.observers.SessionFactoryObserverForSchemaExport.sessionFactoryCreated(SessionFactoryObserverForSchemaExport.java:21)
+	at org.hibernate.internal.SessionFactoryObserverChain.sessionFactoryCreated(SessionFactoryObserverChain.java:35)
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:315)
+	at io.quarkus.hibernate.orm.runtime.boot.FastBootEntityManagerFactoryBuilder.build(FastBootEntityManagerFactoryBuilder.java:87)
+	at io.quarkus.hibernate.orm.runtime.FastBootHibernatePersistenceProvider.createEntityManagerFactory(FastBootHibernatePersistenceProvider.java:72)
+	at jakarta.persistence.Persistence.createEntityManagerFactory(Persistence.java:80)
+	at jakarta.persistence.Persistence.createEntityManagerFactory(Persistence.java:55)
+	at io.quarkus.hibernate.orm.runtime.JPAConfig$LazyPersistenceUnit.get(JPAConfig.java:157)
+	at io.quarkus.hibernate.orm.runtime.JPAConfig$1.run(JPAConfig.java:64)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Column "NOME_COMPLETO" not found; SQL statement:
+INSERT INTO usuarios (id, nome_completo, email, senha, perfil, ativo) VALUES (4, 'Atendente', 'atendente@pizzeria.com', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVEFDa', 'ATENDENTE', true) [42122-224]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:514)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.table.Table.getColumn(Table.java:759)
+	at org.h2.command.Parser.parseColumn(Parser.java:1190)
+	at org.h2.command.Parser.parseColumnList(Parser.java:1175)
+	at org.h2.command.Parser.parseInsert(Parser.java:1549)
+	at org.h2.command.Parser.parsePrepared(Parser.java:719)
+	at org.h2.command.Parser.parse(Parser.java:592)
+	at org.h2.command.Parser.parse(Parser.java:564)
+	at org.h2.command.Parser.prepareCommand(Parser.java:483)
+	at org.h2.engine.SessionLocal.prepareLocal(SessionLocal.java:639)
+	at org.h2.engine.SessionLocal.prepareCommand(SessionLocal.java:559)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1166)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:245)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:231)
+	at io.agroal.pool.wrapper.StatementWrapper.execute(StatementWrapper.java:235)
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80)
+	... 21 more
+
+2025-07-13 10:58:46,076 pop-os pizzeria-management-dev.jar[52331] DEBUG [org.hib.SQL] (JPA Startup Thread) INSERT INTO usuarios (id, nome_completo, email, senha, perfil, ativo) VALUES (5, 'Cliente', 'cliente@pizzeria.com', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVEFDa', 'CLIENTE', true)
+2025-07-13 10:58:46,077 pop-os pizzeria-management-dev.jar[52331] WARN  [org.hib.too.sch.int.ExceptionHandlerLoggedImpl] (JPA Startup Thread) GenerationTarget encountered exception accepting command : Error executing DDL "INSERT INTO usuarios (id, nome_completo, email, senha, perfil, ativo) VALUES (5, 'Cliente', 'cliente@pizzeria.com', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVEFDa', 'CLIENTE', true)" via JDBC [Column "NOME_COMPLETO" not found;]: org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "INSERT INTO usuarios (id, nome_completo, email, senha, perfil, ativo) VALUES (5, 'Cliente', 'cliente@pizzeria.com', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVEFDa', 'CLIENTE', true)" via JDBC [Column "NOME_COMPLETO" not found;]
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:94)
+	at org.hibernate.tool.schema.internal.Helper.applySqlString(Helper.java:233)
+	at org.hibernate.tool.schema.internal.Helper.applyScript(Helper.java:255)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.applyImportFiles(SchemaCreatorImpl.java:665)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.applyImportSources(SchemaCreatorImpl.java:584)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.performCreation(SchemaCreatorImpl.java:184)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.doCreation(SchemaCreatorImpl.java:142)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.doCreation(SchemaCreatorImpl.java:118)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:256)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.lambda$process$5(SchemaManagementToolCoordinator.java:145)
+	at java.base/java.util.HashMap.forEach(HashMap.java:1421)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:142)
+	at io.quarkus.hibernate.orm.runtime.observers.SessionFactoryObserverForSchemaExport.sessionFactoryCreated(SessionFactoryObserverForSchemaExport.java:21)
+	at org.hibernate.internal.SessionFactoryObserverChain.sessionFactoryCreated(SessionFactoryObserverChain.java:35)
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:315)
+	at io.quarkus.hibernate.orm.runtime.boot.FastBootEntityManagerFactoryBuilder.build(FastBootEntityManagerFactoryBuilder.java:87)
+	at io.quarkus.hibernate.orm.runtime.FastBootHibernatePersistenceProvider.createEntityManagerFactory(FastBootHibernatePersistenceProvider.java:72)
+	at jakarta.persistence.Persistence.createEntityManagerFactory(Persistence.java:80)
+	at jakarta.persistence.Persistence.createEntityManagerFactory(Persistence.java:55)
+	at io.quarkus.hibernate.orm.runtime.JPAConfig$LazyPersistenceUnit.get(JPAConfig.java:157)
+	at io.quarkus.hibernate.orm.runtime.JPAConfig$1.run(JPAConfig.java:64)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Column "NOME_COMPLETO" not found; SQL statement:
+INSERT INTO usuarios (id, nome_completo, email, senha, perfil, ativo) VALUES (5, 'Cliente', 'cliente@pizzeria.com', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVEFDa', 'CLIENTE', true) [42122-224]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:514)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.table.Table.getColumn(Table.java:759)
+	at org.h2.command.Parser.parseColumn(Parser.java:1190)
+	at org.h2.command.Parser.parseColumnList(Parser.java:1175)
+	at org.h2.command.Parser.parseInsert(Parser.java:1549)
+	at org.h2.command.Parser.parsePrepared(Parser.java:719)
+	at org.h2.command.Parser.parse(Parser.java:592)
+	at org.h2.command.Parser.parse(Parser.java:564)
+	at org.h2.command.Parser.prepareCommand(Parser.java:483)
+	at org.h2.engine.SessionLocal.prepareLocal(SessionLocal.java:639)
+	at org.h2.engine.SessionLocal.prepareCommand(SessionLocal.java:559)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1166)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:245)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:231)
+	at io.agroal.pool.wrapper.StatementWrapper.execute(StatementWrapper.java:235)
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80)
+	... 21 more
+
+2025-07-13 10:58:46,155 pop-os pizzeria-management-dev.jar[52331] INFO  [io.quarkus] (Quarkus Main Thread) pizzeria-management 1.0.0-SNAPSHOT on JVM (powered by Quarkus 3.7.1) started in 3.035s. Listening on: http://localhost:8080
+2025-07-13 10:58:46,155 pop-os pizzeria-management-dev.jar[52331] INFO  [io.quarkus] (Quarkus Main Thread) Profile dev activated. Live Coding activated.
+2025-07-13 10:58:46,156 pop-os pizzeria-management-dev.jar[52331] INFO  [io.quarkus] (Quarkus Main Thread) Installed features: [agroal, cdi, hibernate-orm, hibernate-orm-panache, hibernate-validator, jdbc-h2, jdbc-postgresql, narayana-jta, resteasy-reactive, resteasy-reactive-jackson, security, smallrye-context-propagation, smallrye-jwt, smallrye-openapi, swagger-ui, vertx]
+2025-07-13 10:59:11,487 pop-os pizzeria-management-dev.jar[52331] WARN  [io.qua.ver.htt.run.sec.FormAuthenticationMechanism] (vert.x-eventloop-thread-0) Encryption key was not specified for persistent FORM auth, using temporary key VOWomJ2Ku9EgLJMhNV/67nxuPTZLJNCPa7nEA+9ihes=
+2025-07-13 11:25:21,855 pop-os pizzeria-management-dev.jar[52331] INFO  [io.qua.dep.dev.RuntimeUpdatesProcessor] (vert.x-worker-thread-1) File change detected: /home/manoel/Programação Web/src/main/resources/application.properties
+2025-07-13 11:25:21,856 pop-os pizzeria-management-dev.jar[52331] INFO  [io.qua.dep.dev.RuntimeUpdatesProcessor] (vert.x-worker-thread-1) File change detected: /home/manoel/Programação Web/src/main/resources/import.sql
+2025-07-13 11:25:21,857 pop-os pizzeria-management-dev.jar[52331] INFO  [io.qua.dep.dev.RuntimeUpdatesProcessor] (vert.x-worker-thread-1) Restarting quarkus due to changes in application.properties, import.sql.
+2025-07-13 11:25:21,949 pop-os pizzeria-management-dev.jar[52331] INFO  [io.quarkus] (Quarkus Main Thread) pizzeria-management stopped in 0.091s

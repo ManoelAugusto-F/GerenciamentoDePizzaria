@@ -112,4 +112,12 @@ public class LogResource {
                          .build();
         }
     }
+
+    @POST
+    @Path("/frontend")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response logFrontendError(String logMessage) {
+        LOG.error("[FRONTEND] " + logMessage);
+        return Response.ok().build();
+    }
 } 

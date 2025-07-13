@@ -2,14 +2,10 @@ package com.pizzeria.model.entity;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 import java.time.LocalDateTime;
 
-@Data
 @Entity
 @Table(name = "logs")
-@EqualsAndHashCode(callSuper = true)
 public class Log extends PanacheEntity {
     
     @ManyToOne
@@ -32,4 +28,15 @@ public class Log extends PanacheEntity {
     public void prePersist() {
         this.dataHora = LocalDateTime.now();
     }
+
+    public Usuario getUsuario() { return usuario; }
+    public void setUsuario(Usuario usuario) { this.usuario = usuario; }
+    public LocalDateTime getDataHora() { return dataHora; }
+    public void setDataHora(LocalDateTime dataHora) { this.dataHora = dataHora; }
+    public String getAcao() { return acao; }
+    public void setAcao(String acao) { this.acao = acao; }
+    public String getDescricao() { return descricao; }
+    public void setDescricao(String descricao) { this.descricao = descricao; }
+    public String getDetalhes() { return detalhes; }
+    public void setDetalhes(String detalhes) { this.detalhes = detalhes; }
 } 

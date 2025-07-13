@@ -24,7 +24,7 @@ class Auth {
         const password = document.getElementById('password').value;
 
         try {
-            const response = await fetch('/api/auth/login', {
+            const response = await fetch('/api/usuarios/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -32,19 +32,15 @@ class Auth {
                 body: JSON.stringify({ email, password })
             });
 
+            const data = await response.json();
             if (!response.ok) {
-                throw new Error('Credenciais inválidas');
+                throw new Error(data.erro || 'Credenciais inválidas');
             }
 
-            const data = await response.json();
-            this.setSession(data);
-            if (data.perfil === 'ADMIN') {
-                window.location.href = '/admin.html';
-            } else if (data.perfil === 'ATENDENTE') {
-                window.location.href = '/atendente.html';
-            } else {
-                window.location.href = '/cliente.html';
-            }
+            // Como o novo endpoint retorna apenas mensagem, você pode buscar os dados do usuário após o login
+            // ou ajustar o backend para retornar o usuário e perfil. Por enquanto, só mostra mensagem de sucesso.
+            alert(data.mensagem || 'Login realizado com sucesso!');
+            window.location.href = '/'; // Redireciona para a página inicial ou dashboard
         } catch (error) {
             alert(error.message);
         }
@@ -112,4 +108,20 @@ class Auth {
     }
 }
 
-const auth = new Auth(); 
+const auth = new Auth();
+
+// Captura global de erros no frontend e envia para o backend
+window.onerror = function(message, source, lineno, colno, error) {
+    const log = {
+        message,
+        source,
+        lineno,
+        colno,
+        stack: error && error.stack ? error.stack : null
+    };
+    fetch('/api/logs/frontend', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(log)
+    });
+}; 

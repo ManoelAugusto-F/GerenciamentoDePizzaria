@@ -10,6 +10,7 @@ import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.SecurityContext;
+import org.jboss.logging.Logger;
 import java.util.List;
 
 @Path("/produtos")
@@ -17,11 +18,19 @@ import java.util.List;
 @Consumes(MediaType.APPLICATION_JSON)
 public class ProdutoResource {
 
+    private static final Logger LOG = Logger.getLogger(ProdutoResource.class);
+
     @Inject
     ProdutoService produtoService;
     
     @Context
     SecurityContext securityContext;
+    
+    @GET
+    @Path("/teste")
+    public Response teste() {
+        return Response.ok("{\"mensagem\":\"API de Produtos funcionando!\"}").build();
+    }
     
     @POST
     @RolesAllowed("ADMIN")
@@ -31,8 +40,9 @@ public class ProdutoResource {
             Produto novoProduto = produtoService.criar(produto, usuario);
             return Response.status(Response.Status.CREATED).entity(novoProduto).build();
         } catch (RuntimeException e) {
+            LOG.errorf(e, "Erro ao criar produto");
             return Response.status(Response.Status.BAD_REQUEST)
-                         .entity(e.getMessage())
+                         .entity("{\"erro\":\"" + e.getMessage() + "\"}")
                          .build();
         }
     }
@@ -46,8 +56,9 @@ public class ProdutoResource {
             Produto produtoAtualizado = produtoService.atualizar(id, produto, usuario);
             return Response.ok(produtoAtualizado).build();
         } catch (RuntimeException e) {
+            LOG.errorf(e, "Erro ao atualizar produto ID: %d", id);
             return Response.status(Response.Status.BAD_REQUEST)
-                         .entity(e.getMessage())
+                         .entity("{\"erro\":\"" + e.getMessage() + "\"}")
                          .build();
         }
     }
@@ -61,35 +72,85 @@ public class ProdutoResource {
             produtoService.deletar(id, usuario);
             return Response.noContent().build();
         } catch (RuntimeException e) {
+            LOG.errorf(e, "Erro ao deletar produto ID: %d", id);
             return Response.status(Response.Status.BAD_REQUEST)
-                         .entity(e.getMessage())
+                         .entity("{\"erro\":\"" + e.getMessage() + "\"}")
                          .build();
         }
     }
     
     @GET
-    public List<Produto> listarTodos() {
-        return produtoService.listarTodos();
+    @RolesAllowed({"ADMIN", "ATENDENTE"})
+    public Response listarTodos() {
+        try {
+            List<Produto> produtos = produtoService.listarTodos();
+            return Response.ok(produtos).build();
+        } catch (RuntimeException e) {
+            LOG.errorf(e, "Erro ao listar produtos");
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                         .entity("{\"erro\":\"" + e.getMessage() + "\"}")
+                         .build();
+        }
     }
     
     @GET
-    @Path("/tipo/{tipo}")
-    public List<Produto> listarPorTipo(@PathParam("tipo") Produto.Tipo tipo) {
-        return produtoService.listarPorTipo(tipo);
+    @Path("/disponiveis")
+    @RolesAllowed({"ADMIN", "ATENDENTE", "CLIENTE"})
+    public Response listarDisponiveis() {
+        try {
+            List<Produto> produtos = produtoService.listarDisponiveis();
+            return Response.ok(produtos).build();
+        } catch (RuntimeException e) {
+            LOG.errorf(e, "Erro ao listar produtos disponíveis");
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                         .entity("{\"erro\":\"" + e.getMessage() + "\"}")
+                         .build();
+        }
     }
     
     @GET
     @Path("/{id}")
+    @RolesAllowed({"ADMIN", "ATENDENTE", "CLIENTE"})
     public Response buscarPorId(@PathParam("id") Long id) {
         try {
             Produto produto = produtoService.buscarPorId(id);
-            if (produto == null) {
-                return Response.status(Response.Status.NOT_FOUND).build();
-            }
             return Response.ok(produto).build();
         } catch (RuntimeException e) {
+            LOG.errorf(e, "Erro ao buscar produto ID: %d", id);
+            return Response.status(Response.Status.NOT_FOUND)
+                         .entity("{\"erro\":\"" + e.getMessage() + "\"}")
+                         .build();
+        }
+    }
+    
+    @PUT
+    @Path("/{id}/ativar")
+    @RolesAllowed("ADMIN")
+    public Response ativar(@PathParam("id") Long id) {
+        try {
+            Usuario usuario = (Usuario) securityContext.getUserPrincipal();
+            Produto produto = produtoService.ativar(id, usuario);
+            return Response.ok(produto).build();
+        } catch (RuntimeException e) {
+            LOG.errorf(e, "Erro ao ativar produto ID: %d", id);
             return Response.status(Response.Status.BAD_REQUEST)
-                         .entity(e.getMessage())
+                         .entity("{\"erro\":\"" + e.getMessage() + "\"}")
+                         .build();
+        }
+    }
+    
+    @PUT
+    @Path("/{id}/desativar")
+    @RolesAllowed("ADMIN")
+    public Response desativar(@PathParam("id") Long id) {
+        try {
+            Usuario usuario = (Usuario) securityContext.getUserPrincipal();
+            Produto produto = produtoService.desativar(id, usuario);
+            return Response.ok(produto).build();
+        } catch (RuntimeException e) {
+            LOG.errorf(e, "Erro ao desativar produto ID: %d", id);
+            return Response.status(Response.Status.BAD_REQUEST)
+                         .entity("{\"erro\":\"" + e.getMessage() + "\"}")
                          .build();
         }
     }

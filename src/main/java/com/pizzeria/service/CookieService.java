@@ -7,8 +7,9 @@ import jakarta.ws.rs.core.NewCookie;
 import java.time.Duration;
 
 @ApplicationScoped
-public class CookieService {
-        private static final String COOKIE_NAME = "token";
+public class
+CookieService {
+    private static final String COOKIE_NAME = "token";
 
     public NewCookie generateJwtCookie(String jwtToken) {
         return new NewCookie(
@@ -23,8 +24,8 @@ public class CookieService {
         );
     }
 
-        public String getTokenFromCookie(Cookie cookie) {
-            return cookie != null ? cookie.getValue() : null;
-        }
+    public String getTokenFromCookie(Cookie cookie) {
+        return cookie != null ? cookie.getValue() : null;
     }
+}
 

@@ -1,6 +1,4 @@
 package com.pizzeria.resource;
-
-import com.pizzeria.dto.TokenDTO;
 import com.pizzeria.dto.UserLoginDTO;
 import com.pizzeria.dto.UserRegisterDTO;
 import com.pizzeria.model.User;

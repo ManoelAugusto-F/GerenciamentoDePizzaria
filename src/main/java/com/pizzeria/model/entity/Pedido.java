@@ -2,17 +2,13 @@ package com.pizzeria.model.entity;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
 @Entity
 @Table(name = "pedidos")
-@EqualsAndHashCode(callSuper = true)
 public class Pedido extends PanacheEntity {
     
     @ManyToOne
@@ -57,4 +53,23 @@ public class Pedido extends PanacheEntity {
     public void atualizarDataAtualizacao() {
         this.dataAtualizacao = LocalDateTime.now();
     }
+
+    public Usuario getCliente() { return cliente; }
+    public void setCliente(Usuario cliente) { this.cliente = cliente; }
+    public LocalDateTime getDataPedido() { return dataPedido; }
+    public void setDataPedido(LocalDateTime dataPedido) { this.dataPedido = dataPedido; }
+    public LocalDateTime getDataAtualizacao() { return dataAtualizacao; }
+    public void setDataAtualizacao(LocalDateTime dataAtualizacao) { this.dataAtualizacao = dataAtualizacao; }
+    public Status getStatus() { return status; }
+    public void setStatus(Status status) { this.status = status; }
+    public String getEnderecoEntrega() { return enderecoEntrega; }
+    public void setEnderecoEntrega(String enderecoEntrega) { this.enderecoEntrega = enderecoEntrega; }
+    public String getFormaPagamento() { return formaPagamento; }
+    public void setFormaPagamento(String formaPagamento) { this.formaPagamento = formaPagamento; }
+    public BigDecimal getValorTotal() { return valorTotal; }
+    public void setValorTotal(BigDecimal valorTotal) { this.valorTotal = valorTotal; }
+    public List<ItemPedido> getItens() { return itens; }
+    public void setItens(List<ItemPedido> itens) { this.itens = itens; }
+    public Usuario getAtendente() { return atendente; }
+    public void setAtendente(Usuario atendente) { this.atendente = atendente; }
 } 

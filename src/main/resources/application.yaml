@@ -1,10 +1,10 @@
 quarkus:
   datasource:
     db-kind: postgresql
-    username: postgres
-    password: postgres
+    username: oliver
+    password: 5xb7iPPiSM85TqWE
     jdbc:
-      url: jdbc:postgresql://localhost:5432/pizzeria
+      url: jdbc:postgresql://192.168.1.230:5432/pizzeria
   hibernate-orm:
     database:
       generation: update

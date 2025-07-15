@@ -3,43 +3,41 @@ package com.pizzeria.service;
 import com.pizzeria.dto.AuthDTO;
 import com.pizzeria.dto.AuthResponseDTO;
 import com.pizzeria.model.entity.Usuario;
-import io.smallrye.jwt.build.Jwt;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
-import java.time.Duration;
-import java.util.Arrays;
-import java.util.HashSet;
+import org.mindrot.jbcrypt.BCrypt;
+import java.util.Set;
 
 @ApplicationScoped
 public class AuthService {
-
+    @Inject
+    TokenService tokenService;
+    @Inject
+    CookieService cookieService;
     @Transactional
     public AuthResponseDTO authenticate(AuthDTO authDTO) {
-        Usuario usuario = Usuario.find("email", authDTO.getEmail()).firstResult();
-        
-        if (usuario == null || !usuario.getSenha().equals(authDTO.getSenha())) {
-            throw new RuntimeException("Credenciais inválidas");
+        Usuario user;
+
+        try {
+            user = Usuario.find("email", authDTO.getEmail()).firstResult();
+            if (!BCrypt.checkpw(authDTO.getSenha(), user.getSenha())) {
+                throw new RuntimeException("Email ou senha inválidos");
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
         }
-        
-        if (!usuario.isAtivo()) {
+
+        if (!user.isAtivo()) {
             throw new RuntimeException("Usuário inativo");
         }
-        
-        String token = generateToken(usuario);
-        
+        String token = tokenService.generateToken(user.getNomeCompleto(), user.getEmail(), "");
+
         return new AuthResponseDTO(
-            token,
-            usuario.getNomeCompleto(),
-            usuario.getEmail(),
-            usuario.getPerfil()
+                token,
+                user.getNomeCompleto(),
+                user.getEmail(),
+                user.getPerfil()
         );
-    }
-    
-    private String generateToken(Usuario usuario) {
-        return Jwt.issuer("https://pizzeria.com")
-                 .subject(usuario.getEmail())
-                 .groups(new HashSet<>(Arrays.asList(usuario.getPerfil().name())))
-                 .expiresIn(Duration.ofHours(24))
-                 .sign();
     }
 } 

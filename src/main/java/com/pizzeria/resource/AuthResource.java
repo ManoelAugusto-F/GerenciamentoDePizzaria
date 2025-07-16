@@ -4,7 +4,6 @@ import com.pizzeria.dto.UserRegisterDTO;
 import com.pizzeria.model.User;
 import com.pizzeria.service.CookieService;
 import com.pizzeria.service.TokenService;
-import io.smallrye.jwt.build.Jwt;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -18,7 +17,7 @@ import jakarta.ws.rs.core.Response;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.util.Map;
-import java.util.Set;
+
 
 @Path("/auth")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -46,9 +45,16 @@ public class AuthResource {
 
     @POST
     @Path("/login")
-    @Produces(MediaType.APPLICATION_JSON)
     public Response login(@Valid UserLoginDTO dto) {
-        User user = User.find("email", dto.email).firstResult();
+        User user;
+
+        try {
+            user = User.find("email", dto.email).firstResult();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(e.getMessage())
+                    .build();
+        }
 
         if (user == null || !BCrypt.checkpw(dto.password, user.password)) {
             return Response.status(Response.Status.UNAUTHORIZED)
@@ -56,11 +62,14 @@ public class AuthResource {
                     .build();
         }
 
+        System.out.println("Usuário encontrado: " + user.name);
+
+
         String token = tokenService.generateToken(user.name, user.email, user.roles);
         NewCookie jwtCookie = cookieService.generateJwtCookie(token);
         return Response.ok()
                 .entity(Map.of("message", "Login com sucesso"))
-                .cookie(jwtCookie)
+                .cookie(jwtCookie).header("Location", "/index.html")
                 .build();
     }
 }

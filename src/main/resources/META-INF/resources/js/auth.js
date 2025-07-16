@@ -1,5 +1,6 @@
 class Auth {
     constructor() {
+
         this.token = localStorage.getItem('token');
         this.user = JSON.parse(localStorage.getItem('user'));
         this.setupEventListeners();

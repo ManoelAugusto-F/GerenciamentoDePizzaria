@@ -3,26 +3,24 @@ const API_URL = 'http://localhost:8080';
 
 // Funções de autenticação
 async function login(email, password) {
+    console.log('teste');
     try {
         const response = await fetch(`${API_URL}/auth/login`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email, password })
         });
 
         if (!response.ok) {
-            throw new Error('Credenciais inválidas');
+            const errorText = await response.text();
+            throw new Error(errorText || 'Erro ao fazer login');
         }
 
-        const data = await response.json();
-        localStorage.setItem('token', data.token);
-        window.location.href = 'index.html';
     } catch (error) {
-        showError('Erro ao fazer login: ' + error.message);
+        showError(error.message);
     }
 }
+
 
 async function register(name, email, password, phone) {
     try {
@@ -31,7 +29,7 @@ async function register(name, email, password, phone) {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ name, email, password, phone })
+            body: JSON.stringify({name, email, password, phone})
         });
 
         if (!response.ok) {
@@ -71,7 +69,7 @@ async function createOrder(items) {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
             },
-            body: JSON.stringify({ items })
+            body: JSON.stringify({items})
         });
 
         if (!response.ok) {
@@ -86,18 +84,26 @@ async function createOrder(items) {
 }
 
 // Funções de validação
-function validateLoginForm() {
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
+function validateLoginForm(e) {
+    e.preventDefault(); // evita submit tradicional da página
 
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+    console.log('teste')
     if (!email || !password) {
         showError('Por favor, preencha todos os campos');
         return false;
     }
 
-    login(email, password);
-    return false;
+    // chama login e trata erro async
+    console.log(email, password);
+    login(email, password).catch(error => {
+        showError(error.message);
+    });
+
+    return false; // mantém sem reload, caso o preventDefault não funcione
 }
+
 
 function validateRegisterForm() {
     const name = document.getElementById('name').value;
@@ -138,7 +144,7 @@ function removeFromCart(pizzaId) {
 function updateCart() {
     const cartItems = document.getElementById('cart-items');
     const cartTotal = document.getElementById('cart-total');
-    
+
     if (!cartItems || !cartTotal) return;
 
     cartItems.innerHTML = '';
@@ -163,7 +169,7 @@ function updateCart() {
 async function loadMenu() {
     const pizzas = await getPizzas();
     const menuContainer = document.getElementById('menu-items');
-    
+
     if (!menuContainer) return;
 
     pizzas.forEach(pizza => {

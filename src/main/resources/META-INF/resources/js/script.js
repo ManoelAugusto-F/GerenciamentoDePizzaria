@@ -1,26 +1,22 @@
 // Configuração da API
-const API_URL = 'http://localhost:8080';
+const API_URL = 'http://localhost:8080/api';
 
 // Funções de autenticação
 async function login(email, password) {
     try {
         const response = await fetch(`${API_URL}/auth/login`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email, password })
         });
 
         if (!response.ok) {
-            throw new Error('Credenciais inválidas');
+            const errorText = await response.text();
+            throw new Error(errorText || 'Erro ao fazer login');
         }
-
-        const data = await response.json();
-        localStorage.setItem('token', data.token);
         window.location.href = 'index.html';
     } catch (error) {
-        showError('Erro ao fazer login: ' + error.message);
+        showError(error.message);
     }
 }
 
@@ -94,8 +90,9 @@ function validateLoginForm() {
         showError('Por favor, preencha todos os campos');
         return false;
     }
-
-    login(email, password);
+    login(email, password).catch(error => {
+        showError(error.message);
+    });
     return false;
 }
 

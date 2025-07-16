@@ -31,7 +31,10 @@ public class AuthService {
         if (!user.isAtivo()) {
             throw new RuntimeException("Usuário inativo");
         }
-        String token = tokenService.generateToken(user.getNomeCompleto(), user.getEmail(), "");
+        String token = "aqui vai catar o token dos cookies, verifica a lib que foi usada pra criar os cookies que deve ter como catar por lá";
+        // verificar se os dados que estão em user batem com o token criado anteriormente no login que agora estão
+        // no cookie apos login, não precisa do return aqui, faça algo como ele volta para o login caso os dados não baterem com os do cookie
+        // , você tem que decodificar o token q está nos cookies antes, antes de iniciar esa nova função verifica se os cookies estão la.
 
         return new AuthResponseDTO(
                 token,
@@ -39,5 +42,7 @@ public class AuthService {
                 user.getEmail(),
                 user.getPerfil()
         );
+
+
     }
-} 
+}

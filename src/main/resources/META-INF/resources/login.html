@@ -7,20 +7,10 @@
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-    <nav class="navbar">
-        <div class="container">
-            <a href="index.html" class="logo">Pizzaria</a>
-            <div class="nav-links">
-                <a href="index.html">Início</a>
-                <a href="cardapio.html">Cardápio</a>
-                <a href="login.html" class="active">Login</a>
-                <a href="cadastro.html">Cadastro</a>
-                <span id="userInfo" style="margin-left: 1rem;"></span>
-            </div>
-        </div>
-    </nav>
+<div id="navbar-render"></div>
 
     <main class="container">
+
         <div class="form-container">
             <h2>Login</h2>
             <div id="error-message" class="error-message" style="display: none;"></div>
@@ -43,17 +33,12 @@
 
     <script src="js/script.js"></script>
     <script src="js/auth.js"></script>
+    <script src="js/nav.js"></script>
     <script>
         // Redireciona se já autenticado
         document.addEventListener('DOMContentLoaded', function() {
             if (auth.isAuthenticated()) {
-                if (auth.user?.perfil === 'ADMIN') {
-                    window.location.href = '/admin.html';
-                } else if (auth.user?.perfil === 'ATENDENTE') {
-                    window.location.href = '/atendente.html';
-                } else {
-                    window.location.href = '/cliente.html';
-                }
+                window.location.href = '/index.html';
             }
         });
     </script>

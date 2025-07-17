@@ -7,32 +7,23 @@
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-    <nav class="navbar">
-        <div class="container">
-            <a href="index.html" class="logo">Pizzaria</a>
-            <div class="nav-links">
-                <a href="index.html">Início</a>
-                <a href="cardapio.html" class="active">Cardápio</a>
-                <a href="login.html">Login</a>
-                <a href="cadastro.html">Cadastro</a>
-            </div>
-        </div>
-    </nav>
+<div id="navbar-render"></div>
+<main class="container">
+    <div class="menu-container">
+        <h2>Nosso Cardápio</h2>
+        <div id="menu-items" class="menu-grid"></div>
+    </div>
 
-    <main class="container">
-        <div class="menu-container">
-            <h2>Nosso Cardápio</h2>
-            <div id="menu-items" class="menu-grid"></div>
-        </div>
+    <div class="cart-container">
+        <h3>Seu Carrinho</h3>
+        <ul id="cart-items" class="cart-items"></ul>
+        <div id="cart-total" class="cart-total"></div>
+        <button onclick="checkout()" class="btn btn-primary btn-block">Finalizar Pedido</button>
+    </div>
+</main>
 
-        <div class="cart-container">
-            <h3>Seu Carrinho</h3>
-            <ul id="cart-items" class="cart-items"></ul>
-            <div id="cart-total" class="cart-total"></div>
-            <button onclick="checkout()" class="btn btn-primary btn-block">Finalizar Pedido</button>
-        </div>
-    </main>
-
-    <script src="js/script.js"></script>
+<script src="js/script.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/nav.js"></script>
 </body>
 </html> 

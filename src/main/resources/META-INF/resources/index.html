@@ -7,23 +7,7 @@
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-    <nav class="navbar">
-        <div class="container">
-            <a href="index.html" class="logo">Pizzaria</a>
-            <div class="nav-links" id="mainMenu">
-                <a href="index.html" class="active">Início</a>
-                <a href="cardapio.html">Cardápio</a>
-                <a href="login.html" id="loginLink">Login</a>
-                <a href="cadastro.html" id="registerLink">Cadastro</a>
-                <a href="admin.html" class="admin-only" style="display:none">Administração</a>
-                <a href="atendente.html" class="attendant-only" style="display:none">Painel Atendente</a>
-                <a href="cliente.html" class="client-only" style="display:none">Meus Pedidos</a>
-                <a href="#" id="logoutBtn" style="display:none">Sair</a>
-                <span id="userInfo" style="margin-left: 1rem;"></span>
-            </div>
-        </div>
-    </nav>
-
+    <div id="navbar-render"></div>
     <main>
         <section class="hero">
             <div class="container">
@@ -69,6 +53,7 @@
 
     <script src="js/script.js"></script>
     <script src="js/auth.js"></script>
+    <script src="js/nav.js"></script>
     <script>
         // Menu dinâmico conforme papel
         document.addEventListener('DOMContentLoaded', function() {

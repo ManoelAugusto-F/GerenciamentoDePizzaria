@@ -10,4 +10,5 @@ public class UserLoginDTO {
 
     @NotBlank
     public String password;
+    public String roles;
 } 

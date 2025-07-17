@@ -17,7 +17,8 @@ import java.util.List;
 public class UserResources {
     @Inject
     UserService userService;
-// isto ta quase pronto, falta implementar o front end e talvez mexer no uptade para
+
+    // isto ta quase pronto, falta implementar o front end e talvez mexer no uptade para
 // caso de algo errado, n testei ainda se vai assim e cria no front end o formulario de admin pra fazer isso daqui
     @GET
     @Path("")
@@ -26,9 +27,9 @@ public class UserResources {
     }
 
     @PUT
-    @Path("")
-    public User updateUser(@Valid UserLoginDTO user) {
-        return userService.updateUserRolesByEmail(user.email, user.roles);
+    @Path("/{email}/roles")
+    public User updateUser(@Valid UserLoginDTO user, @PathParam("email") String email) {
+        return userService.updateUserRolesByEmail(email, user.roles);
     }
 
 

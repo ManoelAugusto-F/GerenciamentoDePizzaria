@@ -1,0 +1,92 @@
+/* Área completa da seção */
+#userSection {
+    max-width: 1800px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+/* Linha de filtros lado a lado */
+#filtersRow {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-bottom: 20px;
+}
+
+.searchBtn {
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 8px;
+
+}
+
+.searchBtn > i {
+    font-size: 15px;
+}
+
+#searchEmail{
+
+    width: 500px;
+    max-width: 100%;
+}
+
+/* Input e select estilizados */
+#searchEmail, #roleFilter {
+    padding: 5px 20px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    outline: none;
+    background-color: #fff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+/* Tabela */
+#userTable {
+    width: 900px;
+    border-collapse: collapse;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+#userTable th, #userTable td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+}
+
+#userTable th {
+    background-color: #eee;
+}
+
+/* Paginação */
+#paginationControls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+#paginationControls button {
+    padding: 8px 16px;
+    font-size: 1rem;
+    border: none;
+    background-color: #4f46e5;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#paginationControls button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+#paginationControls span {
+    font-weight: 500;
+}

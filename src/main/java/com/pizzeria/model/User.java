@@ -25,5 +25,6 @@ public class User extends PanacheEntity {
     public String password;
 
     @NotBlank
+    @Column(name = "roles")
     public String roles; // e.g. "USER", "ADMIN"
 } 

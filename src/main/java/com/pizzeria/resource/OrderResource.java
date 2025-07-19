@@ -1,14 +1,12 @@
 package com.pizzeria.resource;
 
-import com.pizzeria.dto.OrderCheckoutDTO;
-import com.pizzeria.dto.OrderItemDTO;
-import com.pizzeria.model.Order;
-import com.pizzeria.model.OrderItem;
-import com.pizzeria.model.Pizza;
-import com.pizzeria.model.User;
+import com.pizzeria.model.dto.OrderCheckoutDTO;
+import com.pizzeria.model.dto.OrderItemDTO;
+import com.pizzeria.model.entity.Order;
+import com.pizzeria.model.entity.OrderItem;
+import com.pizzeria.model.entity.Pizza;
+import com.pizzeria.model.entity.User;
 import io.quarkus.security.Authenticated;
-import jakarta.annotation.security.RolesAllowed;
-import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;

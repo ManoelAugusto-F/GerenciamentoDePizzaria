@@ -25,12 +25,12 @@ function renderUsers(users) {
             <td>${user.name}</td>
             <td>${user.email}</td>
             <td>
-             <select name="roles" id="roleFilter" onchange="changeUserRole('${user.email}', '${user.roles}')">
+             <select class="roleFilter" name="roles" id="roleFilter-${user.email}" onchange="changeUserRole(this, '${user.email}', '${user.roles}')">
                    ${select.map(role => `
                     <option value="${role}" ${role.toUpperCase() === user.roles ? 'selected' : ''}>${role}</option>
                 `).join('')}
                 </select>
-</td>
+</td
         `;
         tbody.appendChild(tr);
     });
@@ -42,8 +42,8 @@ function renderUsers(users) {
     document.getElementById('nextPage').disabled = currentPage >= totalPages;
 }
 
-const changeUserRole = async (email, currentRoles) => {
-    const newRole = document.getElementById('roleFilter').value;
+const changeUserRole = async (element, email, currentRoles) => {
+    const newRole = element.value;
     if (newRole === currentRoles) {
         return; // Nenhuma alteração necessária
     }
@@ -72,7 +72,6 @@ const changeUserRole = async (email, currentRoles) => {
 
 function applyFilters() {
     const searchEmail = document.getElementById('searchEmail').value.toLowerCase();
-    const selectedRole = document.getElementById('roleFilter').value;
 
     filteredUsers = allUsers.filter(user =>
         user.email.toLowerCase().includes(searchEmail)
@@ -95,17 +94,23 @@ function onSubmitSearch(e) {
 
 async function fetchUsers() {
     try {
-        const token = localStorage.getItem('token');
-        const response = await fetch(`${API_URL}/users`, {
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        });
+        const token = auth.getToken();
 
+        if (!token) {
+            throw new Error('Token inválido ou não autenticado');
+        }
+
+        const response = await fetch('http://localhost:8080/api/users', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            credentials: "include"
+        });
         if (!response.ok) {
             throw new Error('Erro ao buscar usuários');
         }
-
         allUsers = await response.json();
         filteredUsers = [...allUsers];
         renderUsers(filteredUsers);
@@ -119,10 +124,13 @@ function showError(message) {
 }
 
 window.onload = () => {
-    fetchUsers();
-
-    // document.getElementById('searchForm').addEventListener('input', applyFilters);
-    document.getElementById('roleFilter').addEventListener('change', applyFilters);
+    fetchUsers().then(r => {
+        renderUsers(filteredUsers);
+    });
+    for (let users of allUsers  ){
+        // roleFilter-${user.email}
+        document.getElementById('roleFilter' + "-"+ users.email).addEventListener('change', applyFilters);
+    }
 };
 
 

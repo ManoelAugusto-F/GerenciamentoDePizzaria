@@ -1,14 +1,13 @@
-package com.pizzeria.dto;
+package com.pizzeria.model.dto;
 
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
 
-public class UserLoginDTO {
-
+public class UserDTO {
+    private Long id;
     @Email
     public String email;
-
-
+    public String name;
     public String password;
     public String roles;
+    public Boolean ativo;
 } 

@@ -1,4 +1,4 @@
-package com.pizzeria.dto;
+package com.pizzeria.model.dto;
 
 import com.pizzeria.model.entity.Produto.Tipo;
 import jakarta.validation.constraints.DecimalMin;

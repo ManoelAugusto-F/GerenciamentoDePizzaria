@@ -1,6 +1,5 @@
-package com.pizzeria.dto;
+package com.pizzeria.model.dto;
 
-import com.pizzeria.model.entity.Usuario.Perfil;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -10,5 +9,4 @@ public class AuthResponseDTO {
     private String token;
     private String nomeCompleto;
     private String email;
-    private Perfil perfil;
 } 

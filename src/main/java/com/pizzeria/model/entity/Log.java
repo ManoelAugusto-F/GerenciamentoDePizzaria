@@ -10,7 +10,7 @@ public class Log extends PanacheEntity {
     
     @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false)
-    private Usuario usuario;
+    private User usuario;
     
     @Column(nullable = false)
     private LocalDateTime dataHora;
@@ -29,8 +29,8 @@ public class Log extends PanacheEntity {
         this.dataHora = LocalDateTime.now();
     }
 
-    public Usuario getUsuario() { return usuario; }
-    public void setUsuario(Usuario usuario) { this.usuario = usuario; }
+    public User getUsuario() { return usuario; }
+    public void setUsuario(User usuario) { this.usuario = usuario; }
     public LocalDateTime getDataHora() { return dataHora; }
     public void setDataHora(LocalDateTime dataHora) { this.dataHora = dataHora; }
     public String getAcao() { return acao; }

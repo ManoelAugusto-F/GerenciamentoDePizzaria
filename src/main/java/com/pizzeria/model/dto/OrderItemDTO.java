@@ -1,4 +1,4 @@
-package com.pizzeria.dto;
+package com.pizzeria.model.dto;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;

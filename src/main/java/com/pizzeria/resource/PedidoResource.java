@@ -1,7 +1,7 @@
-package com.pizzeria.rest;
+package com.pizzeria.resource;
 
 import com.pizzeria.model.entity.Pedido;
-import com.pizzeria.model.entity.Usuario;
+import com.pizzeria.model.entity.User;
 import com.pizzeria.service.PedidoService;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
@@ -27,7 +27,7 @@ public class PedidoResource {
     @RolesAllowed({"CLIENTE", "ATENDENTE"})
     public Response criar(Pedido pedido) {
         try {
-            Usuario usuario = (Usuario) securityContext.getUserPrincipal();
+            User usuario = (User) securityContext.getUserPrincipal();
             Pedido novoPedido = pedidoService.criar(pedido, usuario);
             return Response.status(Response.Status.CREATED).entity(novoPedido).build();
         } catch (RuntimeException e) {
@@ -42,7 +42,7 @@ public class PedidoResource {
     @RolesAllowed({"ADMIN", "ATENDENTE"})
     public Response atualizarStatus(@PathParam("id") Long id, Pedido.Status novoStatus) {
         try {
-            Usuario usuario = (Usuario) securityContext.getUserPrincipal();
+            User usuario = (User) securityContext.getUserPrincipal();
             Pedido pedido = pedidoService.atualizarStatus(id, novoStatus, usuario);
             return Response.ok(pedido).build();
         } catch (RuntimeException e) {
@@ -85,10 +85,10 @@ public class PedidoResource {
             if (pedido == null) {
                 return Response.status(Response.Status.NOT_FOUND).build();
             }
-            
-            Usuario usuario = (Usuario) securityContext.getUserPrincipal();
-            if (usuario.getPerfil() == Usuario.Perfil.CLIENTE && 
-                !pedido.getCliente().id.equals(usuario.id)) {
+
+            User usuario = (User) securityContext.getUserPrincipal();
+            if (usuario.getRoles() == "USER" &&
+                    !(pedido.getCliente().getId() == usuario.getId())) {
                 return Response.status(Response.Status.FORBIDDEN).build();
             }
             
@@ -104,10 +104,10 @@ public class PedidoResource {
     @Path("/me")
     @RolesAllowed("CLIENTE")
     public List<Pedido> listarMeusPedidos(@jakarta.ws.rs.core.Context jakarta.ws.rs.core.SecurityContext securityContext) {
-        Usuario usuario = (Usuario) securityContext.getUserPrincipal();
+        User usuario = (User) securityContext.getUserPrincipal();
         if (usuario == null) {
             throw new WebApplicationException("Não autenticado", Response.Status.UNAUTHORIZED);
         }
-        return pedidoService.listarPorCliente(usuario.id);
+        return pedidoService.listarPorCliente(usuario.getId());
     }
 } 

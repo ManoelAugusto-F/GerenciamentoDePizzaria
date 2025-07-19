@@ -11,7 +11,7 @@ import java.util.List;
 public class PedidoService {
 
     @Transactional
-    public Pedido criar(Pedido pedido, Usuario cliente) {
+    public Pedido criar(Pedido pedido, User cliente) {
         pedido.setCliente(cliente);
         pedido.setDataPedido(LocalDateTime.now());
         pedido.setDataAtualizacao(LocalDateTime.now());
@@ -25,7 +25,7 @@ public class PedidoService {
     }
     
     @Transactional
-    public Pedido atualizarStatus(Long id, Pedido.Status novoStatus, Usuario usuario) {
+    public Pedido atualizarStatus(Long id, Pedido.Status novoStatus, User usuario) {
         Pedido pedido = Pedido.findById(id);
         if (pedido == null) {
             throw new RuntimeException("Pedido não encontrado");
@@ -66,7 +66,7 @@ public class PedidoService {
         pedido.setValorTotal(valorTotal);
     }
     
-    private void registrarLog(Usuario usuario, String acao, String descricao) {
+    private void registrarLog(User usuario, String acao, String descricao) {
         Log log = new Log();
         log.setUsuario(usuario);
         log.setAcao(acao);

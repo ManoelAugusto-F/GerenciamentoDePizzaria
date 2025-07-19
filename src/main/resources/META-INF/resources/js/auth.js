@@ -1,6 +1,5 @@
 class Auth {
     constructor() {
-
         this.token = this.getCookie('token');
         this.user = this.getUserRoleByJtw();
     }
@@ -25,8 +24,10 @@ class Auth {
         if (!token) return null;
 
         const payload = this.decodeJWT(token);
-        return payload?.roles || null;
+        return payload?.groups || null;
     }
+
+
 
     decodeJWT(token) {
         if (!token) return null;
@@ -143,11 +144,17 @@ class Auth {
     }
 
     isAdmin() {
-        return this.user === 'ADMIN';
+        if (!this.getToken()) {
+            return false;
+        }
+        return this.user[0] === 'ADMIN';
     }
 
     isAttendant() {
-        return this.user === 'ATENDENTE';
+        if (!this.getToken()) {
+            return false;
+        }
+        return this.user[0] === 'ATENDENTE';
     }
 
     getToken() {
@@ -171,4 +178,14 @@ window.onerror = function (message, source, lineno, colno, error) {
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(log)
     });
-}; 
+};
+
+const originalFetch = window.fetch;
+window.fetch = function (url, options = {}) {
+    const token = auth.getToken();
+    options.headers = new Headers(options.headers || {});
+    if (token) {
+        options.headers.set('Authorization', 'Bearer ' + token);
+    }
+    return originalFetch(url, { ...options, headers: options.headers });
+};

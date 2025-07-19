@@ -1,7 +1,6 @@
 package com.pizzeria.resource;
-import com.pizzeria.dto.UserLoginDTO;
-import com.pizzeria.dto.UserRegisterDTO;
-import com.pizzeria.model.User;
+import com.pizzeria.model.dto.UserDTO;
+import com.pizzeria.model.entity.User;
 import com.pizzeria.service.CookieService;
 import com.pizzeria.service.TokenService;
 import jakarta.inject.Inject;
@@ -15,6 +14,7 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.NewCookie;
 import jakarta.ws.rs.core.Response;
 import org.mindrot.jbcrypt.BCrypt;
+
 
 import java.util.Map;
 
@@ -30,22 +30,22 @@ public class AuthResource {
     @POST
     @Path("/register")
     @Transactional
-    public Response register(@Valid UserRegisterDTO dto) {
+    public Response register(@Valid UserDTO dto) {
         if (User.find("email", dto.email).firstResult() != null) {
             return Response.status(Response.Status.CONFLICT).entity("Email already registered").build();
         }
         User user = new User();
-        user.name = dto.name;
-        user.email = dto.email;
-        user.password = BCrypt.hashpw(dto.password, BCrypt.gensalt());
-        user.roles = "USER";
+        user.setName(dto.name);
+        user.setEmail(dto.email);
+        user.setPassword(BCrypt.hashpw(dto.password, BCrypt.gensalt()));
+        user.setRoles("USER"); // Default role for new users
         user.persist();
         return Response.status(Response.Status.CREATED).build();
     }
 
     @POST
     @Path("/login")
-    public Response login(@Valid UserLoginDTO dto) {
+    public Response login(@Valid UserDTO dto) {
         User user;
 
         try {
@@ -56,24 +56,22 @@ public class AuthResource {
                     .build();
         }
 
-        if (user == null || !BCrypt.checkpw(dto.password, user.password)) {
+        if (user == null || !BCrypt.checkpw(dto.password, user.getPassword())) {
             return Response.status(Response.Status.UNAUTHORIZED)
                     .entity("Email ou senha inválidos.")
                     .build();
         }
 
-        System.out.println("Usuário encontrado: " + user.name);
+        System.out.println("Usuário encontrado: " + user.getName());
 
 
-        String token = tokenService.generateToken(user.name, user.email, user.roles);
+        String token = tokenService.generateToken(user.getName(), user.getEmail(), user.getRoles());
         NewCookie jwtCookie = cookieService.generateJwtCookie(token);
         return Response.ok()
                 .entity(Map.of("message", "Login com sucesso"))
                 .cookie(jwtCookie).header("Location", "/index.html")
                 .build();
     }
+
+
 }
-
-
-
-

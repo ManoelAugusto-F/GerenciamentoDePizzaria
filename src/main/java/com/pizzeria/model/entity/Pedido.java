@@ -13,7 +13,7 @@ public class Pedido extends PanacheEntity {
     
     @ManyToOne
     @JoinColumn(name = "cliente_id", nullable = false)
-    private Usuario cliente;
+    private User cliente;
     
     @Column(nullable = false)
     private LocalDateTime dataPedido;
@@ -39,7 +39,7 @@ public class Pedido extends PanacheEntity {
     
     @ManyToOne
     @JoinColumn(name = "atendente_id")
-    private Usuario atendente;
+    private User atendente;
     
     public enum Status {
         RECEBIDO,
@@ -54,8 +54,8 @@ public class Pedido extends PanacheEntity {
         this.dataAtualizacao = LocalDateTime.now();
     }
 
-    public Usuario getCliente() { return cliente; }
-    public void setCliente(Usuario cliente) { this.cliente = cliente; }
+    public User getCliente() { return cliente; }
+    public void setCliente(User cliente) { this.cliente = cliente; }
     public LocalDateTime getDataPedido() { return dataPedido; }
     public void setDataPedido(LocalDateTime dataPedido) { this.dataPedido = dataPedido; }
     public LocalDateTime getDataAtualizacao() { return dataAtualizacao; }
@@ -70,6 +70,6 @@ public class Pedido extends PanacheEntity {
     public void setValorTotal(BigDecimal valorTotal) { this.valorTotal = valorTotal; }
     public List<ItemPedido> getItens() { return itens; }
     public void setItens(List<ItemPedido> itens) { this.itens = itens; }
-    public Usuario getAtendente() { return atendente; }
-    public void setAtendente(Usuario atendente) { this.atendente = atendente; }
+    public User getAtendente() { return atendente; }
+    public void setAtendente(User atendente) { this.atendente = atendente; }
 } 

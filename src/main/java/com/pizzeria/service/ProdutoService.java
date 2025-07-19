@@ -2,7 +2,7 @@ package com.pizzeria.service;
 
 import com.pizzeria.model.entity.Log;
 import com.pizzeria.model.entity.Produto;
-import com.pizzeria.model.entity.Usuario;
+import com.pizzeria.model.entity.User;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
 import java.util.List;
@@ -11,14 +11,14 @@ import java.util.List;
 public class ProdutoService {
 
     @Transactional
-    public Produto criar(Produto produto, Usuario usuario) {
+    public Produto criar(Produto produto, User usuario) {
         produto.persist();
         registrarLog(usuario, "CRIAR", "Produto criado: " + produto.getNome());
         return produto;
     }
     
     @Transactional
-    public Produto atualizar(Long id, Produto produtoAtualizado, Usuario usuario) {
+    public Produto atualizar(Long id, Produto produtoAtualizado, User usuario) {
         Produto produto = Produto.findById(id);
         if (produto == null) {
             throw new RuntimeException("Produto não encontrado");
@@ -36,7 +36,7 @@ public class ProdutoService {
     }
     
     @Transactional
-    public void deletar(Long id, Usuario usuario) {
+    public void deletar(Long id, User usuario) {
         Produto produto = Produto.findById(id);
         if (produto == null) {
             throw new RuntimeException("Produto não encontrado");
@@ -64,7 +64,7 @@ public class ProdutoService {
     }
 
     @Transactional
-    public Produto ativar(Long id, Usuario usuario) {
+    public Produto ativar(Long id, User usuario) {
         Produto produto = Produto.findById(id);
         if (produto == null) {
             throw new RuntimeException("Produto não encontrado");
@@ -75,7 +75,7 @@ public class ProdutoService {
     }
 
     @Transactional
-    public Produto desativar(Long id, Usuario usuario) {
+    public Produto desativar(Long id, User usuario) {
         Produto produto = Produto.findById(id);
         if (produto == null) {
             throw new RuntimeException("Produto não encontrado");
@@ -85,7 +85,7 @@ public class ProdutoService {
         return produto;
     }
 
-    private void registrarLog(Usuario usuario, String acao, String descricao) {
+    private void registrarLog(User usuario, String acao, String descricao) {
         Log log = new Log();
         log.setUsuario(usuario);
         log.setAcao(acao);

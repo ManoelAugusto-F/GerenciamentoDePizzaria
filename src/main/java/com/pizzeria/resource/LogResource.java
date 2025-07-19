@@ -1,4 +1,4 @@
-package com.pizzeria.rest;
+package com.pizzeria.resource;
 
 import com.pizzeria.dao.LogDAO;
 import com.pizzeria.model.entity.Log;

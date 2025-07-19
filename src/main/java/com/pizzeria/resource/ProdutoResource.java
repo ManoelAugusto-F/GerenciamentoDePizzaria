@@ -1,7 +1,7 @@
-package com.pizzeria.rest;
+package com.pizzeria.resource;
 
 import com.pizzeria.model.entity.Produto;
-import com.pizzeria.model.entity.Usuario;
+import com.pizzeria.model.entity.User;
 import com.pizzeria.service.ProdutoService;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
@@ -11,6 +11,8 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.SecurityContext;
 import org.jboss.logging.Logger;
+
+import java.security.Principal;
 import java.util.List;
 
 @Path("/produtos")
@@ -25,18 +27,12 @@ public class ProdutoResource {
     
     @Context
     SecurityContext securityContext;
-    
-    @GET
-    @Path("/teste")
-    public Response teste() {
-        return Response.ok("{\"mensagem\":\"API de Produtos funcionando!\"}").build();
-    }
+
     
     @POST
-    @RolesAllowed("ADMIN")
     public Response criar(Produto produto) {
         try {
-            Usuario usuario = (Usuario) securityContext.getUserPrincipal();
+            User usuario = (User) securityContext.getUserPrincipal();
             Produto novoProduto = produtoService.criar(produto, usuario);
             return Response.status(Response.Status.CREATED).entity(novoProduto).build();
         } catch (RuntimeException e) {
@@ -49,10 +45,9 @@ public class ProdutoResource {
     
     @PUT
     @Path("/{id}")
-    @RolesAllowed("ADMIN")
     public Response atualizar(@PathParam("id") Long id, Produto produto) {
         try {
-            Usuario usuario = (Usuario) securityContext.getUserPrincipal();
+            User usuario = (User) securityContext.getUserPrincipal();
             Produto produtoAtualizado = produtoService.atualizar(id, produto, usuario);
             return Response.ok(produtoAtualizado).build();
         } catch (RuntimeException e) {
@@ -65,10 +60,9 @@ public class ProdutoResource {
     
     @DELETE
     @Path("/{id}")
-    @RolesAllowed("ADMIN")
     public Response deletar(@PathParam("id") Long id) {
         try {
-            Usuario usuario = (Usuario) securityContext.getUserPrincipal();
+            User usuario = (User) securityContext.getUserPrincipal();
             produtoService.deletar(id, usuario);
             return Response.noContent().build();
         } catch (RuntimeException e) {
@@ -80,7 +74,6 @@ public class ProdutoResource {
     }
     
     @GET
-    @RolesAllowed({"ADMIN", "ATENDENTE"})
     public Response listarTodos() {
         try {
             List<Produto> produtos = produtoService.listarTodos();
@@ -92,25 +85,10 @@ public class ProdutoResource {
                          .build();
         }
     }
-    
-    @GET
-    @Path("/disponiveis")
-    @RolesAllowed({"ADMIN", "ATENDENTE", "CLIENTE"})
-    public Response listarDisponiveis() {
-        try {
-            List<Produto> produtos = produtoService.listarDisponiveis();
-            return Response.ok(produtos).build();
-        } catch (RuntimeException e) {
-            LOG.errorf(e, "Erro ao listar produtos disponíveis");
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                         .entity("{\"erro\":\"" + e.getMessage() + "\"}")
-                         .build();
-        }
-    }
+
     
     @GET
     @Path("/{id}")
-    @RolesAllowed({"ADMIN", "ATENDENTE", "CLIENTE"})
     public Response buscarPorId(@PathParam("id") Long id) {
         try {
             Produto produto = produtoService.buscarPorId(id);
@@ -125,10 +103,9 @@ public class ProdutoResource {
     
     @PUT
     @Path("/{id}/ativar")
-    @RolesAllowed("ADMIN")
     public Response ativar(@PathParam("id") Long id) {
         try {
-            Usuario usuario = (Usuario) securityContext.getUserPrincipal();
+            User usuario = (User) securityContext.getUserPrincipal();
             Produto produto = produtoService.ativar(id, usuario);
             return Response.ok(produto).build();
         } catch (RuntimeException e) {
@@ -141,10 +118,9 @@ public class ProdutoResource {
     
     @PUT
     @Path("/{id}/desativar")
-    @RolesAllowed("ADMIN")
     public Response desativar(@PathParam("id") Long id) {
         try {
-            Usuario usuario = (Usuario) securityContext.getUserPrincipal();
+            User usuario = (User) securityContext.getUserPrincipal();
             Produto produto = produtoService.desativar(id, usuario);
             return Response.ok(produto).build();
         } catch (RuntimeException e) {

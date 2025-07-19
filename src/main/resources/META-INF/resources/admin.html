@@ -31,11 +31,10 @@
 <script src="js/footer.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        if (!auth.isAuthenticated() || auth.user !== 'ADMIN') {
+        if (!auth.isAuthenticated() || !auth.isAdmin()) {
             window.location.href = '/login.html';
         }
     });
 </script>
 </body>
-
 </html> 

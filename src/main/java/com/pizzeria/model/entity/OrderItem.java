@@ -1,4 +1,4 @@
-package com.pizzeria.model;
+package com.pizzeria.model.entity;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.persistence.*;

@@ -13,7 +13,7 @@ CookieService {
 
     public NewCookie generateJwtCookie(String jwtToken) {
         return new NewCookie(
-                "token",                      // nome do cookie
+                COOKIE_NAME,                      // nome do cookie
                 jwtToken,                     // valor do cookie
                 "/",                          // path
                 null,                        // domínio (null = mesmo domínio)

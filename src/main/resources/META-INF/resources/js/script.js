@@ -40,19 +40,6 @@ async function register(name, email, password, phone) {
     }
 }
 
-// Funções do carrinho
-async function getPizzas() {
-    try {
-        const response = await fetch(`${API_URL}/pizzas`);
-        if (!response.ok) {
-            throw new Error('Erro ao carregar pizzas');
-        }
-        return await response.json();
-    } catch (error) {
-        showError('Erro ao carregar menu: ' + error.message);
-        return [];
-    }
-}
 
 async function createOrder(items) {
     try {

@@ -27,8 +27,6 @@ class Auth {
         return payload?.groups || null;
     }
 
-
-
     decodeJWT(token) {
         if (!token) return null;
 
@@ -60,34 +58,6 @@ class Auth {
             logoutBtn.addEventListener('click', () => this.handleLogout());
         }
     }
-
-    // async handleLogin(e) {
-    //     e.preventDefault();
-    //     const email = document.getElementById('email').value;
-    //     const password = document.getElementById('password').value;
-    //
-    //     try {
-    //         const response = await fetch('/api/usuarios/login', {
-    //             method: 'POST',
-    //             headers: {
-    //                 'Content-Type': 'application/json'
-    //             },
-    //             body: JSON.stringify({email, password})
-    //         });
-    //
-    //         const data = await response.json();
-    //         if (!response.ok) {
-    //             throw new Error(data.erro || 'Credenciais inválidas');
-    //         }
-    //
-    //         // Como o novo endpoint retorna apenas mensagem, você pode buscar os dados do usuário após o login
-    //         // ou ajustar o backend para retornar o usuário e perfil. Por enquanto, só mostra mensagem de sucesso.
-    //         alert(data.mensagem || 'Login realizado com sucesso!');
-    //         window.location.href = '/'; // Redireciona para a página inicial ou dashboard
-    //     } catch (error) {
-    //         alert(error.message);
-    //     }
-    // }
 
     handleLogout() {
         this.removerCookie('token');
@@ -178,14 +148,4 @@ window.onerror = function (message, source, lineno, colno, error) {
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(log)
     });
-};
-
-const originalFetch = window.fetch;
-window.fetch = function (url, options = {}) {
-    const token = auth.getToken();
-    options.headers = new Headers(options.headers || {});
-    if (token) {
-        options.headers.set('Authorization', 'Bearer ' + token);
-    }
-    return originalFetch(url, { ...options, headers: options.headers });
 };

@@ -30,7 +30,7 @@ body {
 .container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 20px;
 }
 
 /* Navbar */
@@ -83,6 +83,7 @@ body {
 .dashboard-grid {
     display: flex;
     justify-content: center;
+    margin-top: 15px;
     gap: 20px;
     flex-wrap: wrap; /* ou nowrap para forçar uma única linha */
 }
@@ -95,7 +96,7 @@ body {
 
 .dashboard-card {
     background-color: var(--white);
-    padding: 20px;
+    padding: 10px;
     border-radius: 8px;
     text-align: center;
     font-weight: 600;

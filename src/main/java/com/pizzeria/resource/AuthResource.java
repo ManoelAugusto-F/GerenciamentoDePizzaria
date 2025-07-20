@@ -65,7 +65,7 @@ public class AuthResource {
         System.out.println("Usuário encontrado: " + user.getName());
 
 
-        String token = tokenService.generateToken(user.getName(), user.getEmail(), user.getRoles());
+        String token = tokenService.generateToken( user.getEmail(), user.getRoles());
         NewCookie jwtCookie = cookieService.generateJwtCookie(token);
         return Response.ok()
                 .entity(Map.of("message", "Login com sucesso"))

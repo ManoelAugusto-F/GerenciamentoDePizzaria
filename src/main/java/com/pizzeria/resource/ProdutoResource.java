@@ -1,7 +1,9 @@
 package com.pizzeria.resource;
 
+import com.pizzeria.model.dto.ProdutoDTO;
 import com.pizzeria.model.entity.Produto;
 import com.pizzeria.model.entity.User;
+import com.pizzeria.service.ImageSaveService;
 import com.pizzeria.service.ProdutoService;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
@@ -23,26 +25,56 @@ public class ProdutoResource {
     private static final Logger LOG = Logger.getLogger(ProdutoResource.class);
 
     @Inject
+    ImageSaveService imageSaveService;
+
+    @Inject
     ProdutoService produtoService;
-    
+
     @Context
     SecurityContext securityContext;
 
-    
+
     @POST
-    public Response criar(Produto produto) {
+    @RolesAllowed({"admin"})
+    public Response criar(ProdutoDTO dto) {
         try {
             User usuario = (User) securityContext.getUserPrincipal();
+            if (usuario == null) {
+                throw new WebApplicationException("Usuário não autenticado", 401);
+            }
+
+            Produto produto = new Produto();
+            produto.setNome(dto.getNome());
+            produto.setDescricao(dto.getDescricao());
+            produto.setPreco(dto.getPreco());
+            produto.setTipo(dto.getTipo());
+            produto.setDisponivel(dto.isDisponivel());
+
+            if (dto.getImagemBase64() != null && !dto.getImagemBase64().isEmpty()) {
+                try {
+                    String base64 = dto.getImagemBase64();
+                    String path = imageSaveService.saveImageFromBase64(
+                            base64,
+                            "produto_" + System.currentTimeMillis() + ".png"
+                    );
+                    produto.setImagemUrl(path);
+                } catch (Exception e) {
+                    throw new RuntimeException("Erro ao salvar a imagem: " + e.getMessage());
+                }
+            }
+
             Produto novoProduto = produtoService.criar(produto, usuario);
+
             return Response.status(Response.Status.CREATED).entity(novoProduto).build();
+
         } catch (RuntimeException e) {
             LOG.errorf(e, "Erro ao criar produto");
             return Response.status(Response.Status.BAD_REQUEST)
-                         .entity("{\"erro\":\"" + e.getMessage() + "\"}")
-                         .build();
+                    .entity("{\"erro\":\"" + e.getMessage() + "\"}")
+                    .build();
         }
     }
-    
+
     @PUT
     @Path("/{id}")
     public Response atualizar(@PathParam("id") Long id, Produto produto) {
@@ -53,11 +85,11 @@ public class ProdutoResource {
         } catch (RuntimeException e) {
             LOG.errorf(e, "Erro ao atualizar produto ID: %d", id);
             return Response.status(Response.Status.BAD_REQUEST)
-                         .entity("{\"erro\":\"" + e.getMessage() + "\"}")
-                         .build();
+                    .entity("{\"erro\":\"" + e.getMessage() + "\"}")
+                    .build();
         }
     }
-    
+
     @DELETE
     @Path("/{id}")
     public Response deletar(@PathParam("id") Long id) {
@@ -68,11 +100,11 @@ public class ProdutoResource {
         } catch (RuntimeException e) {
             LOG.errorf(e, "Erro ao deletar produto ID: %d", id);
             return Response.status(Response.Status.BAD_REQUEST)
-                         .entity("{\"erro\":\"" + e.getMessage() + "\"}")
-                         .build();
+                    .entity("{\"erro\":\"" + e.getMessage() + "\"}")
+                    .build();
         }
     }
-    
+
     @GET
     public Response listarTodos() {
         try {
@@ -81,12 +113,12 @@ public class ProdutoResource {
         } catch (RuntimeException e) {
             LOG.errorf(e, "Erro ao listar produtos");
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                         .entity("{\"erro\":\"" + e.getMessage() + "\"}")
-                         .build();
+                    .entity("{\"erro\":\"" + e.getMessage() + "\"}")
+                    .build();
         }
     }
 
-    
+
     @GET
     @Path("/{id}")
     public Response buscarPorId(@PathParam("id") Long id) {
@@ -96,11 +128,11 @@ public class ProdutoResource {
         } catch (RuntimeException e) {
             LOG.errorf(e, "Erro ao buscar produto ID: %d", id);
             return Response.status(Response.Status.NOT_FOUND)
-                         .entity("{\"erro\":\"" + e.getMessage() + "\"}")
-                         .build();
+                    .entity("{\"erro\":\"" + e.getMessage() + "\"}")
+                    .build();
         }
     }
-    
+
     @PUT
     @Path("/{id}/ativar")
     public Response ativar(@PathParam("id") Long id) {
@@ -111,11 +143,11 @@ public class ProdutoResource {
         } catch (RuntimeException e) {
             LOG.errorf(e, "Erro ao ativar produto ID: %d", id);
             return Response.status(Response.Status.BAD_REQUEST)
-                         .entity("{\"erro\":\"" + e.getMessage() + "\"}")
-                         .build();
+                    .entity("{\"erro\":\"" + e.getMessage() + "\"}")
+                    .build();
         }
     }
-    
+
     @PUT
     @Path("/{id}/desativar")
     public Response desativar(@PathParam("id") Long id) {
@@ -126,8 +158,8 @@ public class ProdutoResource {
         } catch (RuntimeException e) {
             LOG.errorf(e, "Erro ao desativar produto ID: %d", id);
             return Response.status(Response.Status.BAD_REQUEST)
-                         .entity("{\"erro\":\"" + e.getMessage() + "\"}")
-                         .build();
+                    .entity("{\"erro\":\"" + e.getMessage() + "\"}")
+                    .build();
         }
     }
 } 

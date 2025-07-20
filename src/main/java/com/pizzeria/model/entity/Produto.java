@@ -1,5 +1,6 @@
 package com.pizzeria.model.entity;
 
+import com.pizzeria.Enum.Tipo;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
@@ -39,10 +40,5 @@ public class Produto extends PanacheEntity {
     public void setDisponivel(boolean disponivel) { this.disponivel = disponivel; }
     public String getImagemUrl() { return imagemUrl; }
     public void setImagemUrl(String imagemUrl) { this.imagemUrl = imagemUrl; }
-    
-    public enum Tipo {
-        PIZZA,
-        BEBIDA,
-        EXTRAS
-    }
+
 } 

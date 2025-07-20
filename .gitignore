@@ -47,4 +47,8 @@ coverage/
 
 # Arquivos de configuração local
 application-local.properties
-application-local.yaml 
+application-local.yaml
+
+# Ignorar chaves privadas/públicas
+*/privateKey.pem
+*/publicKey.pem

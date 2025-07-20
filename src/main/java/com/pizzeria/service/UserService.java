@@ -32,4 +32,17 @@ public class UserService {
         user.setRoles(roles);
         return user;
     }
+
+
+    public User getUserById(Long id) {
+        if (id == null) {
+            throw new IllegalArgumentException("ID must not be null");
+        }
+        User user = userDAO.getUserById(id);
+        if (user == null) {
+            throw new IllegalArgumentException("Usuario não encontrado com ID: " + id);
+        }
+        return user;
+    }
+
 }

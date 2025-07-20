@@ -3,7 +3,7 @@ let allUsers = [];
 let filteredUsers = [];
 let currentPage = 1;
 const pageSize = 15;
-const searchForm = document.getElementById('searchForm')
+
 function renderUsers(users) {
     const tbody = document.querySelector('#userTable tbody');
     tbody.innerHTML = '';
@@ -16,8 +16,8 @@ function renderUsers(users) {
         tbody.innerHTML = `<tr><td colspan="3" style="text-align:center;">Nenhum usuário encontrado.</td></tr>`;
         return;
     }
-    //alterar posteriormente para o do teu backend
-    const select = ['Admin', 'User', 'Atendente'];
+
+    const rolesOptions = ['ADMIN', 'USER', 'ATENDENTE'];
 
     paginatedUsers.forEach(user => {
         const tr = document.createElement('tr');
@@ -25,14 +25,17 @@ function renderUsers(users) {
             <td>${user.name}</td>
             <td>${user.email}</td>
             <td>
-             <select class="roleFilter" name="roles" id="roleFilter-${user.email}" onchange="changeUserRole(this, '${user.email}', '${user.roles}')">
-                   ${select.map(role => `
-                    <option value="${role}" ${role.toUpperCase() === user.roles ? 'selected' : ''}>${role}</option>
-                `).join('')}
+                <select class="roleFilter" id="roleFilter-${user.email}">
+                    ${rolesOptions.map(role => `
+                        <option value="${role}" ${role === user.roles ? 'selected' : ''}>${role}</option>
+                    `).join('')}
                 </select>
-</td
+            </td>
         `;
         tbody.appendChild(tr);
+
+        // Adiciona o event listener aqui, já que o elemento acabou de ser criado
+        tr.querySelector('select.roleFilter').addEventListener('change', (e) => changeUserRole(e.target, user.email));
     });
 
     // Atualiza info de página
@@ -42,21 +45,21 @@ function renderUsers(users) {
     document.getElementById('nextPage').disabled = currentPage >= totalPages;
 }
 
-const changeUserRole = async (element, email, currentRoles) => {
+async function changeUserRole(element, email) {
     const newRole = element.value;
-    if (newRole === currentRoles) {
-        return; // Nenhuma alteração necessária
-    }
 
     try {
         const token = localStorage.getItem('token');
+        if (!token) throw new Error('Usuário não autenticado');
+
         const response = await fetch(`${API_URL}/users/${email}/roles`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
+                'Authorization': `Bearer ${token}`,
             },
-            body: JSON.stringify({ roles: newRole.toUpperCase() })
+            credentials: 'include',
+            body: JSON.stringify({ roles: newRole }),
         });
 
         if (!response.ok) {
@@ -64,7 +67,7 @@ const changeUserRole = async (element, email, currentRoles) => {
         }
 
         alert('Papel do usuário atualizado com sucesso!');
-        fetchUsers(); // Recarrega a lista de usuários
+        fetchUsers(); // Atualiza a lista
     } catch (error) {
         showError(error.message);
     }
@@ -94,23 +97,22 @@ function onSubmitSearch(e) {
 
 async function fetchUsers() {
     try {
-        const token = auth.getToken();
-
-        if (!token) {
-            throw new Error('Token inválido ou não autenticado');
-        }
-
-        const response = await fetch('http://localhost:8080/api/users', {
+        const token = localStorage.getItem('token');
+        if (!token) throw new Error('Token inválido ou não autenticado');
+        console.log("TOKEN:", auth.getToken());
+        const response = await fetch(`${API_URL}/users`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
+                'Authorization': `Bearer ${token}`,
             },
-            credentials: "include"
+            credentials: 'include',
         });
+
         if (!response.ok) {
             throw new Error('Erro ao buscar usuários');
         }
+
         allUsers = await response.json();
         filteredUsers = [...allUsers];
         renderUsers(filteredUsers);
@@ -120,19 +122,12 @@ async function fetchUsers() {
 }
 
 function showError(message) {
-    alert(message); // Pode substituir por div de erro, se quiser.
+    alert(message);
 }
 
 window.onload = () => {
-    fetchUsers().then(r => {
-        renderUsers(filteredUsers);
-    });
-    for (let users of allUsers  ){
-        // roleFilter-${user.email}
-        document.getElementById('roleFilter' + "-"+ users.email).addEventListener('change', applyFilters);
-    }
+    fetchUsers();
+    document.getElementById('searchForm').addEventListener('submit', onSubmitSearch);
+    document.getElementById('prevPage').addEventListener('click', () => changePage(-1));
+    document.getElementById('nextPage').addEventListener('click', () => changePage(1));
 };
-
-
-
-

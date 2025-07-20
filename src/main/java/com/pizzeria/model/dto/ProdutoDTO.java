@@ -1,6 +1,7 @@
 package com.pizzeria.model.dto;
 
-import com.pizzeria.model.entity.Produto.Tipo;
+import com.pizzeria.Enum.Tipo;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -9,7 +10,7 @@ import java.math.BigDecimal;
 
 @Data
 public class ProdutoDTO {
-    
+    private Tipo tipo;
     private Long id;
     
     @NotNull(message = "Nome é obrigatório")
@@ -24,24 +25,13 @@ public class ProdutoDTO {
     private BigDecimal preco;
     
     @NotNull(message = "Tipo é obrigatório")
-    private Tipo tipo;
+
     
     private boolean disponivel = true;
     
     @Size(max = 500, message = "URL da imagem deve ter no máximo 500 caracteres")
     private String imagemUrl;
-    
-    // Construtor para conversão de entidade para DTO
-    public ProdutoDTO(Long id, String nome, String descricao, BigDecimal preco, Tipo tipo, boolean disponivel, String imagemUrl) {
-        this.id = id;
-        this.nome = nome;
-        this.descricao = descricao;
-        this.preco = preco;
-        this.tipo = tipo;
-        this.disponivel = disponivel;
-        this.imagemUrl = imagemUrl;
-    }
-    
-    // Construtor padrão
-    public ProdutoDTO() {}
+
+    private String imagemBase64;
+
 } 

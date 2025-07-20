@@ -1,5 +1,6 @@
 package com.pizzeria.dao;
 
+import com.pizzeria.Enum.Tipo;
 import com.pizzeria.model.entity.Produto;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.EntityManager;
@@ -36,7 +37,7 @@ public class ProdutoDAO {
         return query.getResultList();
     }
 
-    public List<Produto> listarPorTipo(Produto.Tipo tipo) {
+    public List<Produto> listarPorTipo(Tipo tipo) {
         TypedQuery<Produto> query = em.createQuery(
             "SELECT p FROM Produto p WHERE p.tipo = :tipo ORDER BY p.nome", Produto.class);
         query.setParameter("tipo", tipo);
@@ -49,7 +50,7 @@ public class ProdutoDAO {
         return query.getResultList();
     }
 
-    public List<Produto> listarDisponiveisPorTipo(Produto.Tipo tipo) {
+    public List<Produto> listarDisponiveisPorTipo(Tipo tipo) {
         TypedQuery<Produto> query = em.createQuery(
             "SELECT p FROM Produto p WHERE p.tipo = :tipo AND p.disponivel = true ORDER BY p.nome", Produto.class);
         query.setParameter("tipo", tipo);

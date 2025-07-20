@@ -24,7 +24,6 @@ public class PedidoResource {
     SecurityContext securityContext;
     
     @POST
-    @RolesAllowed({"CLIENTE", "ATENDENTE"})
     public Response criar(Pedido pedido) {
         try {
             User usuario = (User) securityContext.getUserPrincipal();
@@ -36,10 +35,9 @@ public class PedidoResource {
                          .build();
         }
     }
-    
+
     @PUT
     @Path("/{id}/status")
-    @RolesAllowed({"ADMIN", "ATENDENTE"})
     public Response atualizarStatus(@PathParam("id") Long id, Pedido.Status novoStatus) {
         try {
             User usuario = (User) securityContext.getUserPrincipal();
@@ -53,14 +51,12 @@ public class PedidoResource {
     }
     
     @GET
-    @RolesAllowed({"ADMIN", "ATENDENTE"})
     public List<Pedido> listarTodos() {
         return pedidoService.listarTodos();
     }
     
     @GET
     @Path("/cliente/{clienteId}")
-    @RolesAllowed({"ADMIN", "ATENDENTE"})
     public List<Pedido> listarPorCliente(@PathParam("clienteId") Long clienteId) {
         return pedidoService.listarPorCliente(clienteId);
     }
@@ -71,14 +67,12 @@ public class PedidoResource {
      */
     @GET
     @Path("/status/{status}")
-    @RolesAllowed({"ADMIN", "ATENDENTE"})
     public List<Pedido> listarPorStatus(@PathParam("status") Pedido.Status status) {
         return pedidoService.listarPorStatus(status);
     }
     
     @GET
     @Path("/{id}")
-    @RolesAllowed({"ADMIN", "ATENDENTE", "CLIENTE"})
     public Response buscarPorId(@PathParam("id") Long id) {
         try {
             Pedido pedido = pedidoService.buscarPorId(id);
@@ -102,7 +96,6 @@ public class PedidoResource {
     
     @GET
     @Path("/me")
-    @RolesAllowed("CLIENTE")
     public List<Pedido> listarMeusPedidos(@jakarta.ws.rs.core.Context jakarta.ws.rs.core.SecurityContext securityContext) {
         User usuario = (User) securityContext.getUserPrincipal();
         if (usuario == null) {
@@ -110,4 +103,5 @@ public class PedidoResource {
         }
         return pedidoService.listarPorCliente(usuario.getId());
     }
+
 } 

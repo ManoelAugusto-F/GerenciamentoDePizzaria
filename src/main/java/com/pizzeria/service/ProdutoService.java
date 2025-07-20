@@ -1,5 +1,6 @@
 package com.pizzeria.service;
 
+import com.pizzeria.Enum.Tipo;
 import com.pizzeria.model.entity.Log;
 import com.pizzeria.model.entity.Produto;
 import com.pizzeria.model.entity.User;
@@ -42,7 +43,7 @@ public class ProdutoService {
             throw new RuntimeException("Produto não encontrado");
         }
         
-        registrarLog(usuario, "DELETAR", "Produto deletado: " + produto.getNome());
+        registrarLog(usuario, "DELETAR", "Produto deletado: " + usuario.getName());
         produto.delete();
     }
     
@@ -50,7 +51,7 @@ public class ProdutoService {
         return Produto.listAll();
     }
     
-    public List<Produto> listarPorTipo(Produto.Tipo tipo) {
+    public List<Produto> listarPorTipo(Tipo tipo) {
         return Produto.list("tipo", tipo);
     }
     

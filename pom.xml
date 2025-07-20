@@ -41,6 +41,8 @@
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-resteasy-reactive</artifactId>
     </dependency>
+
+
     
     <!-- Persistência -->
     <dependency>
@@ -54,6 +56,11 @@
     </dependency>
     
     <!-- Segurança -->
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-security</artifactId>
+    </dependency>
+
     <dependency>
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-smallrye-jwt</artifactId>

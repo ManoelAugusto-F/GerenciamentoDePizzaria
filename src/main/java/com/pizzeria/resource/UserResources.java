@@ -24,7 +24,6 @@ public class UserResources {
     UserService userService;
 
     @GET
-    @Path("")
     @RolesAllowed({"ADMIN"})
     public Response getAllUsers() {
         try {
@@ -45,7 +44,7 @@ public class UserResources {
 
     @PUT
     @Path("/{email}/roles")
-     @RolesAllowed({"ADMIN"})
+    @RolesAllowed({"ADMIN"})
     public User updateUser(@Valid UserDTO user, @PathParam("email") String email) {
         return userService.updateUserRolesByEmail(email, user.roles);
     }

@@ -5,7 +5,10 @@ import com.pizzeria.model.entity.Produto;
 import com.pizzeria.model.entity.User;
 import com.pizzeria.service.ImageSaveService;
 import com.pizzeria.service.ProdutoService;
+import com.pizzeria.service.UserService;
+import io.smallrye.jwt.auth.principal.DefaultJWTCallerPrincipal;
 import jakarta.annotation.security.RolesAllowed;
+import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Context;
@@ -20,13 +23,15 @@ import java.util.List;
 @Path("/produtos")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
+@RequestScoped
 public class ProdutoResource {
 
     private static final Logger LOG = Logger.getLogger(ProdutoResource.class);
 
     @Inject
     ImageSaveService imageSaveService;
-
+    @Inject
+    UserService userService;
     @Inject
     ProdutoService produtoService;
 
@@ -35,14 +40,18 @@ public class ProdutoResource {
 
 
     @POST
-    @RolesAllowed({"admin"})
+    @RolesAllowed({"ADMIN"})
     public Response criar(ProdutoDTO dto) {
         try {
-            User usuario = (User) securityContext.getUserPrincipal();
-            if (usuario == null) {
+            var principal = (DefaultJWTCallerPrincipal) securityContext.getUserPrincipal();
+            if (principal == null) {
                 throw new WebApplicationException("Usuário não autenticado", 401);
             }
-
+            String email = principal.getClaim("upn"); // Obtém o email do usuário autenticado
+            if (email == null || email.isEmpty()) {
+                throw new WebApplicationException("Email do usuário não encontrado", 401);
+            }
+            User usuario = userService.findByEmail(email);
             Produto produto = new Produto();
             produto.setNome(dto.getNome());
             produto.setDescricao(dto.getDescricao());

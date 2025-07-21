@@ -45,11 +45,13 @@ function renderUsers(users) {
     document.getElementById('nextPage').disabled = currentPage >= totalPages;
 }
 
+
+
 async function changeUserRole(element, email) {
     const newRole = element.value;
 
     try {
-        const token = localStorage.getItem('token');
+        const token = auth.getToken();
         if (!token) throw new Error('Usuário não autenticado');
 
         const response = await fetch(`${API_URL}/users/${email}/roles`, {
@@ -97,9 +99,8 @@ function onSubmitSearch(e) {
 
 async function fetchUsers() {
     try {
-        const token = localStorage.getItem('token');
+        const token = auth.getToken();
         if (!token) throw new Error('Token inválido ou não autenticado');
-        console.log("TOKEN:", auth.getToken());
         const response = await fetch(`${API_URL}/users`, {
             method: 'GET',
             headers: {
@@ -127,7 +128,6 @@ function showError(message) {
 
 window.onload = () => {
     fetchUsers();
-    document.getElementById('searchForm').addEventListener('submit', onSubmitSearch);
     document.getElementById('prevPage').addEventListener('click', () => changePage(-1));
     document.getElementById('nextPage').addEventListener('click', () => changePage(1));
 };

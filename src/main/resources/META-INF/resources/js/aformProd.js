@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById("form");
+    const API_URL = 'http://localhost:8080/api';
     if (!form) {
         console.error("Formulário não encontrado!");
         return;
@@ -38,12 +39,13 @@ document.addEventListener('DOMContentLoaded', function () {
             console.log("Produto a ser enviado:", produto);
 
             try {
-                const response = await fetch('http://localhost:8080/api/produtos', {
+                const response = await fetch(`${API_URL}/produtos`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${auth.getToken()}`
                     },
+                    credentials: 'include',
                     body: JSON.stringify(produto)
                 });
 

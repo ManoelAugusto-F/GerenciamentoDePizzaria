@@ -6,6 +6,9 @@ import io.quarkus.security.runtime.SecurityIdentityAssociation;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.MediaType;
 
 import java.util.List;
 
@@ -41,6 +44,17 @@ public class UserService {
         User user = userDAO.getUserById(id);
         if (user == null) {
             throw new IllegalArgumentException("Usuario não encontrado com ID: " + id);
+        }
+        return user;
+    }
+
+    public User findByEmail(String email) {
+        if (email == null || email.isEmpty()) {
+            throw new IllegalArgumentException("Email must not be null or empty");
+        }
+        User user = userDAO.findByEmail(email);
+        if (user == null) {
+            throw new IllegalArgumentException("Usuario não encontrado com email: " + email);
         }
         return user;
     }

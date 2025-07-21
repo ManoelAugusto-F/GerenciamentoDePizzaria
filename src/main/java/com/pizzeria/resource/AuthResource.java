@@ -14,10 +14,7 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.NewCookie;
 import jakarta.ws.rs.core.Response;
 import org.mindrot.jbcrypt.BCrypt;
-
-
 import java.util.Map;
-
 
 @Path("/auth")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -64,7 +61,6 @@ public class AuthResource {
 
         System.out.println("Usuário encontrado: " + user.getName());
 
-
         String token = tokenService.generateToken( user.getEmail(), user.getRoles());
         NewCookie jwtCookie = cookieService.generateJwtCookie(token);
         return Response.ok()
@@ -72,6 +68,4 @@ public class AuthResource {
                 .cookie(jwtCookie).header("Location", "/index.html")
                 .build();
     }
-
-
 }

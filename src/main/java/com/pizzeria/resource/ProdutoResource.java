@@ -3,13 +3,16 @@ package com.pizzeria.resource;
 import com.pizzeria.model.dto.ProdutoDTO;
 import com.pizzeria.model.entity.Produto;
 import com.pizzeria.model.entity.User;
+import com.pizzeria.service.AuthService;
 import com.pizzeria.service.ImageSaveService;
 import com.pizzeria.service.ProdutoService;
 import com.pizzeria.service.UserService;
 import io.smallrye.jwt.auth.principal.DefaultJWTCallerPrincipal;
+import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
@@ -35,23 +38,15 @@ public class ProdutoResource {
     @Inject
     ProdutoService produtoService;
 
-    @Context
-    SecurityContext securityContext;
+   @Inject
+    AuthService authService;
 
 
     @POST
     @RolesAllowed({"ADMIN"})
     public Response criar(ProdutoDTO dto) {
         try {
-            var principal = (DefaultJWTCallerPrincipal) securityContext.getUserPrincipal();
-            if (principal == null) {
-                throw new WebApplicationException("Usuário não autenticado", 401);
-            }
-            String email = principal.getClaim("upn"); // Obtém o email do usuário autenticado
-            if (email == null || email.isEmpty()) {
-                throw new WebApplicationException("Email do usuário não encontrado", 401);
-            }
-            User usuario = userService.findByEmail(email);
+           User usuario = authService.AutenticateUser();
             Produto produto = new Produto();
             produto.setNome(dto.getNome());
             produto.setDescricao(dto.getDescricao());
@@ -88,7 +83,7 @@ public class ProdutoResource {
     @Path("/{id}")
     public Response atualizar(@PathParam("id") Long id, Produto produto) {
         try {
-            User usuario = (User) securityContext.getUserPrincipal();
+            User usuario =  authService.AutenticateUser();
             Produto produtoAtualizado = produtoService.atualizar(id, produto, usuario);
             return Response.ok(produtoAtualizado).build();
         } catch (RuntimeException e) {
@@ -103,7 +98,7 @@ public class ProdutoResource {
     @Path("/{id}")
     public Response deletar(@PathParam("id") Long id) {
         try {
-            User usuario = (User) securityContext.getUserPrincipal();
+            User usuario = authService.AutenticateUser();
             produtoService.deletar(id, usuario);
             return Response.noContent().build();
         } catch (RuntimeException e) {
@@ -113,11 +108,13 @@ public class ProdutoResource {
                     .build();
         }
     }
-
+    @Transactional
     @GET
+    @RolesAllowed({"USER", "ADMIN","ATENDENTE"})
     public Response listarTodos() {
+        User usuario = authService.AutenticateUser();
         try {
-            List<Produto> produtos = produtoService.listarTodos();
+            List<Produto> produtos = produtoService.listarTodos(usuario);
             return Response.ok(produtos).build();
         } catch (RuntimeException e) {
             LOG.errorf(e, "Erro ao listar produtos");
@@ -146,7 +143,7 @@ public class ProdutoResource {
     @Path("/{id}/ativar")
     public Response ativar(@PathParam("id") Long id) {
         try {
-            User usuario = (User) securityContext.getUserPrincipal();
+            User usuario = authService.AutenticateUser();
             Produto produto = produtoService.ativar(id, usuario);
             return Response.ok(produto).build();
         } catch (RuntimeException e) {
@@ -161,7 +158,7 @@ public class ProdutoResource {
     @Path("/{id}/desativar")
     public Response desativar(@PathParam("id") Long id) {
         try {
-            User usuario = (User) securityContext.getUserPrincipal();
+            User usuario = authService.AutenticateUser();
             Produto produto = produtoService.desativar(id, usuario);
             return Response.ok(produto).build();
         } catch (RuntimeException e) {

@@ -41,33 +41,6 @@ async function register(name, email, password, phone) {
 }
 
 
-async function createOrder(items) {
-    try {
-        const token = localStorage.getItem('token');
-        if (!token) {
-            throw new Error('Usuário não autenticado');
-        }
-
-        const response = await fetch(`${API_URL}/orders`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            },
-            body: JSON.stringify({ items })
-        });
-
-        if (!response.ok) {
-            throw new Error('Erro ao criar pedido');
-        }
-
-        return await response.json();
-    } catch (error) {
-        showError('Erro ao finalizar pedido: ' + error.message);
-        return null;
-    }
-}
-
 // Funções de validação
 function validateLoginForm() {
     const email = document.getElementById('email').value;

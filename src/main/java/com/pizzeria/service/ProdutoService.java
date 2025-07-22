@@ -47,7 +47,8 @@ public class ProdutoService {
         produto.delete();
     }
     
-    public List<Produto> listarTodos() {
+    public List<Produto> listarTodos(User usuario) {
+        registrarLog(usuario, "Listar", "Produto listado: " + "todos");
         return Produto.listAll();
     }
     

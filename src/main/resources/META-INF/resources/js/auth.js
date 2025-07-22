@@ -88,7 +88,7 @@ class Auth {
 
         if (this.isAuthenticated()) {
             if (userInfo) {
-                userInfo.textContent = `Olá, ${this.user.nomeCompleto} (${this.user.perfil})`;
+                userInfo.textContent = `Olá, ${this.user.name} (${this.user.perfil})`;
             }
             adminElements.forEach(el => {
                 el.style.display = this.isAdmin() ? 'block' : 'none';

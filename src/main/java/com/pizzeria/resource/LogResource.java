@@ -26,45 +26,18 @@ public class LogResource {
     LogDAO logDAO;
 
     @GET
-    public Response listarComFiltros(@QueryParam("usuarioId") Long usuarioId,
-                                   @QueryParam("acao") String acao,
-                                   @QueryParam("dataInicio") String dataInicio,
-                                   @QueryParam("dataFim") String dataFim) {
+    public Response findAll() {
         try {
-            LocalDateTime inicio = null;
-            LocalDateTime fim = null;
-            
-            if (dataInicio != null && !dataInicio.isEmpty()) {
-                try {
-                    inicio = LocalDateTime.parse(dataInicio);
-                } catch (DateTimeParseException e) {
-                    throw new WebApplicationException("Formato de data de início inválido. Use: yyyy-MM-ddTHH:mm:ss", Response.Status.BAD_REQUEST);
-                }
-            }
-            
-            if (dataFim != null && !dataFim.isEmpty()) {
-                try {
-                    fim = LocalDateTime.parse(dataFim);
-                } catch (DateTimeParseException e) {
-                    throw new WebApplicationException("Formato de data de fim inválido. Use: yyyy-MM-ddTHH:mm:ss", Response.Status.BAD_REQUEST);
-                }
-            }
-            
-            List<Log> logs = logDAO.listarComFiltros(usuarioId, acao, inicio, fim);
+            List<Log> logs = logDAO.listarTodos();
             return Response.ok(logs).build();
-            
-        } catch (WebApplicationException e) {
-            LOG.warnf("Erro ao listar logs: %s", e.getMessage());
-            return Response.status(e.getResponse().getStatus())
-                         .entity("{\"erro\":\"" + e.getMessage() + "\"}")
-                         .build();
         } catch (Exception e) {
-            LOG.errorf(e, "Erro inesperado ao listar logs");
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                         .entity("{\"erro\":\"Erro interno do servidor\"}")
-                         .build();
+                    .entity("Erro ao buscar os logs: " + e.getMessage())
+                    .build();
         }
     }
+
+
 
     @GET
     @Path("/{id}")
@@ -84,34 +57,7 @@ public class LogResource {
                          .build();
         }
     }
-    
-    @GET
-    @Path("/usuario/{usuarioId}")
-    public Response listarPorUsuario(@PathParam("usuarioId") Long usuarioId) {
-        try {
-            List<Log> logs = logDAO.listarPorUsuario(usuarioId);
-            return Response.ok(logs).build();
-        } catch (Exception e) {
-            LOG.errorf(e, "Erro inesperado ao listar logs do usuário ID: %d", usuarioId);
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                         .entity("{\"erro\":\"Erro interno do servidor\"}")
-                         .build();
-        }
-    }
-    
-    @GET
-    @Path("/acao/{acao}")
-    public Response listarPorAcao(@PathParam("acao") String acao) {
-        try {
-            List<Log> logs = logDAO.listarPorAcao(acao);
-            return Response.ok(logs).build();
-        } catch (Exception e) {
-            LOG.errorf(e, "Erro inesperado ao listar logs por ação: %s", acao);
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                         .entity("{\"erro\":\"Erro interno do servidor\"}")
-                         .build();
-        }
-    }
+
 
     @POST
     @Path("/frontend")

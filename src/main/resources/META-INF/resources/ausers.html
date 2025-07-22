@@ -63,7 +63,7 @@
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         if (!auth.isAuthenticated() || !auth.isAdmin()) {
-            window.location.href = '/login.html';
+            window.location.href = '/error.html';
         }
     });
 </script>

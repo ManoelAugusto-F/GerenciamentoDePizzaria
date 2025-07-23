@@ -37,8 +37,6 @@ public class LogResource {
         }
     }
 
-
-
     @GET
     @Path("/{id}")
     public Response buscarPorId(@PathParam("id") Long id) {

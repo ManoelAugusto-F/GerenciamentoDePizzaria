@@ -50,7 +50,7 @@ public class ProdutoService {
         produto.delete();
     }
     
-    public List<Produto> listarTodos(User usuario) {
+    public List<Produto> listarTodos() {
         return Produto.listAll();
     }
     

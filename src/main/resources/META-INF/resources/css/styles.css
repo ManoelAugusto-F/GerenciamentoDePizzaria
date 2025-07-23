@@ -1,3 +1,4 @@
+
 /* Importação de fontes */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
@@ -313,6 +314,31 @@ body {
 
 .menu-item button:hover {
     background-color: #ff3333;
+}
+
+/* Complemento para .item-card */
+.menu-item .item-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.item-card h3 {
+    font-size: 1.2rem;
+    margin: 10px 0 6px;
+}
+
+.item-card p {
+    font-size: 0.9rem;
+    color: var(--gray);
+}
+
+.item-card .price {
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: var(--primary-color);
+    margin-bottom: 10px;
 }
 
 .cart-container {

@@ -1,22 +1,23 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Cardápio - Pizzaria</title>
-    <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/cardCardapio.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 </head>
 <body>
 <div id="navbar-render"></div>
+
 <main class="container">
     <div class="menu-container">
         <h2>Nosso Cardápio</h2>
-        <div id="menu-items" class="menu-grid">
-            <div id="card-container"></div>
-<!--            produtos serão renderizados aqui-->
 
+        <!-- Container de cards com grid -->
+        <div id="card-container" class="card-container">
+            <!-- Cards renderizados dinamicamente aqui -->
         </div>
     </div>
 
@@ -27,25 +28,21 @@
         <button onclick="checkout()" class="btn btn-primary btn-block">Finalizar Pedido</button>
     </div>
 </main>
+
 <div id="footer-placeholder"></div>
-<!--scripts-->
+
+<!-- Scripts -->
 <script src="js/footer.js"></script>
 <script src="js/script.js"></script>
 <script src="js/auth.js"></script>
 <script src="js/nav.js"></script>
+
 <script>
     const fetchItens = async () => {
-        const token =   auth.getToken();
+        const token = auth.getToken();
         try {
-            const response = await fetch(`${API_URL}/produtos`, {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            });
-            if (!response.ok) {
-                throw new Error('Erro ao buscar os itens do cardápio');
-            }
-            console.log('token',token);
+            const response = await fetch(`${API_URL}/produtos`);
+            if (!response.ok) throw new Error('Erro ao buscar os itens do cardápio');
             const data = await response.json();
             renderMenuItems(data);
         } catch (error) {
@@ -56,18 +53,16 @@
     const renderMenuItems = (items) => {
         const menuContainer = document.getElementById('card-container');
         menuContainer.innerHTML = '';
-        items.map(item => {
+        items.forEach(item => {
             const itemElement = document.createElement('div');
-            itemElement.className = 'menu-item';
+            itemElement.className = 'item-card';
             itemElement.innerHTML = `
-              <div class="item-card">
-                 <img src="${item.imagemUrl}" alt="${item.nome}">
-                <h3>${item.nome}</h3>
-                <p>${item.descricao}</p>
-                <span class="price">R$ ${item.preco.toFixed(2)}</span>
-                <button class="btn btn-primary" onclick="addToCart(${item.id})">Adicionar ao Carrinho</button>
-               </div>
-            `;
+          <img src="${item.imagemUrl}" alt="${item.nome}">
+          <h3>${item.nome}</h3>
+          <p>${item.descricao}</p>
+          <div class="price">R$ ${item.preco.toFixed(2)}</div>
+          <button class="btn btn-primary" onclick="addToCart(${item.id})">Adicionar ao Carrinho</button>
+        `;
             menuContainer.appendChild(itemElement);
         });
     }
@@ -77,4 +72,4 @@
     })();
 </script>
 </body>
-</html> 
+</html>

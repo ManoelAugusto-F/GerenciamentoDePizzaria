@@ -8,7 +8,6 @@ import com.pizzeria.service.ImageSaveService;
 import com.pizzeria.service.ProdutoService;
 import com.pizzeria.service.UserService;
 import io.smallrye.jwt.auth.principal.DefaultJWTCallerPrincipal;
-import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
@@ -39,7 +38,7 @@ public class ProdutoResource {
     ProdutoService produtoService;
 
    @Inject
-    AuthService authService;
+   AuthService authService;
 
 
     @POST
@@ -110,11 +109,9 @@ public class ProdutoResource {
     }
     @Transactional
     @GET
-    @RolesAllowed({"USER", "ADMIN","ATENDENTE"})
     public Response listarTodos() {
-        User usuario = authService.AutenticateUser();
         try {
-            List<Produto> produtos = produtoService.listarTodos(usuario);
+            List<Produto> produtos = produtoService.listarTodos();
             return Response.ok(produtos).build();
         } catch (RuntimeException e) {
             LOG.errorf(e, "Erro ao listar produtos");
@@ -123,7 +120,6 @@ public class ProdutoResource {
                     .build();
         }
     }
-
 
     @GET
     @Path("/{id}")

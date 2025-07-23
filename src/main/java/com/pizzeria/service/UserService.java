@@ -1,6 +1,7 @@
 package com.pizzeria.service;
 
 import com.pizzeria.dao.UserDAO;
+import com.pizzeria.model.dto.UserDTO;
 import com.pizzeria.model.entity.User;
 import io.quarkus.security.runtime.SecurityIdentityAssociation;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -9,6 +10,7 @@ import jakarta.transaction.Transactional;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.util.List;
 
@@ -16,6 +18,12 @@ import java.util.List;
 public class UserService {
     @Inject
     UserDAO userDAO;
+    @Inject
+    AuthService authService;
+    @Inject
+    LogService logService;
+
+
     public List<User> getAllUsers() {
         return User.listAll();
     }
@@ -45,6 +53,23 @@ public class UserService {
         if (user == null) {
             throw new IllegalArgumentException("Usuario não encontrado com ID: " + id);
         }
+        return user;
+    }
+
+    public User updateUserData(UserDTO dto) {
+        if (dto == null) {
+            throw new IllegalArgumentException("Dados inválidos");
+        }
+
+        User user;
+        user = User.findById(dto.getId());
+        if (user == null) {
+            throw new RuntimeException("usuario não encontrado");
+        }
+        logService.registrarLog(user, "Atualizar", " dados de usuario atualizado");
+        user.setName(dto.getName());
+        user.setEmail(dto.getEmail());
+        user.setPassword(BCrypt.hashpw(dto.getPassword(), BCrypt.gensalt()));
         return user;
     }
 

@@ -28,13 +28,13 @@ public class AuthResource {
     @Path("/register")
     @Transactional
     public Response register(@Valid UserDTO dto) {
-        if (User.find("email", dto.email).firstResult() != null) {
+        if (User.find("email", dto.getEmail()).firstResult() != null) {
             return Response.status(Response.Status.CONFLICT).entity("Email already registered").build();
         }
         User user = new User();
-        user.setName(dto.name);
-        user.setEmail(dto.email);
-        user.setPassword(BCrypt.hashpw(dto.password, BCrypt.gensalt()));
+        user.setName(dto.getName());
+        user.setEmail(dto.getEmail());
+        user.setPassword(BCrypt.hashpw(dto.getPassword(), BCrypt.gensalt()));
         user.setRoles("USER"); // Default role for new users
         user.persist();
         return Response.status(Response.Status.CREATED).build();
@@ -46,14 +46,14 @@ public class AuthResource {
         User user;
 
         try {
-            user = User.find("email", dto.email).firstResult();
+            user = User.find("email", dto.getEmail()).firstResult();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(e.getMessage())
                     .build();
         }
 
-        if (user == null || !BCrypt.checkpw(dto.password, user.getPassword())) {
+        if (user == null || !BCrypt.checkpw(dto.getPassword(), user.getPassword())) {
             return Response.status(Response.Status.UNAUTHORIZED)
                     .entity("Email ou senha inválidos.")
                     .build();
@@ -61,7 +61,7 @@ public class AuthResource {
 
         System.out.println("Usuário encontrado: " + user.getName());
 
-        String token = tokenService.generateToken( user.getEmail(), user.getRoles());
+        String token = tokenService.generateToken(String.valueOf(user.getId()), user.getRoles());
         NewCookie jwtCookie = cookieService.generateJwtCookie(token);
         return Response.ok()
                 .entity(Map.of("message", "Login com sucesso"))

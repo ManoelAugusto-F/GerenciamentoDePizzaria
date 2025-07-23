@@ -27,6 +27,12 @@ class Auth {
         return payload?.groups || null;
     }
 
+    GetIdByJwt() {
+        if (!this.token) return null;
+        const id = this.decodeJWT(this.token);
+        return id?.upn;
+    }
+
     decodeJWT(token) {
         if (!token) return null;
 

@@ -20,11 +20,9 @@ public class DebugToken {
     @GET
     @Path("/get-token")
     public Response debugToken() {
-
         if (jwt == null || jwt.getRawToken() == null) {
             return Response.status(Response.Status.UNAUTHORIZED).entity("Token não encontrado").build();
         }
-
         return Response.ok("Token OK. Usuário: " + jwt.getName()).build();
     }
 }

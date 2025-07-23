@@ -5,16 +5,19 @@ import com.pizzeria.model.entity.Log;
 import com.pizzeria.model.entity.Produto;
 import com.pizzeria.model.entity.User;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import java.util.List;
 
 @ApplicationScoped
 public class ProdutoService {
+    @Inject
+    LogService logService;
 
     @Transactional
     public Produto criar(Produto produto, User usuario) {
         produto.persist();
-        registrarLog(usuario, "CRIAR", "Produto criado: " + produto.getNome());
+        logService.registrarLog(usuario, "CRIAR", "Produto criado: " + produto.getNome());
         return produto;
     }
     
@@ -31,8 +34,8 @@ public class ProdutoService {
         produto.setTipo(produtoAtualizado.getTipo());
         produto.setDisponivel(produtoAtualizado.isDisponivel());
         produto.setImagemUrl(produtoAtualizado.getImagemUrl());
-        
-        registrarLog(usuario, "ATUALIZAR", "Produto atualizado: " + produto.getNome());
+
+        logService.registrarLog(usuario, "ATUALIZAR", "Produto atualizado: " + produto.getNome());
         return produto;
     }
     
@@ -42,13 +45,12 @@ public class ProdutoService {
         if (produto == null) {
             throw new RuntimeException("Produto não encontrado");
         }
-        
-        registrarLog(usuario, "DELETAR", "Produto deletado: " + usuario.getName());
+
+        logService.registrarLog(usuario, "DELETAR", "Produto deletado: " + usuario.getName());
         produto.delete();
     }
     
     public List<Produto> listarTodos(User usuario) {
-        registrarLog(usuario, "Listar", "Produto listado: " + "todos");
         return Produto.listAll();
     }
     
@@ -72,7 +74,7 @@ public class ProdutoService {
             throw new RuntimeException("Produto não encontrado");
         }
         produto.setDisponivel(true);
-        registrarLog(usuario, "ATIVAR", "Produto ativado: " + produto.getNome());
+        logService.registrarLog(usuario, "ATIVAR", "Produto ativado: " + produto.getNome());
         return produto;
     }
 
@@ -83,15 +85,9 @@ public class ProdutoService {
             throw new RuntimeException("Produto não encontrado");
         }
         produto.setDisponivel(false);
-        registrarLog(usuario, "DESATIVAR", "Produto desativado: " + produto.getNome());
+        logService.registrarLog(usuario, "DESATIVAR", "Produto desativado: " + produto.getNome());
         return produto;
     }
 
-    private void registrarLog(User usuario, String acao, String descricao) {
-        Log log = new Log();
-        log.setUsuario(usuario);
-        log.setAcao(acao);
-        log.setDescricao(descricao);
-        log.persist();
-    }
+
 } 

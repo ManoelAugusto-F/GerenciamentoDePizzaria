@@ -14,7 +14,6 @@ class LogsManager {
         };
         this.init();
     }
-
     init() {
         console.debug('UsuarioId', this.filters.usuarioId);
         console.debug('ação', this.filters.acao);
@@ -54,9 +53,7 @@ class LogsManager {
             if (this.filters.dataFim) {
                 params.append('dataFim', this.filters.dataFim);
             }
-
             const url = `http://localhost:8080/api/logs`;
-
             const response = await fetch(url, {
                 method: 'GET',
                 headers: {
@@ -64,7 +61,6 @@ class LogsManager {
                     'Authorization': `Bearer ${token}`
                 }
             });
-
             if (!response.ok) {
                 console.error('Resposta não OK:', response.status, response.statusText);
                 // Tentar ler o corpo da resposta para mais detalhes
@@ -78,15 +74,12 @@ class LogsManager {
                 }
                 return;
             }
-
             const responseData = await response.json();
-
             if (!Array.isArray(responseData)) {
                 console.error('Resposta não é um array:', responseData);
                 this.showNotification('Formato de resposta inválido da API', 'error');
                 return;
             }
-
             this.logs = responseData;
             this.processLogs();
             this.updateSummary();
@@ -138,7 +131,6 @@ class LogsManager {
             const matchDataFim = !this.filters.dataFim || new Date(log.datetime) <= new Date(this.filters.dataFim);
             return matchUsuario && matchAcao && matchDataInicio && matchDataFim;
         });
-
         // Reordena os logs conforme o sort atual
         this.filteredLogs.sort((a, b) => {
             const dir = this.sortDirection === 'asc' ? 1 : -1;
@@ -161,12 +153,10 @@ class LogsManager {
         const uniqueUsers = allUsers.filter((user, index, self) =>
             index === self.findIndex(u => u.id === user.id)
         );
-
         const label = document.createElement('label');
         label.setAttribute('for', 'filterUserSelect');
         label.textContent = 'Usuário:';
         userFilter.appendChild(label);
-
         const select = document.createElement('select');
         select.id = 'filterUserSelect';
         const defaultOption = document.createElement('option');
@@ -272,7 +262,6 @@ class LogsManager {
 
     formatDateTime(datetime) {
         if (!datetime) return 'Data inválida';
-
         try {
             const date = new Date(datetime);
             return date.toLocaleString('pt-BR', {
@@ -313,77 +302,60 @@ class LogsManager {
     }
 
     updateSummary() {
-
         const total = this.logs.length;
         const logins = this.logs.filter(log => log.action === 'login').length;
         const updates = this.logs.filter(log => log.action === 'update').length;
         const deletes = this.logs.filter(log => log.action === 'delete').length;
-
-
         const totalElement = document.getElementById('totalLogs');
         const loginsElement = document.getElementById('totalLogins');
         const updatesElement = document.getElementById('totalUpdates');
         const deletesElement = document.getElementById('totalDeletes');
-
         if (totalElement) totalElement.textContent = total;
         if (loginsElement) loginsElement.textContent = logins;
         if (updatesElement) updatesElement.textContent = updates;
         if (deletesElement) deletesElement.textContent = deletes;
-
     }
 
     updatePagination() {
         const totalPages = Math.ceil(this.filteredLogs.length / this.itemsPerPage);
         const startItem = (this.currentPage - 1) * this.itemsPerPage + 1;
         const endItem = Math.min(this.currentPage * this.itemsPerPage, this.filteredLogs.length);
-
         const paginaAtualElement = document.getElementById('paginaAtual');
         const paginationInfoElement = document.getElementById('paginationInfo');
         const anteriorBtn = document.getElementById('anteriorBtn');
         const proximaBtn = document.getElementById('proximaBtn');
-
         if (paginaAtualElement) {
             paginaAtualElement.textContent = `Página ${this.currentPage} de ${totalPages}`;
         }
-
         if (paginationInfoElement) {
             paginationInfoElement.textContent = `Mostrando ${startItem}-${endItem} de ${this.filteredLogs.length} registros`;
         }
-
         if (anteriorBtn) {
             anteriorBtn.disabled = this.currentPage <= 1;
         }
-
         if (proximaBtn) {
             proximaBtn.disabled = this.currentPage >= totalPages;
         }
     }
 
     changePage(direction) {
-
-        const totalPages = Math.ceil(this.filteredLogs.length / this.itemsPerPage);
-
+        const totalPages = Math.ceil(this.filteredLogs.length / this.itemsPerPage)
         if (direction === -1 && this.currentPage > 1) {
             this.currentPage--;
         } else if (direction === 1 && this.currentPage < totalPages) {
             this.currentPage++;
         }
-
-
-
         this.renderTable();
         this.updatePagination();
     }
 
     async showLogDetails(logId) {
-
         try {
             const token = auth.getToken();
             if (!token) {
                 this.showNotification('Token não encontrado', 'error');
                 return;
             }
-
             const response = await fetch(`/logs/${logId}`, {
                 method: 'GET',
                 headers: {
@@ -391,13 +363,10 @@ class LogsManager {
                     'Authorization': `Bearer ${token}`
                 }
             });
-
             if (!response.ok) {
                 throw new Error(`Erro HTTP: ${response.status}`);
             }
-
             const log = await response.json();
-
             // aqui ele cria os objeto de criação da pagina
             const logFormatted = {
                 id: log.id,
@@ -411,15 +380,12 @@ class LogsManager {
                     id:logs.usuario.id
                 }
             };
-
             const modal = document.getElementById('logModal');
             const modalBody = document.getElementById('logModalBody');
-
             if (!modal || !modalBody) {
                 console.error('Elementos do modal não encontrados');
                 return;
             }
-
             modalBody.innerHTML = `
                 <div class="log-detail-section">
                     <h4><i class="fas fa-info-circle"></i> Informações Básicas</h4>
@@ -445,7 +411,6 @@ class LogsManager {
                         </div>
                     </div>
                 </div>
-
                 <div class="log-detail-section">
                     <h4><i class="fas fa-user"></i> Informações do Usuário</h4>
                     <div class="detail-grid">
@@ -467,7 +432,6 @@ class LogsManager {
                         </div>
                     </div>
                 </div>
-
                 <div class="log-detail-section">
                     <h4><i class="fas fa-cogs"></i> Detalhes Técnicos</h4>
                     <div class="detail-code">
@@ -475,10 +439,8 @@ class LogsManager {
                     </div>
                 </div>
             `;
-
             modal.style.display = 'block';
             document.body.style.overflow = 'hidden';
-
         } catch (error) {
             console.error('Erro ao carregar detalhes do log:', error);
             this.showNotification('Erro ao carregar detalhes do log: ' + error.message, 'error');
@@ -497,14 +459,11 @@ class LogsManager {
         const filterUserSelect = document.getElementById('filterUserSelect');
         const filterAction = document.getElementById('filterAction');
         const filterDate = document.getElementById('filterDate');
-
         if (filterUserSelect) filterUserSelect.value = 'Todos';
         if (filterAction) filterAction.value = '';
         if (filterDate) filterDate.value = '';
-
         this.filters = { usuarioId: null, acao: '', dataInicio: '', dataFim: '' };
         this.currentPage = 1;
-
         // Atualiza os filtros e re-renderiza
         this.applyClientSideFilters();
         this.renderTable();
@@ -513,15 +472,12 @@ class LogsManager {
     }
 
     async refreshLogs() {
-
         this.showNotification('Atualizando logs...', 'info');
         await this.loadLogs();
         this.showNotification('Logs atualizados com sucesso!', 'success');
     }
 
     exportLogs() {
-
-
         const dataToExport = this.filteredLogs.map(log => ({
             ID: log.id,
             'Usuário': log.user,
@@ -531,11 +487,9 @@ class LogsManager {
             'Ação': this.getActionLabel(log.action),
             'Descrição': log.description
         }));
-
         const csv = this.convertToCSV(dataToExport);
         const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
         const link = document.createElement('a');
-
         if (link.download !== undefined) {
             const url = URL.createObjectURL(blob);
             link.setAttribute('href', url);
@@ -545,13 +499,11 @@ class LogsManager {
             link.click();
             document.body.removeChild(link);
         }
-
         this.showNotification('Logs exportados com sucesso!', 'success');
     }
 
     convertToCSV(data) {
         if (!data.length) return '';
-
         const headers = Object.keys(data[0]);
         const csvContent = [
             headers.join(','),
@@ -564,7 +516,6 @@ class LogsManager {
                 }).join(',')
             )
         ].join('\n');
-
         return csvContent;
     }
 
@@ -573,17 +524,13 @@ class LogsManager {
         if (logsSection) {
             if (show) {
                 logsSection.classList.add('loading');
-
             } else {
                 logsSection.classList.remove('loading');
-
             }
         }
     }
 
     showNotification(message, type = 'info') {
-
-
         // Criar elemento de notificação
         const notification = document.createElement('div');
         notification.className = `notification notification-${type}`;
@@ -638,30 +585,25 @@ class LogsManager {
                     from { transform: translateX(100%); opacity: 0; }
                     to { transform: translateX(0); opacity: 1; }
                 }
-                
                 /* Estilos para informações do usuário na tabela */
                 .user-info {
                     display: flex;
                     align-items: center;
                     gap: 10px;
                 }
-                
                 .user-details {
                     display: flex;
                     flex-direction: column;
                     gap: 2px;
                 }
-                
                 .user-name {
                     font-weight: 600;
                     color: var(--secondary-color);
                 }
-                
                 .user-email {
                     font-size: 0.85rem;
                     color: var(--gray);
                 }
-                
                 .user-role {
                     font-size: 0.75rem;
                     background: var(--primary-color);
@@ -671,7 +613,6 @@ class LogsManager {
                     display: inline-block;
                     width: fit-content;
                 }
-                
                 @media (max-width: 768px) {
                     .user-email, .user-role {
                         display: none;
@@ -682,7 +623,6 @@ class LogsManager {
         }
 
         document.body.appendChild(notification);
-
         // Remover automaticamente após 5 segundos
         setTimeout(() => {
             if (notification.parentElement) {
@@ -696,17 +636,14 @@ class LogsManager {
 let logsManager;
 
 function initializeLogs() {
-
     try {
         logsManager = new LogsManager();
-
     } catch (error) {
         console.error('Erro ao criar LogsManager:', error);
     }
 }
 
 function changePage(direction) {
-
     if (logsManager) {
         logsManager.changePage(direction);
     } else {
@@ -715,7 +652,6 @@ function changePage(direction) {
 }
 
 function sortTable(column) {
-
     if (logsManager) {
         logsManager.sortTable(column);
     } else {
@@ -723,10 +659,7 @@ function sortTable(column) {
     }
 }
 
-
-
 function clearFilters() {
-
     if (logsManager) {
         logsManager.clearFilters();
     } else {
@@ -735,7 +668,6 @@ function clearFilters() {
 }
 
 function refreshLogs() {
-
     if (logsManager) {
         logsManager.refreshLogs();
     } else {
@@ -744,7 +676,6 @@ function refreshLogs() {
 }
 
 function exportLogs() {
-
     if (logsManager) {
         logsManager.exportLogs();
     } else {
@@ -753,7 +684,6 @@ function exportLogs() {
 }
 
 function closeLogModal() {
-
     if (logsManager) {
         logsManager.closeLogModal();
     } else {
@@ -766,7 +696,6 @@ const modalStyles = `
     .log-detail-section {
         margin-bottom: 25px;
     }
-    
     .log-detail-section h4 {
         color: var(--secondary-color);
         margin-bottom: 15px;
@@ -776,34 +705,28 @@ const modalStyles = `
         align-items: center;
         gap: 8px;
     }
-    
     .detail-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
         gap: 15px;
     }
-    
     .detail-item {
         display: flex;
         flex-direction: column;
         gap: 5px;
     }
-    
     .detail-item.full-width {
         grid-column: 1 / -1;
     }
-    
     .detail-item strong {
         color: var(--gray);
         font-size: 0.9rem;
         font-weight: 600;
     }
-    
     .detail-item span {
         color: var(--secondary-color);
         font-weight: 500;
     }
-    
     .detail-code {
         background-color: #f8f9fa;
         border: 1px solid var(--light-gray);
@@ -811,7 +734,6 @@ const modalStyles = `
         padding: 15px;
         overflow-x: auto;
     }
-    
     .detail-code pre {
         margin: 0;
         font-family: 'Courier New', monospace;
@@ -819,7 +741,6 @@ const modalStyles = `
         line-height: 1.4;
         color: var(--secondary-color);
     }
-    
     @media (max-width: 768px) {
         .detail-grid {
             grid-template-columns: 1fr;

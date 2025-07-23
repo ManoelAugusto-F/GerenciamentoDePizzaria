@@ -16,13 +16,13 @@
         <a href="#" onclick="app.navigateTo('menu')" class="dashboard-card">Catálogo</a>
         <a href="#" onclick="app.navigateTo('orders')" class="dashboard-card">Acompanhar Pedido</a>
         <a href="#" onclick="app.navigateTo('history')" class="dashboard-card">Histórico de Pedidos</a>
-        <a href="#" onclick="app.navigateTo('profile')" class="dashboard-card">Meu Perfil</a>
+        <a href="perfilUser.html" onclick="app.navigateTo('profile')" class="dashboard-card">Meu Perfil</a>
     </div>
 </main>
 
 <div class="container-pefilUser">
     <h2>Editar Perfil</h2>
-    <form action="/alterar-dados" method="POST">
+    <form id="formUser" method="POST">
         <div class="form-group">
             <label for="nome">Nome:</label>
             <input type="text" id="nome" name="nome" placeholder="Seu nome completo" required>
@@ -40,7 +40,8 @@
 
         <div class="form-group">
             <label for="confirmar-senha">Confirmar Senha:</label>
-            <input type="password" id="confirmar-senha" name="confirmarSenha" placeholder="Confirme a nova senha" required>
+            <input type="password" id="confirmar-senha" name="confirmarSenha" placeholder="Confirme a nova senha"
+                   required>
         </div>
 
         <button type="submit">Salvar Alterações</button>
@@ -48,15 +49,12 @@
 </div>
 
 
-
-
-
 <div id="footer-placeholder"></div>
 <!--scripts-->
-<script src="js/footer.js"></script>
-<script src="js/perfilUsers.js"></script>
 <script src="js/auth.js"></script>
 <script src="js/app.js"></script>
 <script src="js/nav.js"></script>
+<script src="js/footer.js"></script>
+<script src="js/perfilUsers.js"></script>
 </body>
 </html>

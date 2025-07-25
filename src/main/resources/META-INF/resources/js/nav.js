@@ -23,7 +23,7 @@ function renderNavbar() {
         <a href="admin.html" class="admin-only" style="display:none">Administração</a>
         <a href="atendente.html" class="attendant-only" style="display:none">Painel Atendente</a>
         <a href="cliente.html" class="client-only" style="display:none">Meus Pedidos</a>
-        <button class="btnCart" onclick="openCart()">${cartIcon}</button>
+       ${auth.isAuthenticated() ?  `<button class="btnCart" onclick="openCart()">${cartIcon}</button>`:''}
       </div>
     </div>
   </nav>

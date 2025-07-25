@@ -7,10 +7,10 @@ import com.pizzeria.service.AuthService;
 import com.pizzeria.service.ImageSaveService;
 import com.pizzeria.service.ProdutoService;
 import com.pizzeria.service.UserService;
+import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
-import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -98,13 +98,12 @@ public class ProdutoResource {
         }
     }
 
-    @Transactional
+
     @GET
-    @RolesAllowed({"USER", "ADMIN","ATENDENTE"})
+    @PermitAll
     public Response listarTodos() {
-        User usuario = authService.AutenticateUser();
         try {
-            List<Produto> produtos = produtoService.listarTodos(usuario);
+            List<Produto> produtos = produtoService.listarTodos();
             return Response.ok(produtos).build();
         } catch (RuntimeException e) {
             LOG.errorf(e, "Erro ao listar produtos");

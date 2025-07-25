@@ -18,7 +18,7 @@ public class CartDAO {
             throw new IllegalArgumentException("Usuário não encontrado");
         }
 
-        List<Cart> cartList = Cart.list("userId", user.getId());
+        List<Cart> cartList = Cart.list("user.id", user.getId());
         if (cartList == null || cartList.isEmpty()) {
             throw new IllegalArgumentException("Carrinho vazio para o usuário: " + user.getName());
         }

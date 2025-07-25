@@ -2,9 +2,11 @@ package com.pizzeria.resource;
 
 import com.pizzeria.model.dto.CartDTO;
 import com.pizzeria.model.entity.Cart;
-import com.pizzeria.model.entity.Produto;
 import com.pizzeria.model.entity.User;
+import com.pizzeria.service.AuthService;
 import com.pizzeria.service.CartService;
+import com.pizzeria.service.ProdutoService;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -19,45 +21,41 @@ public class CartResource {
 
     @Inject
     CartService cartService;
+    @Inject
+    AuthService authService;
+    @Inject
+    ProdutoService produtoService;
 
     @POST
-    @Path("/add")
-    public Response addItemToCart(CartDTO cartDTO) {
+    @Path("/add/{productID}")
+    @RolesAllowed({"ADMIN", "ATENDENTE", "USER"})
+    public Response addItemToCart(@PathParam("productID") Long productID) {
         try {
-            if (cartDTO == null || cartDTO.getUserId() == null || cartDTO.getProductId() == null) {
-                return Response.status(Response.Status.BAD_REQUEST)
-                        .entity("Dados do carrinho inválidos").build();
+            User user = authService.AutenticateUser();
+            if (productID == null) {
+                return Response.status(Response.Status.NOT_FOUND).entity("Produto não encontrado").build();
             }
-            Cart cart = new Cart();
 
-            User user = new User();
-            user.setId(cartDTO.getUserId());
-            cart.setUser(user);
-
-            Produto produto = new Produto();
-            produto.id = cartDTO.getProductId();
-            cart.setProduct(produto);
-
-
-            Cart createdCart = cartService.addToCart(cart);
+            Cart createdCart = cartService.addToCart(productID,user);
             return Response.status(Response.Status.CREATED).entity(createdCart).build();
 
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
     }
 
     @GET
-    @Path("/{userId}")
-    public Response getCartByUserId(@PathParam("userId") Long userId) {
+    @RolesAllowed({"ADMIN","USER", "ATENDENTE"})
+    public Response getCartByUserId() {
+        User user = authService.AutenticateUser();
         try {
-            if (userId == null) {
+            if (user == null) {
                 return Response.status(Response.Status.BAD_REQUEST)
                         .entity("ID do usuário não pode ser nulo").build();
             }
 
             CartDTO dto = new CartDTO();
-            dto.setUserId(userId);
+            dto.setUserId(user.getId());
             List<Cart> cartList = cartService.getCart(dto);
 
             return Response.ok(cartList).build();
@@ -68,7 +66,8 @@ public class CartResource {
     }
 
     @DELETE
-    @Path("/{cartId}")
+    @Path("/delete/{cartId}")
+    @RolesAllowed({"ADMIN","USER", "ATENDENTE"})
     public Response deleteCartItem(@PathParam("cartId") Long cartId) {
         try {
             if (cartId == null) {

@@ -30,9 +30,9 @@
 <div id="footer-placeholder"></div>
 
 <!-- Scripts -->
+<script src="js/auth.js"></script>
 <script src="js/footer.js"></script>
 <script src="js/script.js"></script>
-<script src="js/auth.js"></script>
 <script src="js/nav.js"></script>
 <script src="js/CartRender.js"></script>
 
@@ -44,7 +44,6 @@
                 method: 'GET', // opcional aqui, porque GET é o padrão
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
                 }
             });
             if (!response.ok) throw new Error('Erro ao buscar os itens do cardápio');
@@ -66,7 +65,7 @@
           <h3>${item.nome}</h3>
           <p>${item.descricao}</p>
           <div class="price">R$ ${item.preco.toFixed(2)}</div>
-          <button class="btn btn-primary" onclick="addToCart(${item.id})">Adicionar ao Carrinho</button>
+          ${auth.isAuthenticated()? `<button class="btn btn-primary" onclick="addToCart(${item.id})">Adicionar ao Carrinho</button>`:''}
         `;
             menuContainer.appendChild(itemElement);
         });

@@ -49,24 +49,16 @@ public class ProdutoService {
         logService.registrarLog(usuario, "DELETAR", "Produto deletado: " + usuario.getName());
         produto.delete();
     }
-    
-   public List<Produto> listarTodos(User usuario) {
-            logService.registrarLog(usuario, "Listar", "Produto listado: " + "todos");
+    @Transactional
+   public List<Produto> listarTodos() {
             return Produto.listAll();
     }
-    
-    public List<Produto> listarPorTipo(Tipo tipo) {
-        return Produto.list("tipo", tipo);
-    }
-    
+
+    @Transactional
     public Produto buscarPorId(Long id) {
         return Produto.findById(id);
     }
 
-    // NOVOS MÉTODOS
-    public List<Produto> listarDisponiveis() {
-        return Produto.list("disponivel", true);
-    }
 
     @Transactional
     public Produto ativar(Long id, User usuario) {

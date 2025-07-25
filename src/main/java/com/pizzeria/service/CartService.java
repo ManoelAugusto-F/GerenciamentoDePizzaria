@@ -4,9 +4,12 @@ import com.pizzeria.dao.CartDAO;
 import com.pizzeria.dao.UserDAO;
 import com.pizzeria.model.dto.CartDTO;
 import com.pizzeria.model.entity.Cart;
+import com.pizzeria.model.entity.Produto;
 import com.pizzeria.model.entity.User;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
+import jakarta.ws.rs.core.Response;
 
 import java.util.List;
 
@@ -18,6 +21,8 @@ public class CartService {
 
     @Inject
     UserDAO userDAO;
+    @Inject
+    ProdutoService produtoService;
 
     public List<Cart> getCart(CartDTO dto) {
         if (dto == null || dto.getUserId() == null) {
@@ -31,20 +36,20 @@ public class CartService {
 
         return cartDAO.GetCart(user);
     }
-
-    public Cart addToCart(Cart cart) {
-        if (cart == null || cart.getUser() == null || cart.getProduct() == null) {
-            throw new IllegalArgumentException("Carrinho inválido ou incompleto");
-        }
-
+    @Transactional
+    public Cart addToCart(long productId, User user) {
+        Produto produto = produtoService.buscarPorId(productId);
+        Cart cart = new Cart();
+        cart.setUser(user);
+        cart.setProduct(produto);
         return cartDAO.addToCart(cart);
     }
-
+    @Transactional
     public Cart removeFromCart(Long cartId) {
         if (cartId == null) {
             throw new IllegalArgumentException("ID do carrinho não pode ser nulo");
         }
 
-        return cartDAO.removeFromCart(cartId); // Retorna o cart deletado, não null
+        return cartDAO.removeFromCart(cartId);
     }
 }

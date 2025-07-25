@@ -85,6 +85,13 @@ body {
     gap: 20px;
     align-items: center;
 }
+.remove-cart-btn{
+    cursor: pointer;
+    background: transparent;
+    border:  none;
+    color:  var(--primary-color);
+    font-size:28px;
+}
 
 .navigation-links, .sair-btn{
     color: var(--text-color);

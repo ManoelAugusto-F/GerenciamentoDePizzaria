@@ -6,8 +6,8 @@ async function login(email, password) {
     try {
         const response = await fetch(`${API_URL}/auth/login`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, password })
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({email, password})
         });
 
         if (!response.ok) {
@@ -27,7 +27,7 @@ async function register(name, email, password, phone) {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ name, email, password, phone })
+            body: JSON.stringify({name, email, password, phone})
         });
 
         if (!response.ok) {
@@ -74,75 +74,133 @@ function validateRegisterForm() {
 // Funções do carrinho
 let cart = [];
 
-function addToCart(id) {
-    // passo 1: fazer requisição pra produto id
-    // passo 2: fazer o post de produto id para cart
-    // passo 3: no carrinho tu fez um get all pra todos os itens no carrinho
-    // dps implementa o metodo de remover e bla bla bla
+async function addToCart(id) {
 
-    // getCartByUserId da class CartResource
-    const existingItem = cart.find(item => item.pizza.id === pizza.id);
-    if (existingItem) {
-        existingItem.quantity++;
-    } else {
-        cart.push({
-            pizza: pizza,
-            quantity: 1
+    await addCarrinRequest(id);
+    setTimeout(() => {
+        getCartItens();
+        updateCart();  // dá tempo pro back terminar de deletar
+    }, 200);
+}
+
+async function addCarrinRequest(id) {
+    const response = fetch(`${API_URL}/cart/add/${id}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${auth.getToken()}`
+        }
+    });
+}
+
+async function getCartItens() {
+    try {
+        const response = await fetch(`${API_URL}/cart`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${auth.getToken()}`
+            }
         });
+
+        if (!response.ok) {
+            throw new Error('Erro ao buscar o carrinho');
+        }
+
+        const data = await response.json();
+        cart = data;
+
+
+        updateCart();
+
+    } catch (error) {
+        console.error('Erro ao buscar itens do carrinho', error);
+        cart = [];
     }
-    updateCart();
 }
 
-function removeFromCart(pizzaId) {
-    cart = cart.filter(item => item.pizza.id !== pizzaId);
-    updateCart();
+document.addEventListener('DOMContentLoaded', function () {
+    getCartItens();
+
+});
+
+async function removeFromCart(pizzaId) {
+    try {
+        await removeRequest(pizzaId);
+        setTimeout(() => {
+            updateCart();  // dá tempo pro back terminar de deletar
+        }, 200);      // atualiza os dados do carrinho
+                      // renderiza os novos dados
+    } catch (error) {
+        console.error('Erro ao remover item do carrinho:', error);
+    }
 }
+
+async function removeRequest(pizzaId) {
+    try {
+        const response = await fetch(`${API_URL}/cart/delete/${pizzaId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${auth.getToken()}`
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error('Erro ao remover item do carrinho');
+        }
+    } catch (error) {
+        console.error('Erro:', error);
+    }
+}
+
 
 function updateCart() {
     const cartItems = document.getElementById('cart-items');
     const cartTotal = document.getElementById('cart-total');
-    
+
     if (!cartItems || !cartTotal) return;
 
     cartItems.innerHTML = '';
     let total = 0;
 
+    const groupedItems = {};
+
     cart.forEach(item => {
-        const itemTotal = item.pizza.price * item.quantity;
+        const productId = item.product.id;
+
+        if (!groupedItems[productId]) {
+            groupedItems[productId] = {
+                product: item.product,
+                quantity: 1,
+                cartItemIds: [item.id] // guarda o id do item no carrinho
+            };
+        } else {
+            groupedItems[productId].quantity++;
+            groupedItems[productId].cartItemIds.push(item.id);
+        }
+    });
+
+    Object.values(groupedItems).forEach(group => {
+        const itemTotal = group.product.preco * group.quantity;
         total += itemTotal;
+
+        // Usa o primeiro item do carrinho daquele produto para remover
+        const cartItemIdToRemove = group.cartItemIds[0];
 
         const li = document.createElement('li');
         li.innerHTML = `
-            <span>${item.pizza.name} x ${item.quantity}</span>
+            <span>${group.product.nome} x ${group.quantity}</span>
             <span>R$ ${itemTotal.toFixed(2)}</span>
-            <button onclick="removeFromCart(${item.pizza.id})">Remover</button>
+            <button class="remove-cart-btn" onclick="removeFromCart(${cartItemIdToRemove})">
+                <i class="fa-solid fa-square-minus"></i>
+            </button>
         `;
         cartItems.appendChild(li);
     });
 
     cartTotal.textContent = `Total: R$ ${total.toFixed(2)}`;
 }
-
-async function loadMenu() {
-    const pizzas = await getPizzas();
-    const menuContainer = document.getElementById('menu-items');
-    
-    if (!menuContainer) return;
-
-    pizzas.forEach(pizza => {
-        const div = document.createElement('div');
-        div.className = 'menu-item';
-        div.innerHTML = `
-            <img src="${pizza.imageUrl || 'img/pizza-placeholder.jpg'}" alt="${pizza.name}">
-            <h3>${pizza.name}</h3>
-            <p>${pizza.description}</p>
-            <span class="price">R$ ${pizza.price.toFixed(2)}</span>
-            <button onclick="addToCart(${JSON.stringify(pizza)})">Adicionar ao Carrinho</button>
-        `;
-        menuContainer.appendChild(div);
-    });
-}
-
 
 
 async function checkout() {
@@ -175,11 +233,3 @@ function showError(message) {
         alert(message);
     }
 }
-
-// Inicialização
-document.addEventListener('DOMContentLoaded', () => {
-    const menuPage = document.getElementById('menu-items');
-    if (menuPage) {
-        loadMenu();
-    }
-}); 

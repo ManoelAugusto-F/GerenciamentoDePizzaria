@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Cardápio - Pizzaria</title>
-    <link rel="stylesheet" href="css/styles.css" />
-    <link rel="stylesheet" href="css/cardCardapio.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link rel="stylesheet" href="css/styles.css"/>
+    <link rel="stylesheet" href="css/cardCardapio.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 </head>
 <body>
 <div id="navbar-render"></div>
@@ -23,7 +23,7 @@
 <main class="container">
     <div class="menu-container">
         <h2>Nosso Cardápio</h2>
-        <div id="card-container" class="card-container"> </div>
+        <div id="card-container" class="card-container"></div>
     </div>
 </main>
 
@@ -37,43 +37,88 @@
 <script src="js/CartRender.js"></script>
 
 <script>
+    let items = [];
+
+    document.addEventListener('DOMContentLoaded', async function () {
+        await fetchItens();
+        renderMenuItems();
+    });
+
+    const renderMenuItems = () => {
+        const menuContainer = document.getElementById('card-container');
+        menuContainer.innerHTML = '';
+
+        if (items.length === 0) {
+            menuContainer.innerHTML = '<p>Nenhum item disponível.</p>';
+            return;
+        }
+
+        items.forEach(item => {
+            const itemElement = document.createElement('div');
+            itemElement.className = 'item-card';
+            itemElement.innerHTML = `
+                <div class="image-container">
+                    <img src="${item.imagemUrl}" alt="${item.nome}">
+                </div>
+                <h3>${item.nome}</h3>
+                <p>${item.descricao}</p>
+                <div class="price">R$ ${item.preco.toFixed(2)}</div>
+                ${auth.isAdmin() ? `
+                    <div>
+                        <button onclick="atualizarProduto(${item.id})"><i class="fa-solid fa-pen-to-square"></i></button>
+                        <button onclick="removerProduto(${item.id})"><i class="fa-solid fa-circle-xmark"></i></button>
+                    </div>` : ''}
+                ${auth.isAuthenticated() ? `
+                    <button class="btn btn-primary" onclick="addToCart(${item.id})">Adicionar ao Carrinho</button>` : ''}
+            `;
+            menuContainer.appendChild(itemElement);
+        });
+    };
+
     const fetchItens = async () => {
-        const token = auth.getToken();
         try {
             const response = await fetch(`${API_URL}/produtos`, {
-                method: 'GET', // opcional aqui, porque GET é o padrão
+                method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
                 }
             });
             if (!response.ok) throw new Error('Erro ao buscar os itens do cardápio');
             const data = await response.json();
-            renderMenuItems(data);
+            items = data; // Corrige aqui: antes você fazia items.push(data), que colocava um array DENTRO de outro array
+        } catch (error) {
+            console.error('Erro:', error);
+        }
+    };
+
+    function atualizarProduto(id) {
+        window.location.href = `aFormUpdate.html?id=${id}`
+    }
+
+    function removerProduto(productId) {
+        removeProdRequest(productId).then(() => {
+            alert('Produto removido');
+            fetchItens().then(renderMenuItems);
+        });
+    }
+
+    async function removeProdRequest(id) {
+        try {
+            const response = await fetch(`${API_URL}/produtos/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${auth.getToken()}`
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('Erro ao remover item');
+            }
         } catch (error) {
             console.error('Erro:', error);
         }
     }
-
-    const renderMenuItems = (items) => {
-        const menuContainer = document.getElementById('card-container');
-        menuContainer.innerHTML = '';
-        items.forEach(item => {
-            const itemElement = document.createElement('div');
-            itemElement.className = 'item-card';
-            itemElement.innerHTML = `
-         <div class="image-container"><img src="${item.imagemUrl}" alt="${item.nome}"></div>
-          <h3>${item.nome}</h3>
-          <p>${item.descricao}</p>
-          <div class="price">R$ ${item.preco.toFixed(2)}</div>
-          ${auth.isAuthenticated()? `<button class="btn btn-primary" onclick="addToCart(${item.id})">Adicionar ao Carrinho</button>`:''}
-        `;
-            menuContainer.appendChild(itemElement);
-        });
-    }
-
-    (async () => {
-        await fetchItens();
-    })();
 </script>
 </body>
 </html>

@@ -15,7 +15,6 @@
     <div class="dashboard-grid">
         <a href="ausers.html" onclick="app.navigateTo('users')" class="dashboard-card">Gerenciar Usuários</a>
         <a href="aproducts.html" onclick="app.navigateTo('products')" class="dashboard-card">Gerenciar Produtos</a>
-        <a href="aoders.html" onclick="app.navigateTo('orders')" class="dashboard-card">Monitorar Pedidos</a>
         <a href="algos.html" onclick="app.navigateTo('logs')" class="dashboard-card">Logs / Monitoramento</a>
     </div>
     <div id="content"></div>
@@ -36,14 +35,16 @@
                     <p>Total de Logs: <span id="totalLogs">0</span></p>
                 </div>
             </div>
+
             <div class="summary-card">
-                <div class="summary-icon login">
-                    <i class="fas fa-sign-in-alt"></i>
+                <div class="summary-icon">
+                    <i class="fa-solid fa-circle-plus"></i>
                 </div>
                 <div class="summary-content">
-                    <p>Logins: <span id="totalLogins">0</span></p>
+                    <p>Total de Adicionar: <span id="totalCriar">0</span></p>
                 </div>
             </div>
+
             <div class="summary-card">
                 <div class="summary-icon update">
                     <i class="fas fa-edit"></i>

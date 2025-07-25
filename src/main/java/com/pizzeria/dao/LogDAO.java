@@ -76,7 +76,6 @@ public class LogDAO {
         }
         
         jpql.append(" ORDER BY l.dataHora DESC");
-        
         TypedQuery<Log> query = em.createQuery(jpql.toString(), Log.class);
         
         if (usuarioId != null) {
@@ -91,7 +90,6 @@ public class LogDAO {
         if (dataFim != null) {
             query.setParameter("dataFim", dataFim);
         }
-        
         return query.getResultList();
     }
 } 

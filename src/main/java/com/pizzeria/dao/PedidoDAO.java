@@ -1,5 +1,6 @@
 package com.pizzeria.dao;
 
+import com.pizzeria.Enum.StatusPedido;
 import com.pizzeria.model.entity.Pedido;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.EntityManager;
@@ -33,40 +34,33 @@ public class PedidoDAO {
 
     public List<Pedido> listarTodos() {
         TypedQuery<Pedido> query = em.createQuery(
-            "SELECT p FROM Pedido p ORDER BY p.dataPedido DESC", Pedido.class);
+            "SELECT p FROM Pedido p ", Pedido.class);
         return query.getResultList();
     }
 
     public List<Pedido> listarPorCliente(Long clienteId) {
         TypedQuery<Pedido> query = em.createQuery(
-            "SELECT p FROM Pedido p WHERE p.cliente.id = :clienteId ORDER BY p.dataPedido DESC", Pedido.class);
+            "SELECT p FROM Pedido p WHERE p.cliente.id = :clienteId ", Pedido.class);
         query.setParameter("clienteId", clienteId);
         return query.getResultList();
     }
 
-    public List<Pedido> listarPorStatus(Pedido.Status status) {
+    public List<Pedido> listarPorStatus(StatusPedido status) {
         TypedQuery<Pedido> query = em.createQuery(
-            "SELECT p FROM Pedido p WHERE p.status = :status ORDER BY p.dataPedido DESC", Pedido.class);
+            "SELECT p FROM Pedido p WHERE p.status = :status", Pedido.class);
         query.setParameter("status", status);
         return query.getResultList();
     }
 
-    public List<Pedido> listarPorPeriodo(LocalDateTime dataInicio, LocalDateTime dataFim) {
-        TypedQuery<Pedido> query = em.createQuery(
-            "SELECT p FROM Pedido p WHERE p.dataPedido BETWEEN :dataInicio AND :dataFim ORDER BY p.dataPedido DESC", Pedido.class);
-        query.setParameter("dataInicio", dataInicio);
-        query.setParameter("dataFim", dataFim);
-        return query.getResultList();
-    }
 
     public List<Pedido> listarPorAtendente(Long atendenteId) {
         TypedQuery<Pedido> query = em.createQuery(
-            "SELECT p FROM Pedido p WHERE p.atendente.id = :atendenteId ORDER BY p.dataPedido DESC", Pedido.class);
+            "SELECT p FROM Pedido p WHERE p.atendente.id = :atendenteId", Pedido.class);
         query.setParameter("atendenteId", atendenteId);
         return query.getResultList();
     }
 
-    public Long contarPorStatus(Pedido.Status status) {
+    public Long contarPorStatus(StatusPedido status) {
         TypedQuery<Long> query = em.createQuery(
             "SELECT COUNT(p) FROM Pedido p WHERE p.status = :status", Long.class);
         query.setParameter("status", status);

@@ -2,8 +2,10 @@ package com.pizzeria.dao;
 
 import com.pizzeria.model.entity.Cart;
 import com.pizzeria.model.entity.User;
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 
 import java.util.List;
 
@@ -46,5 +48,11 @@ public class CartDAO {
         cart.delete();
         return cart;
     }
+
+    @Transactional
+    public void deleteByUserId(long userId) {
+        Cart.delete("user.id", userId);
+    }
+
 
 }

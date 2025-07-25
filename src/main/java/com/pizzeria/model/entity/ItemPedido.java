@@ -11,30 +11,19 @@ import java.math.BigDecimal;
 @Table(name = "itens_pedido")
 @EqualsAndHashCode(callSuper = true)
 public class ItemPedido extends PanacheEntity {
-    
+
     @ManyToOne
     @JoinColumn(name = "pedido_id", nullable = false)
     private Pedido pedido;
-    
+
     @ManyToOne
     @JoinColumn(name = "produto_id", nullable = false)
     private Produto produto;
     
     @Column(nullable = false)
-    private Integer quantidade;
+    private Integer quantity;
     
     @Column(nullable = false)
-    private BigDecimal precoUnitario;
-    
-    @Column(nullable = false)
-    private BigDecimal subtotal;
-    
-    @Column
-    private String observacoes;
-    
-    @PrePersist
-    @PreUpdate
-    public void calcularSubtotal() {
-        this.subtotal = this.precoUnitario.multiply(BigDecimal.valueOf(this.quantidade));
-    }
+    private double preco;
+
 } 

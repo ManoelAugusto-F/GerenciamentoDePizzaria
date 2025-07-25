@@ -32,8 +32,6 @@ function renderNavbar() {
     auth.setupEventListeners(); // chama de novo após re-renderizar
 }
 
-
-
 function openCart() {
     openHide = !openHide;
     cartIcon = openHide

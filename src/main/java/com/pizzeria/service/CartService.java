@@ -1,16 +1,18 @@
 package com.pizzeria.service;
 
+import com.pizzeria.Enum.StatusPedido;
 import com.pizzeria.dao.CartDAO;
+import com.pizzeria.dao.PedidoDAO;
 import com.pizzeria.dao.UserDAO;
 import com.pizzeria.model.dto.CartDTO;
-import com.pizzeria.model.entity.Cart;
-import com.pizzeria.model.entity.Produto;
-import com.pizzeria.model.entity.User;
+import com.pizzeria.model.dto.PedidoDTO;
+import com.pizzeria.model.dto.ProdutoItem;
+import com.pizzeria.model.entity.*;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
-import jakarta.ws.rs.core.Response;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @ApplicationScoped
@@ -23,6 +25,12 @@ public class CartService {
     UserDAO userDAO;
     @Inject
     ProdutoService produtoService;
+    @Inject
+    PedidoService pedidoService;
+    @Inject
+    AuthService authService;
+    @Inject
+    PedidoDAO pedidoDAO;
 
     public List<Cart> getCart(CartDTO dto) {
         if (dto == null || dto.getUserId() == null) {
@@ -36,6 +44,7 @@ public class CartService {
 
         return cartDAO.GetCart(user);
     }
+
     @Transactional
     public Cart addToCart(long productId, User user) {
         Produto produto = produtoService.buscarPorId(productId);
@@ -44,6 +53,7 @@ public class CartService {
         cart.setProduct(produto);
         return cartDAO.addToCart(cart);
     }
+
     @Transactional
     public Cart removeFromCart(Long cartId) {
         if (cartId == null) {
@@ -52,4 +62,42 @@ public class CartService {
 
         return cartDAO.removeFromCart(cartId);
     }
+
+    public void removeFromUserID(long userId) {
+        cartDAO.deleteByUserId(userId);
+    }
+
+    @Transactional
+    public Pedido checkout(PedidoDTO dto) {
+        User user = authService.AutenticateUser();
+        Pedido pedido = new Pedido();
+        pedido.setCliente(user);
+        pedido.setStatus(StatusPedido.PREPARANDO);
+        pedido.setTotal(dto.getTotal());
+
+        List<ItemPedido> itens = new ArrayList<>();
+
+        for (ProdutoItem prodDTO : dto.getProdutos()) {
+            Produto produto = produtoService.buscarPorId(prodDTO.getProductId());
+            if (produto == null) {
+                throw new IllegalArgumentException("Produto com ID " + prodDTO.getProductId() + " não encontrado.");
+            }
+
+            ItemPedido item = new ItemPedido();
+            item.setProduto(produto);
+            item.setPedido(pedido);
+            item.setQuantity(prodDTO.getQuantity());
+            item.setPreco(prodDTO.getPreco());
+
+            itens.add(item);
+        }
+
+        pedido.setItens(itens);
+        Pedido pedidoSalvo = pedidoService.criar(pedido, user);
+
+        removeFromUserID(user.getId());
+
+        return pedidoSalvo;
+    }
+
 }

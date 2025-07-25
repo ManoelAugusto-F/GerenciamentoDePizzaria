@@ -78,10 +78,17 @@ class Api {
     }
 
     async createUser(user) {
-        return this.request('/users', {
+        return   await fetch(`${API_URL}/auth/register`, {
             method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
             body: JSON.stringify(user)
         });
+
+        if (!response.ok) {
+            throw new Error('Erro ao registrar usuário');
+        }
     }
 
     async updateUser(id, user) {

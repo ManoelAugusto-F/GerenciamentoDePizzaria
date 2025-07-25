@@ -19,9 +19,7 @@ import java.util.Optional;
 @Consumes(MediaType.APPLICATION_JSON)
 @RolesAllowed("ADMIN")
 public class LogResource {
-
     private static final Logger LOG = Logger.getLogger(LogResource.class);
-
     @Inject
     LogDAO logDAO;
 
@@ -55,7 +53,6 @@ public class LogResource {
                          .build();
         }
     }
-
 
     @POST
     @Path("/frontend")

@@ -40,7 +40,6 @@ async function register(name, email, password, phone) {
     }
 }
 
-
 // Funções de validação
 function validateLoginForm() {
     const email = document.getElementById('email').value;
@@ -75,7 +74,6 @@ function validateRegisterForm() {
 let cart = [];
 
 async function addToCart(id) {
-
     await addCarrinRequest(id);
     setTimeout(() => {
         getCartItens();
@@ -109,10 +107,7 @@ async function getCartItens() {
 
         const data = await response.json();
         cart = data;
-
-
         updateCart();
-
     } catch (error) {
         console.error('Erro ao buscar itens do carrinho', error);
         cart = [];
@@ -120,8 +115,9 @@ async function getCartItens() {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-    getCartItens();
-
+    if (cart) {
+        getCartItens();
+    }
 });
 
 async function removeFromCart(pizzaId) {
@@ -130,7 +126,6 @@ async function removeFromCart(pizzaId) {
         setTimeout(() => {
             updateCart();  // dá tempo pro back terminar de deletar
         }, 200);      // atualiza os dados do carrinho
-                      // renderiza os novos dados
     } catch (error) {
         console.error('Erro ao remover item do carrinho:', error);
     }
@@ -145,7 +140,6 @@ async function removeRequest(pizzaId) {
                 'Authorization': `Bearer ${auth.getToken()}`
             }
         });
-
         if (!response.ok) {
             throw new Error('Erro ao remover item do carrinho');
         }
@@ -160,15 +154,11 @@ function updateCart() {
     const cartTotal = document.getElementById('cart-total');
 
     if (!cartItems || !cartTotal) return;
-
     cartItems.innerHTML = '';
     let total = 0;
-
     const groupedItems = {};
-
     cart.forEach(item => {
         const productId = item.product.id;
-
         if (!groupedItems[productId]) {
             groupedItems[productId] = {
                 product: item.product,
@@ -187,7 +177,6 @@ function updateCart() {
 
         // Usa o primeiro item do carrinho daquele produto para remover
         const cartItemIdToRemove = group.cartItemIds[0];
-
         const li = document.createElement('li');
         li.innerHTML = `
             <span>${group.product.nome} x ${group.quantity}</span>
@@ -198,32 +187,58 @@ function updateCart() {
         `;
         cartItems.appendChild(li);
     });
-
     cartTotal.textContent = `Total: R$ ${total.toFixed(2)}`;
 }
 
+function checkout() {
+    const groupedItems = {};
+    let total = 0;
 
-async function checkout() {
-    if (cart.length === 0) {
-        showError('Adicione itens ao carrinho primeiro');
-        return;
-    }
+    cart.forEach(item => {
+        const productId = item.product.id;
+        const preco = item.product.preco;
 
-    const orderItems = cart.map(item => ({
-        pizzaId: item.pizza.id,
-        quantity: item.quantity
-    }));
+        if (!groupedItems[productId]) {
+            groupedItems[productId] = {
+                productId: productId,
+                quantity: 1,
+                preco: preco // salva o preço unitário
+            };
+        } else {
+            groupedItems[productId].quantity++;
+        }
+    });
 
-    const order = await createOrder(orderItems);
-    if (order) {
-        cart = [];
-        updateCart();
-        alert('Pedido realizado com sucesso!');
-        window.location.href = 'index.html';
-    }
+    Object.values(groupedItems).forEach(group => {
+        total += group.preco * group.quantity;
+    });
+    const finalItems = Object.values(groupedItems);
+    const payload = {
+        produtos: finalItems,
+        total: total
+    };
+    console.log(payload)
+    chegoutFetch(payload)
 }
 
-// Função auxiliar para mostrar erros
+function chegoutFetch(payload) {
+    fetch(`${API_URL}/cart/checkout`, {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${auth.getToken()}`
+        },
+        body: JSON.stringify(payload)
+    }).then(res => {
+        if (res.ok) {
+            alert("Compra finalizada com sucesso!");
+            // limpar carrinho ou redirecionar
+        } else {
+            alert("Erro ao finalizar compra.");
+        }
+    });
+}
+
 function showError(message) {
     const errorDiv = document.getElementById('error-message');
     if (errorDiv) {

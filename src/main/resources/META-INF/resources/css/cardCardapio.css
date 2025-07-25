@@ -2,7 +2,6 @@
 
 /* Menu e Carrinho */
 .menu-container {
-    margin-top: 90px;
     padding: 20px;
 }
 .item-card {
@@ -14,6 +13,7 @@
 }
 
 .card-container {
+    padding-top: 10px;
     display: grid;
     grid-template-columns: repeat(4, 300px);
     gap: 20px;

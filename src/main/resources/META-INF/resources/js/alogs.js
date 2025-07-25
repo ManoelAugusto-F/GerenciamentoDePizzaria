@@ -220,7 +220,7 @@ class LogsManager {
                         <div class="no-data-message">
                             <i class="fas fa-inbox"></i>
                             <p>Nenhum log encontrado</p>
-                            <small>Tente ajustar os filtros para ver mais resultados</small>
+                            <small>Tente ajustar o filtro para ver mais resultados</small>
                         </div>
                     </td>
                 </tr>
@@ -303,17 +303,21 @@ class LogsManager {
 
     updateSummary() {
         const total = this.logs.length;
-        const logins = this.logs.filter(log => log.action === 'login').length;
-        const updates = this.logs.filter(log => log.action === 'update').length;
-        const deletes = this.logs.filter(log => log.action === 'delete').length;
-        const totalElement = document.getElementById('totalLogs');
-        const loginsElement = document.getElementById('totalLogins');
-        const updatesElement = document.getElementById('totalUpdates');
-        const deletesElement = document.getElementById('totalDeletes');
-        if (totalElement) totalElement.textContent = total;
-        if (loginsElement) loginsElement.textContent = logins;
-        if (updatesElement) updatesElement.textContent = updates;
-        if (deletesElement) deletesElement.textContent = deletes;
+        const updates = this.logs.filter(log => log.action === 'ATUALIZAR').length;
+        const deletes = this.logs.filter(log => log.action === 'DELETAR').length;
+        const criar = this.logs.filter(log => log.action === 'CRIAR').length;
+
+        const elementMap = {
+            totalLogs: total,
+            totalUpdates: updates,
+            totalDeletes: deletes,
+            totalCriar: criar,
+        };
+
+        for (const [id, value] of Object.entries(elementMap)) {
+            const el = document.getElementById(id);
+            if (el) el.innerText = String(value);
+        }
     }
 
     updatePagination() {
@@ -433,12 +437,16 @@ class LogsManager {
                     </div>
                 </div>
                 <div class="log-detail-section">
-                    <h4><i class="fas fa-cogs"></i> Detalhes Técnicos</h4>
-                    <div class="detail-code">
-                        <pre><code>${JSON.stringify(logFormatted.details, null, 2)}</code></pre>
-                    </div>
+                      <h4><i class="fas fa-cogs"></i> Detalhes Técnicos</h4>
+                      <div class="detail-code">
+                        ${
+                            logFormatted.details
+                            ? `<pre><code>${JSON.stringify(logFormatted.details, null, 2)}</code></pre>`
+                            : `<p>Vazio</p>`
+                        }
+                      </div>
                 </div>
-            `;
+                `;
             modal.style.display = 'block';
             document.body.style.overflow = 'hidden';
         } catch (error) {

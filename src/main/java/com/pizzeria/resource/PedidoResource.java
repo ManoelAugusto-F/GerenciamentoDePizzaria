@@ -1,7 +1,9 @@
 package com.pizzeria.resource;
 
+import com.pizzeria.Enum.StatusPedido;
 import com.pizzeria.model.entity.Pedido;
 import com.pizzeria.model.entity.User;
+import com.pizzeria.service.AuthService;
 import com.pizzeria.service.PedidoService;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
@@ -19,14 +21,14 @@ public class PedidoResource {
 
     @Inject
     PedidoService pedidoService;
-    
-    @Context
-    SecurityContext securityContext;
+    @Inject
+    AuthService authService;
     
     @POST
+    @RolesAllowed({"ADMIN","ATENDENTE","USER"})
     public Response criar(Pedido pedido) {
         try {
-            User usuario = (User) securityContext.getUserPrincipal();
+            User usuario = authService.AutenticateUser();
             Pedido novoPedido = pedidoService.criar(pedido, usuario);
             return Response.status(Response.Status.CREATED).entity(novoPedido).build();
         } catch (RuntimeException e) {
@@ -38,9 +40,10 @@ public class PedidoResource {
 
     @PUT
     @Path("/{id}/status")
-    public Response atualizarStatus(@PathParam("id") Long id, Pedido.Status novoStatus) {
+    @RolesAllowed({"ADMIN","ATENDENTE"})
+    public Response atualizarStatus(@PathParam("id") Long id, StatusPedido novoStatus) {
         try {
-            User usuario = (User) securityContext.getUserPrincipal();
+            User usuario = authService.AutenticateUser();
             Pedido pedido = pedidoService.atualizarStatus(id, novoStatus, usuario);
             return Response.ok(pedido).build();
         } catch (RuntimeException e) {
@@ -51,15 +54,18 @@ public class PedidoResource {
     }
     
     @GET
+    @RolesAllowed({"ADMIN","ATENDENTE","USER"})
     public List<Pedido> listarTodos() {
         return pedidoService.listarTodos();
     }
     
-    @GET
-    @Path("/cliente/{clienteId}")
-    public List<Pedido> listarPorCliente(@PathParam("clienteId") Long clienteId) {
-        return pedidoService.listarPorCliente(clienteId);
-    }
+//    @GET
+//    @Path("/cliente/{clienteId}")
+//    @RolesAllowed({"ADMIN","ATENDENTE","USER"})
+//    public List<Pedido> listarPorCliente(@PathParam("clienteId") Long clienteId) {
+//        User usuario = authService.AutenticateUser();
+//        return pedidoService.listarPorCliente(usuario.getId());
+//    }
     
     /**
      * Listar pedidos por status (painel do atendente)
@@ -67,7 +73,8 @@ public class PedidoResource {
      */
     @GET
     @Path("/status/{status}")
-    public List<Pedido> listarPorStatus(@PathParam("status") Pedido.Status status) {
+    @RolesAllowed({"ADMIN","ATENDENTE"})
+    public List<Pedido> listarPorStatus(@PathParam("status") StatusPedido status) {
         return pedidoService.listarPorStatus(status);
     }
     
@@ -80,7 +87,7 @@ public class PedidoResource {
                 return Response.status(Response.Status.NOT_FOUND).build();
             }
 
-            User usuario = (User) securityContext.getUserPrincipal();
+            User usuario = authService.AutenticateUser();
             if (usuario.getRoles() == "USER" &&
                     !(pedido.getCliente().getId() == usuario.getId())) {
                 return Response.status(Response.Status.FORBIDDEN).build();
@@ -96,8 +103,8 @@ public class PedidoResource {
     
     @GET
     @Path("/me")
-    public List<Pedido> listarMeusPedidos(@jakarta.ws.rs.core.Context jakarta.ws.rs.core.SecurityContext securityContext) {
-        User usuario = (User) securityContext.getUserPrincipal();
+    public List<Pedido> listarMeusPedidos() {
+        User usuario = authService.AutenticateUser();
         if (usuario == null) {
             throw new WebApplicationException("Não autenticado", Response.Status.UNAUTHORIZED);
         }

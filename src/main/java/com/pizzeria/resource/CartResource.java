@@ -1,7 +1,9 @@
 package com.pizzeria.resource;
 
 import com.pizzeria.model.dto.CartDTO;
+import com.pizzeria.model.dto.PedidoDTO;
 import com.pizzeria.model.entity.Cart;
+import com.pizzeria.model.entity.Pedido;
 import com.pizzeria.model.entity.User;
 import com.pizzeria.service.AuthService;
 import com.pizzeria.service.CartService;
@@ -67,7 +69,7 @@ public class CartResource {
 
     @DELETE
     @Path("/delete/{cartId}")
-    @RolesAllowed({"ADMIN","USER", "ATENDENTE"})
+    @RolesAllowed({"ADMIN","USER","ATENDENTE"})
     public Response deleteCartItem(@PathParam("cartId") Long cartId) {
         try {
             if (cartId == null) {
@@ -81,5 +83,22 @@ public class CartResource {
         } catch (IllegalArgumentException e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
+    }
+
+    @POST
+    @Path("/checkout")
+    @RolesAllowed({"ADMIN","USER", "ATENDENTE"})
+    public Response checkout(PedidoDTO pedido) {
+        try {
+            Pedido novoPedido = cartService.checkout(pedido);
+            return Response.status(Response.Status.CREATED)
+                    .entity(novoPedido)
+                    .build();
+        } catch (RuntimeException e) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity(e.getMessage())
+                    .build();
+        }
+
     }
 }

@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             if (typeof api === 'undefined' || typeof api.createUser !== 'function') {
                 throw new Error('Função api.createUser() não encontrada.');
-            }
+            }return
 
             const createdUser = await api.createUser(newUser);
 

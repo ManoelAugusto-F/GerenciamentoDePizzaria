@@ -17,15 +17,12 @@
     <div class="dashboard-grid">
         <a href="ausers.html" onclick="app.navigateTo('users')" class="dashboard-card">Gerenciar Usuários</a>
         <a href="aproducts.html" onclick="app.navigateTo('products')" class="dashboard-card">Gerenciar Produtos</a>
-        <a href="aoders.html" onclick="app.navigateTo('orders')" class="dashboard-card">Monitorar Pedidos</a>
         <a href="algos.html" onclick="app.navigateTo('logs')" class="dashboard-card">Logs / Monitoramento</a>
     </div>
     <div id="content"></div>
     <div id="userList"></div>
     <div id="pagination"></div>
 </main>
-
-<!-- user-creation-form.html -->
 
 <div class="form-wrapper" id="user-creation-wrapper">
     <div class="form-container">
@@ -34,9 +31,9 @@
             <p>Preencha os dados para cadastrar um novo usuário no sistema.</p>
         </div>
 
-        <form id="create-user-form" novalidate>
+        <form  id="create-user-form" novalidate>
             <div class="form-group">
-                <label for="create-name">Nome Completo</label>
+                <label for="create-name">Nome</label>
                 <input type="text" id="create-name" name="name" class="form-input" placeholder="Ex: João" required>
             </div>
             <div class="form-group">
@@ -51,10 +48,6 @@
                 <label for="create-profile">Perfil de Acesso</label>
                 <select id="create-profile" name="profile" class="form-input" required>=
                 </select>
-            </div>
-            <div class="form-group-checkbox">
-                <input type="checkbox" id="create-active" name="active" checked>
-                <label for="create-active">Marcar como usuário ativo</label>
             </div>
             <div class="form-actions">
                 <button type="button" id="cancel-create-user-btn" class="btn btn-secondary">Cancelar</button>

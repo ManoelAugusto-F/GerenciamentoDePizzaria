@@ -70,9 +70,29 @@ public class ProdutoResource {
 
     @PUT
     @Path("/{id}")
-    public Response atualizar(@PathParam("id") Long id, Produto produto) {
+    public Response atualizar(@PathParam("id") Long id, ProdutoDTO dto) {
         try {
-            User usuario =  authService.AutenticateUser();
+            User usuario = authService.AutenticateUser();
+            Produto produto = new Produto();
+            produto.setNome(dto.getNome());
+            produto.setDescricao(dto.getDescricao());
+            produto.setPreco(dto.getPreco());
+            produto.setTipo(dto.getTipo());
+            produto.setDisponivel(dto.isDisponivel());
+
+            if (dto.getImagemBase64() != null && !dto.getImagemBase64().isEmpty()) {
+                try {
+                    String base64 = dto.getImagemBase64();
+                    String path = imageSaveService.saveImageFromBase64(
+                            base64,
+                            "produto_" + System.currentTimeMillis() + ".png"
+                    );
+                    produto.setImagemUrl(path);
+                } catch (Exception e) {
+                    throw new RuntimeException("Erro ao salvar a imagem: " + e.getMessage());
+                }
+            }
+
             Produto produtoAtualizado = produtoService.atualizar(id, produto, usuario);
             return Response.ok(produtoAtualizado).build();
         } catch (RuntimeException e) {
@@ -85,6 +105,7 @@ public class ProdutoResource {
 
     @DELETE
     @Path("/{id}")
+    @RolesAllowed({"ADMIN"})
     public Response deletar(@PathParam("id") Long id) {
         try {
             User usuario = authService.AutenticateUser();

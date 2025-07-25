@@ -44,7 +44,7 @@ input:focus {
     outline: none;
 }
 
-button {
+.button-send {
     width: 35%; /* 30% menor que os 50% dos inputs */
     padding: 0.8rem;
     margin-top: 1rem;
@@ -57,6 +57,6 @@ button {
     transition: background-color 0.3s;
 }
 
-button:hover {
+.button-send:hover {
     background-color: #0056b3;
 }

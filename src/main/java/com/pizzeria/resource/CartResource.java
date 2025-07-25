@@ -39,7 +39,6 @@ public class CartResource {
             cart.setProduct(produto);
 
 
-
             Cart createdCart = cartService.addToCart(cart);
             return Response.status(Response.Status.CREATED).entity(createdCart).build();
 

@@ -623,7 +623,6 @@ class LogsManager {
         }
 
         document.body.appendChild(notification);
-        // Remover automaticamente após 5 segundos
         setTimeout(() => {
             if (notification.parentElement) {
                 notification.remove();
@@ -632,7 +631,6 @@ class LogsManager {
     }
 }
 
-// Funções globais para compatibilidade
 let logsManager;
 
 function initializeLogs() {
@@ -748,7 +746,6 @@ const modalStyles = `
     }
 `;
 
-// Adicionar estilos do modal
 const styleSheet = document.createElement('style');
 styleSheet.textContent = modalStyles;
 document.head.appendChild(styleSheet);

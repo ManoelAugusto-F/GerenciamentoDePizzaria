@@ -50,8 +50,9 @@ public class ProdutoService {
         produto.delete();
     }
     
-    public List<Produto> listarTodos() {
-        return Produto.listAll();
+   public List<Produto> listarTodos(User usuario) {
+            logService.registrarLog(usuario, "Listar", "Produto listado: " + "todos");
+            return Produto.listAll();
     }
     
     public List<Produto> listarPorTipo(Tipo tipo) {

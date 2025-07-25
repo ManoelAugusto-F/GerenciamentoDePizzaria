@@ -119,28 +119,43 @@ class App {
         content.innerHTML = template.innerHTML;
 
         try {
+            this.showLoading(); // Mostra o indicador de carregamento
             const orders = await api.getOrders();
             const ordersList = document.getElementById('ordersList');
-            
+            if (!orders || orders.length === 0) {
+                const noOrdersMessage = document.getElementById('no-orders-message');
+                if (noOrdersMessage) {
+                    noOrdersMessage.style.display = 'block';
+                }
+                const table = document.querySelector('.orders-table');
+                if (table) {
+                    table.style.display = 'none';
+                }
+                return;
+            }
+
             ordersList.innerHTML = orders.map(order => `
-                <tr>
-                    <td>#${order.id}</td>
-                    <td>${new Date(order.createdAt).toLocaleString()}</td>
-                    <td>
-                        <span class="order-status status-${order.status.toLowerCase()}">
-                            ${order.status}
-                        </span>
-                    </td>
-                    <td>R$ ${order.totalAmount.toFixed(2)}</td>
-                    <td class="action-buttons">
-                        <button class="btn btn-sm btn-info" onclick="app.viewOrder(${order.id})">
-                            Detalhes
-                        </button>
-                    </td>
-                </tr>
-            `).join('');
+            <tr>
+                <td>#${order.id}</td>
+                <td>${new Date(order.createdAt).toLocaleString()}</td>
+                <td>
+                    <span class="order-status status-${order.status.toLowerCase()}">
+                        ${order.status}
+                    </span>
+                </td>
+                <td>R$ ${order.totalAmount.toFixed(2)}</td>
+                <td class="action-buttons">
+                    <button class="btn btn-sm btn-info" onclick="app.viewOrder(${order.id})">
+                        Detalhes
+                    </button>
+                </td>
+            </tr>
+        `).join('');
         } catch (error) {
-            content.innerHTML = '<div class="alert alert-danger">Erro ao carregar os pedidos</div>';
+            console.error('Erro detalhado ao carregar pedidos:', error);
+            content.innerHTML = '<div class="alert alert-danger">Ocorreu um erro ao carregar os pedidos. Tente novamente mais tarde.</div>';
+        } finally {
+            this.hideLoading();
         }
     }
 

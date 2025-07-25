@@ -1,0 +1,120 @@
+.form-wrapper {
+    font-family: 'Segoe UI', 'Roboto', sans-serif;
+    background-color: transparent;
+}
+
+.form-container {
+    background-color: #ffffff;
+    padding: 2rem;
+    border-radius: 8px;
+    max-width: 480px;
+    margin: 2rem auto;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e9ecef;
+}
+
+.form-header {
+    text-align: left;
+    margin-bottom: 1.5rem;
+}
+
+.form-header h3 {
+    font-size: 1.5rem;
+    color: #333;
+    margin: 0;
+}
+
+.form-header p {
+    font-size: 0.95rem;
+    color: #6c757d;
+    margin-top: 0.25rem;
+}
+
+.form-group {
+    margin-bottom: 1.25rem;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 500;
+    color: #495057;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.form-input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 1rem;
+    color: #495057;
+    background-color: #fff;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #e84955;
+    box-shadow: 0 0 0 2px rgba(232, 73, 85, 0.2);
+}
+
+.form-group-checkbox {
+    display: flex;
+    align-items: center;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.form-group-checkbox input[type="checkbox"] {
+    width: 1.1em;
+    height: 1.1em;
+    margin-right: 0.5rem;
+    cursor: pointer;
+    accent-color: #e84955;
+}
+
+.form-group-checkbox label {
+    font-weight: 400;
+    color: #495057;
+    margin-bottom: 0;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+}
+
+.btn {
+    padding: 0.6rem 1.2rem;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+.btn-primary {
+    background-color: #e84955;
+    color: white;
+    border-color: #e84955;
+}
+
+.btn-primary:hover {
+    background-color: #d73a46;
+    border-color: #d73a46;
+}
+
+.btn-secondary {
+    background-color: #f8f9fa;
+    color: #6c757d;
+    border-color: #ced4da;
+}
+
+.btn-secondary:hover {
+    background-color: #e2e6ea;
+    border-color: #dae0e5;
+}

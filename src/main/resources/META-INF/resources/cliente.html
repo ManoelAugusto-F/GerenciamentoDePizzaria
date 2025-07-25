@@ -10,12 +10,12 @@
 <body>
 <div id="navbar-render"></div>
     <main class="container">
+        <div id="cart-render"></div>
         <h1>Área do Cliente</h1>
         <div class="dashboard-grid">
-            <a href="#" onclick="app.navigateTo('menu')" class="dashboard-card">Catálogo</a>
+            <a href="cardapio.html" onclick="app.navigateTo('menu')" class="dashboard-card">Catálogo</a>
             <a href="#" onclick="app.navigateTo('orders')" class="dashboard-card">Acompanhar Pedido</a>
-            <a href="#" onclick="app.navigateTo('history')" class="dashboard-card">Histórico de Pedidos</a>
-            <a href="perfilUser.html" onclick="app.navigateTo('profile')" class="dashboard-card">Meu Perfil</a>
+            <a href="historyPedido.html" onclick="app.navigateTo('history')" class="dashboard-card">Histórico de Pedidos</a>
         </div>
     </main>
 
@@ -24,15 +24,12 @@
         <p>Realize o seu pedido, agora mesmo!</p>
     </div>
 
-
-
-
-
     <div id="footer-placeholder"></div>
     <!--scripts-->
     <script src="js/footer.js"></script>
     <script src="js/auth.js"></script>
     <script src="js/app.js"></script>
     <script src="js/nav.js"></script>
+<script src="js/CartRender.js"></script>
 </body>
 </html> 

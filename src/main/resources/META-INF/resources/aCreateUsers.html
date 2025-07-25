@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administração - Pizzaria</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/aCreateUsers.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body class="page-wrapper">
+<body class="page-wrapper">
+<div id="navbar-render"></div>
+<main class="container page-content">
+    <div id="cart-render"></div>
+    <h1>Área do Administrador</h1>
+    <div class="dashboard-grid">
+        <a href="ausers.html" onclick="app.navigateTo('users')" class="dashboard-card">Gerenciar Usuários</a>
+        <a href="aproducts.html" onclick="app.navigateTo('products')" class="dashboard-card">Gerenciar Produtos</a>
+        <a href="aoders.html" onclick="app.navigateTo('orders')" class="dashboard-card">Monitorar Pedidos</a>
+        <a href="algos.html" onclick="app.navigateTo('logs')" class="dashboard-card">Logs / Monitoramento</a>
+    </div>
+    <div id="content"></div>
+    <div id="userList"></div>
+    <div id="pagination"></div>
+</main>
+
+<!-- user-creation-form.html -->
+
+<div class="form-wrapper" id="user-creation-wrapper">
+    <div class="form-container">
+        <div class="form-header">
+            <h3>Criar Novo Usuário</h3>
+            <p>Preencha os dados para cadastrar um novo usuário no sistema.</p>
+        </div>
+
+        <form id="create-user-form" novalidate>
+            <div class="form-group">
+                <label for="create-name">Nome Completo</label>
+                <input type="text" id="create-name" name="name" class="form-input" placeholder="Ex: João" required>
+            </div>
+            <div class="form-group">
+                <label for="create-email">Email</label>
+                <input type="email" id="create-email" name="email" class="form-input" placeholder="Ex: email@exemplo.com" required>
+            </div>
+            <div class="form-group">
+                <label for="create-password">Senha Provisória</label>
+                <input type="password" id="create-password" name="password" class="form-input" placeholder="Mínimo 8 caracteres" required>
+            </div>
+            <div class="form-group">
+                <label for="create-profile">Perfil de Acesso</label>
+                <select id="create-profile" name="profile" class="form-input" required>=
+                </select>
+            </div>
+            <div class="form-group-checkbox">
+                <input type="checkbox" id="create-active" name="active" checked>
+                <label for="create-active">Marcar como usuário ativo</label>
+            </div>
+            <div class="form-actions">
+                <button type="button" id="cancel-create-user-btn" class="btn btn-secondary">Cancelar</button>
+                <button type="submit" class="btn btn-primary">Salvar Usuário</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="footer-placeholder"></div>
+
+<!-- SCRIPTS -->
+<script src="js/auth.js"></script>
+<script src="js/api.js"></script>
+<script src="js/app.js"></script>
+<script src="js/registerUsers.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/footer.js"></script>
+<script src="js/CartRender.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        if (!auth.isAuthenticated() || !auth.isAdmin()) {
+            alert("Acesso negado. Você precisa ser um administrador.");
+            window.location.href = '/error.html'; // ou para a página de login
+        } else {
+            // Se for admin, carrega a lista de usuários
+            // Supondo que app.loadUsersPage() exista e popule a tabela
+            if (window.app && typeof window.app.loadUsersPage === 'function') {
+                window.app.loadUsersPage();
+            }
+        }
+    });
+</script>
+</body>
+</html>

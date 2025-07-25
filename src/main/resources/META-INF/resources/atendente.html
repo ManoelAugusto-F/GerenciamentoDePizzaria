@@ -9,43 +9,8 @@
 </head>
 <body>
 <div id="navbar-render"></div>
-<!--    <nav class="navbar">-->
-<!--        <div class="container">-->
-<!--            <a href="index.html" class="logo">Pizzaria</a>-->
-<!--            <div class="nav-links" id="mainMenu">-->
-<!--                <a href="index.html">Início</a>-->
-<!--                <a href="atendente.html" class="active attendant-only">Painel Atendente</a>-->
-<!--                <script>-->
-<!--                    function isllogedin() {-->
-<!--                        return getCookie('token');-->
-<!--                    }-->
-<!--                    if(isllogedin()) {-->
-<!--                        document.write('<a href="#" id="logoutBtn">Sair</a>');-->
-<!--                    } else {-->
-<!--                        document.write('<a href="login.html" id="loginLink">Login</a>');-->
-<!--                    }-->
-
-<!--                    function getCookie(nome) {-->
-<!--                        const nameEQ = nome + "=";-->
-<!--                        const cookies = document.cookie.split(';');-->
-<!--                        for(let i = 0; i < cookies.length; i++) {-->
-<!--                            let cookie = cookies[i];-->
-<!--                            while (cookie.charAt(0) === ' ') {-->
-<!--                                cookie = cookie.substring(1, cookie.length);-->
-<!--                            }-->
-<!--                            if (cookie.indexOf(nameEQ) === 0) {-->
-<!--                                return cookie.substring(nameEQ.length, cookie.length);-->
-<!--                            }-->
-<!--                        }-->
-<!--                        return null;-->
-<!--                    }-->
-<!--                </script>-->
-
-<!--                <span id="userInfo" style="margin-left: 1rem;"></span>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </nav>-->
     <main class="container">
+        <div id="cart-render"></div>
         <h1>Painel do Atendente</h1>
         <div>
             <label for="statusFilter">Filtrar por status:</label>
@@ -65,10 +30,11 @@
     <script src="js/auth.js"></script>
     <script src="js/app.js"></script>
     <script src="js/nav.js"></script>
+<script src="js/CartRender.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             if (!auth.isAuthenticated() || !auth.isAttendant()) {
-                window.location.href = '/login.html';
+                window.location.href = '/error.html';
             }
         });
     </script>

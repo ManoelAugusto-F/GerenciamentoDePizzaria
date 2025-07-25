@@ -74,7 +74,13 @@ function validateRegisterForm() {
 // Funções do carrinho
 let cart = [];
 
-function addToCart(pizza) {
+function addToCart(id) {
+    // passo 1: fazer requisição pra produto id
+    // passo 2: fazer o post de produto id para cart
+    // passo 3: no carrinho tu fez um get all pra todos os itens no carrinho
+    // dps implementa o metodo de remover e bla bla bla
+
+    // getCartByUserId da class CartResource
     const existingItem = cart.find(item => item.pizza.id === pizza.id);
     if (existingItem) {
         existingItem.quantity++;
@@ -136,6 +142,8 @@ async function loadMenu() {
         menuContainer.appendChild(div);
     });
 }
+
+
 
 async function checkout() {
     if (cart.length === 0) {

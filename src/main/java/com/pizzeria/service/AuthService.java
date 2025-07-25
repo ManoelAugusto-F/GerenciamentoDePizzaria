@@ -14,16 +14,15 @@ public class AuthService {
     UserService userService;
     @Context
     SecurityContext securityContext;
-
-    public User AutenticateUser() {
+    public User AutenticateUser(){
         var principal = (DefaultJWTCallerPrincipal) securityContext.getUserPrincipal();
         if (principal == null) {
             throw new WebApplicationException("Usuário não autenticado", 401);
         }
-        String id = principal.getClaim("upn"); // Obtém o email do usuário autenticado
-        if (id == null || id.isEmpty()) {
+        String email = principal.getClaim("upn"); // Obtém o email do usuário autenticado
+        if (email == null || email.isEmpty()) {
             throw new WebApplicationException("Email do usuário não encontrado", 401);
         }
-        return userService.getUserById(Long.valueOf(id));
+        return userService.getUserById(Long.valueOf(email));
     }
 }

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minha Conta - Pizzaria</title>
+
+    <!-- CSS Principal e da Página de Histórico -->
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/history.css"> <!-- Usando o CSS que já criamos -->
+
+    <!-- Ícones (Font Awesome) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+    <main class="container">
+        <h1>Área do Cliente</h1>
+        <div class="dashboard-grid">
+            <a href="cardapio.html" onclick="app.navigateTo('menu')" class="dashboard-card">Catálogo</a>
+            <a href="#" onclick="app.navigateTo('orders')" class="dashboard-card">Acompanhar Pedido</a>
+            <a href="historyPedido.html" onclick="app.navigateTo('history')" class="dashboard-card">Histórico de Pedidos</a>
+        </div>
+    </main>
+
+    <div id="navbar-render"></div>
+
+    <!-- Container principal da página -->
+    <main class="container page-content">
+        <div id="cart-render"></div>
+        <!-- O conteúdo dinâmico será injetado aqui pelo app.js -->
+        <div id="content">
+            <!-- Conteúdo inicial da Área do Cliente -->
+            <h1>Minha Conta</h1>
+            <p class="lead">Bem-vindo! Escolha uma das opções abaixo para começar.</p>
+
+            <div class="dashboard-grid">
+                <a href="#" onclick="app.navigateTo('menu' )" class="dashboard-card">
+                    <i class="fas fa-utensils"></i>
+                    <span>Ver Cardápio</span>
+                </a>
+                <a href="#" onclick="app.navigateTo('orders')" class="dashboard-card">
+                    <i class="fas fa-receipt"></i>
+                    <span>Meus Pedidos</span>
+                </a>
+                <a href="#" onclick="app.navigateTo('profile')" class="dashboard-card"> <!-- Exemplo de link futuro -->
+                    <i class="fas fa-user-cog"></i>
+                    <span>Editar Perfil</span>
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <div id="footer-placeholder"></div>
+    <template id="orders-template">
+        <div class="page-header">
+            <h1>Meus Pedidos</h1>
+            <p>Acompanhe o status e o histórico de todos os seus pedidos.</p>
+        </div>
+
+        <div class="table-wrapper">
+            <div class="table-responsive">
+                <table class="table orders-table">
+                    <thead>
+                    <tr>
+                        <th>Pedido</th>
+                        <th>Data</th>
+                        <th>Status</th>
+                        <th>Valor Total</th>
+                        <th>Ações</th>
+                    </tr>
+                    </thead>
+                    <tbody id="ordersList">
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="no-orders-message" class="empty-state" style="display: none;">
+                <i class="fas fa-shopping-basket empty-state-icon"></i>
+                <h2>Você ainda não tem pedidos</h2>
+                <p>Parece que seu histórico está vazio. Que tal explorar nosso cardápio e fazer sua primeira compra?</p>
+                <button class="btn btn-primary" onclick="app.navigateTo('menu')">Ir para o Cardápio</button>
+            </div>
+        </div>
+    </template>
+
+<script src="js/auth.js"></script>
+<script src="js/api.js"></script>
+<script src="js/app.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/footer.js"></script>
+    <script src="js/CartRender.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        if (typeof auth !== 'undefined') {
+            if (!auth.isAuthenticated()) {
+                console.log("Usuário não autenticado. Redirecionando para a página de login...");
+                window.location.href = '/login.html';
+            }
+        } else {
+            console.error("O script auth.js não foi carregado corretamente ou não definiu a variável 'auth'.");
+            window.location.href = '/error.html';
+        }
+    });
+</script>
+
+</body>
+</html>

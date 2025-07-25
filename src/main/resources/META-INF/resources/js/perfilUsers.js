@@ -19,40 +19,31 @@ async function getByemail() {
                 'Authorization': `Bearer ${token}`
             }
         });
-
         if (!response.ok) {
             const errorText = await response.text();
-            console.error(`❌ HTTP ${response.status}: ${errorText}`);
+            console.error(`HTTP ${response.status}: ${errorText}`);
             return;
         }
-
         const data = await response.json();
         user = {
             id: data.id,
             name: data.name,
             email: data.email,
         }
-
         nomeInput.placeholder = user.name;
         emailInput.placeholder = user.email;
-
     } catch (error) {
-        console.error('⚠️ Erro geral no getByemail:', error);
+        console.error('Erro geral no getByemail:', error);
     }
 }
-
 document.addEventListener('DOMContentLoaded', function () {
     if(!auth.getToken()){
-        window.location.href = '/login';
+        window.location.href = '/login.html';
     }
-
     getByemail().then(r => console.log(r));
 });
-
-
     profileForm.addEventListener('submit', function (event) {
         event.preventDefault();
-
         const novaSenha = senhaInput.value;
         const confirmarSenha = confirmarSenhaInput.value;
         if( !(nomeInput && emailInput) || !(senhaInput && confirmarSenhaInput)) {
@@ -64,21 +55,17 @@ document.addEventListener('DOMContentLoaded', function () {
             name: nomeInput.value.trim()  ,
             email: emailInput.value.trim() ,
         };
-
         if (novaSenha || confirmarSenha) {
             if (novaSenha !== confirmarSenha) {
                 alert('As senhas não coincidem. Por favor, verifique e tente novamente.');
                 return; // Interrompe o envio
             }
             if (novaSenha.length < 8) {
-                alert('A nova senha deve ter pelo menos 6 caracteres.');
+                alert('A nova senha deve ter pelo menos 8 caracteres.');
                 return;
             }
             dadosParaAtualizar.password = novaSenha;
         }
-
-
-
         fetch(`${API_URL}/update/self`, {
             method: 'PUT',
             headers: {

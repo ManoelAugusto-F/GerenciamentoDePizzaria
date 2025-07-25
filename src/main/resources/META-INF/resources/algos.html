@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Administração - Pizzaria</title>
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/alogs.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body class="page-wrapper">
@@ -22,18 +23,138 @@
     <div id="pagination"></div>
 </main>
 
+<main id="logs-container-table">
+    <div id="cart-render"></div>
+    <section id="logs-container">
+        <h2><i class="fas fa-clipboard-list"></i> Logs do Sistema</h2>
+        <div class="log-summary">
+            <div class="summary-card">
+                <div class="summary-icon">
+                    <i class="fas fa-list"></i>
+                </div>
+                <div class="summary-content">
+                    <p>Total de Logs: <span id="totalLogs">0</span></p>
+                </div>
+            </div>
+            <div class="summary-card">
+                <div class="summary-icon login">
+                    <i class="fas fa-sign-in-alt"></i>
+                </div>
+                <div class="summary-content">
+                    <p>Logins: <span id="totalLogins">0</span></p>
+                </div>
+            </div>
+            <div class="summary-card">
+                <div class="summary-icon update">
+                    <i class="fas fa-edit"></i>
+                </div>
+                <div class="summary-content">
+                    <p>Atualizações: <span id="totalUpdates">0</span></p>
+                </div>
+            </div>
+            <div class="summary-card">
+                <div class="summary-icon delete">
+                    <i class="fas fa-trash"></i>
+                </div>
+                <div class="summary-content">
+                    <p>Exclusões: <span id="totalDeletes">0</span></p>
+                </div>
+            </div>
+        </div>
+        <div class="logs-filters">
+            <div class="filter-group">
+                <div id="filterUser"></div>
+            </div>
+            <button class="btn btn-outline" onclick="clearFilters()">
+                <i class="fas fa-times"></i> Limpar Filtros
+            </button>
+        </div>
+        <div class="table-container">
+            <table id="logs-table">
+                <thead>
+                <tr>
+                    <th class="sortable" onclick="sortTable('user')">
+                        <i class="fas fa-user"></i> Usuário
+                        <i class="fas fa-sort sort-icon"></i>
+                    </th>
+                    <th class="sortable" onclick="sortTable('datetime')">
+                        <i class="fas fa-clock"></i> Data/Hora
+                        <i class="fas fa-sort sort-icon"></i>
+                    </th>
+                    <th class="sortable" onclick="sortTable('action')">
+                        <i class="fas fa-cog"></i> Ação
+                        <i class="fas fa-sort sort-icon"></i>
+                    </th>
+                    <th>
+                        <i class="fas fa-info-circle"></i> Descrição
+                    </th>
+                    <th>
+                        <i class="fas fa-ellipsis-h"></i> Detalhes
+                    </th>
+                </tr>
+                </thead>
+                <tbody id="logsBody">
+                <tr class="no-data">
+                    <td colspan="5">
+                        <div class="no-data-message">
+                            <i class="fas fa-inbox"></i>
+                            <p>Nenhum log encontrado</p>
+                            <small>Os logs aparecerão aqui quando houver atividade no sistema</small>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
 
+        <!-- Paginação -->
+        <div class="pagination-container">
+            <div class="pagination-info">
+                <span id="paginationInfo">Mostrando 0 de 0 registros</span>
+            </div>
+            <div class="pagination-controls">
+                <button onclick="changePage(-1)" id="anteriorBtn" disabled>
+                    <i class="fas fa-chevron-left"></i> Anterior
+                </button>
+                <span id="paginaAtual">Página 1</span>
+                <button onclick="changePage(1)" id="proximaBtn" disabled>
+                    Próxima <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+</main>
 
 <div id="footer-placeholder"></div>
+
+<!-- Modal para detalhes do log -->
+<div id="logModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3><i class="fas fa-info-circle"></i> Detalhes do Log</h3>
+            <button class="modal-close" onclick="closeLogModal()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body" id="logModalBody">
+        </div>
+    </div>
+</div>
+
 <!--scripts-->
 <script src="js/auth.js"></script>
 <script src="js/app.js"></script>
 <script src="js/nav.js"></script>
+<script src="js/alogs.js"></script>
 <script src="js/footer.js"></script>
+<script src="js/CartRender.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         if (!auth.isAuthenticated() || !auth.isAdmin()) {
-            window.location.href = '/login.html';
+            window.location.href = '/error.html';
+        }
+        if (typeof initializeLogs === 'function') {
+            initializeLogs();
         }
     });
 </script>

@@ -7,19 +7,14 @@ import com.pizzeria.service.AuthService;
 import com.pizzeria.service.ImageSaveService;
 import com.pizzeria.service.ProdutoService;
 import com.pizzeria.service.UserService;
-import io.smallrye.jwt.auth.principal.DefaultJWTCallerPrincipal;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
-import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import jakarta.ws.rs.core.SecurityContext;
 import org.jboss.logging.Logger;
-
-import java.security.Principal;
 import java.util.List;
 
 @Path("/produtos")
@@ -36,10 +31,8 @@ public class ProdutoResource {
     UserService userService;
     @Inject
     ProdutoService produtoService;
-
-   @Inject
-   AuthService authService;
-
+    @Inject
+    AuthService authService;
 
     @POST
     @RolesAllowed({"ADMIN"})
@@ -65,11 +58,8 @@ public class ProdutoResource {
                     throw new RuntimeException("Erro ao salvar a imagem: " + e.getMessage());
                 }
             }
-
             Produto novoProduto = produtoService.criar(produto, usuario);
-
             return Response.status(Response.Status.CREATED).entity(novoProduto).build();
-
         } catch (RuntimeException e) {
             LOG.errorf(e, "Erro ao criar produto");
             return Response.status(Response.Status.BAD_REQUEST)
@@ -107,11 +97,14 @@ public class ProdutoResource {
                     .build();
         }
     }
+
     @Transactional
     @GET
+    @RolesAllowed({"USER", "ADMIN","ATENDENTE"})
     public Response listarTodos() {
+        User usuario = authService.AutenticateUser();
         try {
-            List<Produto> produtos = produtoService.listarTodos();
+            List<Produto> produtos = produtoService.listarTodos(usuario);
             return Response.ok(produtos).build();
         } catch (RuntimeException e) {
             LOG.errorf(e, "Erro ao listar produtos");

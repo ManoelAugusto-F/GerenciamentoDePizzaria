@@ -8,73 +8,53 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
-    <div id="navbar-render"></div>
-    <main>
-        <section class="hero">
-            <div class="container">
-                <h1>As Melhores Pizzas da Cidade</h1>
-                <p>Ingredientes frescos e receitas tradicionais</p>
-                <a href="cardapio.html" class="btn btn-primary">Ver Cardápio</a>
-            </div>
-        </section>
+<div id="navbar-render"></div>
 
-        <section class="features">
-            <div class="container">
-                <h2>Por que escolher nossa pizzaria?</h2>
-                <div class="features-grid">
-                    <div class="feature">
-                        <h3>Ingredientes Frescos</h3>
-                        <p>Utilizamos apenas ingredientes selecionados e frescos</p>
-                    </div>
-                    <div class="feature">
-                        <h3>Entrega Rápida</h3>
-                        <p>Entrega em até 45 minutos na sua região</p>
-                    </div>
-                    <div class="feature">
-                        <h3>Preços Justos</h3>
-                        <p>Qualidade e sabor por um preço acessível</p>
-                    </div>
+<main>
+    <div id="cart-render"></div>
+    <section class="hero">
+        <div class="container">
+            <h1>As Melhores Pizzas da Cidade</h1>
+            <p>Ingredientes frescos e receitas tradicionais</p>
+            <a href="cardapio.html" class="btn btn-primary">Ver Cardápio</a>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="container">
+            <h2>Por que escolher nossa pizzaria?</h2>
+            <div class="features-grid">
+                <div class="feature">
+                    <h3>Ingredientes Frescos</h3>
+                    <p>Utilizamos apenas ingredientes selecionados e frescos</p>
+                </div>
+                <div class="feature">
+                    <h3>Entrega Rápida</h3>
+                    <p>Entrega em até 45 minutos na sua região</p>
+                </div>
+                <div class="feature">
+                    <h3>Preços Justos</h3>
+                    <p>Qualidade e sabor por um preço acessível</p>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <section class="about">
-            <div class="container">
-                <h2>Sobre Nós</h2>
-                <p>Há mais de 20 anos servindo as melhores pizzas da cidade. Nossa missão é proporcionar uma experiência gastronômica única, com sabores autênticos e atendimento de qualidade.</p>
-            </div>
-        </section>
-    </main>
+    <section class="about">
+        <div class="container">
+            <h2>Sobre Nós</h2>
+            <p>Há mais de 20 anos servindo as melhores pizzas da cidade. Nossa missão é proporcionar uma experiência
+                gastronômica única, com sabores autênticos e atendimento de qualidade.</p>
+        </div>
+    </section>
+</main>
 
-    <div id="footer-placeholder"></div>
-    <!--scripts-->
-    <script src="js/script.js"></script>
-    <script src="js/footer.js"></script>
-    <script src="js/auth.js"></script>
-    <script src="js/nav.js"></script>
-    <script>
-        // Menu dinâmico conforme papel
-        document.addEventListener('DOMContentLoaded', function() {
-            if (auth.isAuthenticated()) {
-                document.getElementById('loginLink').style.display = 'none';
-                document.getElementById('registerLink').style.display = 'none';
-                document.getElementById('logoutBtn').style.display = 'inline-block';
-                if (auth.user?.perfil === 'ADMIN') {
-                    document.querySelector('.admin-only').style.display = 'inline-block';
-                } else if (auth.user?.perfil === 'ATENDENTE') {
-                    document.querySelector('.attendant-only').style.display = 'inline-block';
-                } else if (auth.user?.perfil === 'CLIENTE') {
-                    document.querySelector('.client-only').style.display = 'inline-block';
-                }
-            } else {
-                document.getElementById('loginLink').style.display = 'inline-block';
-                document.getElementById('registerLink').style.display = 'inline-block';
-                document.getElementById('logoutBtn').style.display = 'none';
-                document.querySelector('.admin-only').style.display = 'none';
-                document.querySelector('.attendant-only').style.display = 'none';
-                document.querySelector('.client-only').style.display = 'none';
-            }
-        });
-    </script>
+<div id="footer-placeholder"></div>
+<!--scripts-->
+<script src="js/script.js"></script>
+<script src="js/footer.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/CartRender.js"></script>
 </body>
 </html> 

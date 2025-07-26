@@ -6,6 +6,7 @@
     <title>Cardápio - Pizzaria</title>
     <link rel="stylesheet" href="css/styles.css"/>
     <link rel="stylesheet" href="css/cardCardapio.css"/>
+    <link rel="stylesheet" href="css/pedidosPage.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 </head>
 <body>
@@ -14,18 +15,14 @@
     <div id="cart-render"></div>
     <h1>Área do Cliente</h1>
     <div class="dashboard-grid">
-        <a href="cardapio.html" onclick="app.navigateTo('menu')" class="dashboard-card">Catálogo</a>
-        <a href="#" onclick="app.navigateTo('orders')" class="dashboard-card">Acompanhar Pedido</a>
-        <a href="historyPedido.html" onclick="app.navigateTo('history')" class="dashboard-card">Histórico de Pedidos</a>
+        <a href="cardapio.html" class="dashboard-card">Catálogo</a>
+        <a href="#" class="dashboard-card">Acompanhar Pedido</a>
     </div>
 </main>
 
 
 <main class="container">
-    <div class="menu-container">
-        <h2>Nosso Cardápio</h2>
-        <div id="card-container" class="card-container"></div>
-    </div>
+    <div id="pedidos-container"></div>
 </main>
 
 <div id="footer-placeholder"></div>
@@ -36,7 +33,7 @@
 <script src="js/script.js"></script>
 <script src="js/nav.js"></script>
 <script src="js/CartRender.js"></script>
-
+<script src="js/aPedidos.js"></script>
 <!-- definir acesso apenas ao Atendente e Adm -->
 
 </body>

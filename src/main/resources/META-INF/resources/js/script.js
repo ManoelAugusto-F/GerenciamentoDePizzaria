@@ -115,7 +115,7 @@ async function getCartItens() {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-    if (cart) {
+    if (cart.length > 0) {
         getCartItens();
     }
 });
@@ -123,9 +123,9 @@ document.addEventListener('DOMContentLoaded', function () {
 async function removeFromCart(pizzaId) {
     try {
         await removeRequest(pizzaId);
-        setTimeout(() => {
-            updateCart();  // dá tempo pro back terminar de deletar
-        }, 200);      // atualiza os dados do carrinho
+        getCartItens().then(r => {
+            updateCart();
+        })
     } catch (error) {
         console.error('Erro ao remover item do carrinho:', error);
     }
@@ -147,7 +147,6 @@ async function removeRequest(pizzaId) {
         console.error('Erro:', error);
     }
 }
-
 
 function updateCart() {
     const cartItems = document.getElementById('cart-items');
@@ -217,8 +216,10 @@ function checkout() {
         produtos: finalItems,
         total: total
     };
-    console.log(payload)
     chegoutFetch(payload)
+    getCartItens().then(r => {
+        updateCart()
+    });
 }
 
 function chegoutFetch(payload) {

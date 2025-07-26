@@ -10,8 +10,6 @@ public class PedidoDTO {
     private List<ProdutoItem> produtos;
     private Double total;
 
-
-
 }
 
 

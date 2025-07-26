@@ -1,8 +1,6 @@
 let openHide = false;
 let cartIcon = '<i class="fa-solid fa-cart-shopping"></i>';
 
-
-
 function renderNavbar() {
     const navbar = `
   <nav class="navbar"> 
@@ -49,7 +47,6 @@ function openCart() {
 }
 
 // verifica a pagina e ativa o link pra trocar de cor
-
 function ativarLinkAtual() {
     const links = document.querySelectorAll('.navigation-links');
     const currentPath = window.location.pathname.split("/").pop() || 'index.html';

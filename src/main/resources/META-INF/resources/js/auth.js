@@ -139,19 +139,3 @@ class Auth {
 }
 
 const auth = new Auth();
-
-// Captura global de erros do frontend e envia para o backend
-window.onerror = function (message, source, lineno, colno, error) {
-    const log = {
-        message,
-        source,
-        lineno,
-        colno,
-        stack: error && error.stack ? error.stack : null
-    };
-    fetch('/api/logs/frontend', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(log)
-    });
-};

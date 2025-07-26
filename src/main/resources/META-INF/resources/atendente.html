@@ -3,40 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel do Atendente - Pizzaria</title>
+    <title>Cadastro - Pizzaria</title>
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/cardCardapio.css"/>
+    <link rel="stylesheet" href="css/pedidosPage.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
 </head>
 <body>
 <div id="navbar-render"></div>
-    <main class="container">
-        <div id="cart-render"></div>
-        <h1>Painel do Atendente</h1>
-        <div>
-            <label for="statusFilter">Filtrar por status:</label>
-            <select id="statusFilter" onchange="app.loadOrdersPage()">
-                <option value="">Todos</option>
-                <option value="RECEBIDO">Recebido</option>
-                <option value="PREPARANDO">Em preparo</option>
-                <option value="PRONTO">Pronto</option>
-                <option value="ENTREGUE">Entregue</option>
-            </select>
-        </div>
-        <div id="content"></div>
-    </main>
+
+<main class="container">
+    <div id="cart-render"></div>
+    <h1 class="title">Painel do Atendente</h1>
+    <div id="pedidos-container"></div>
+</main>
+
+
 <div id="footer-placeholder"></div>
 <!--scripts-->
-    <script src="js/footer.js"></script>
-    <script src="js/auth.js"></script>
-    <script src="js/app.js"></script>
-    <script src="js/nav.js"></script>
+
+<script src="js/footer.js"></script>
+<script src="js/script.js"></script>
 <script src="js/CartRender.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            if (!auth.isAuthenticated() || !auth.isAttendant()) {
-                window.location.href = '/error.html';
-            }
-        });
-    </script>
+<script src="js/auth.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/aPedidos.js"></script>
 </body>
-</html> 
+</html>
